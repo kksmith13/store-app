@@ -1,0 +1,21 @@
+PODS:
+  - Alamofire (4.0.0)
+  - GoogleAnalytics (3.17.0)
+  - KeychainAccess (3.0.0)
+  - SwiftyJSON (3.1.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - GoogleAnalytics
+  - KeychainAccess
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  KeychainAccess: 412bf2650d9aebfc8135a58103b90ec38caad7f8
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+
+PODFILE CHECKSUM: 81c7df761aebd07ae86faf0cef6a10264fe94e59
+
+COCOAPODS: 1.1.0.rc.2

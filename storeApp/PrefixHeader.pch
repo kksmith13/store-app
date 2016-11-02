@@ -1,0 +1,18 @@
+//
+//  PrefixHeader.pch
+//  Clarks
+//
+//  Created by Kyle Smith on 7/28/16.
+//  Copyright © 2016 Codesmiths. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+//Path to the configuration plist
+#define CONFIGURATION_PLIST @"Config"
+
+#define CONFIGURATION_PRIMARY_COLOR @"colors.primary"
+#define CONFIGURATION_SECONDARY_COLOR @"colors.secondary"
+
+#endif /* PrefixHeader_pch */

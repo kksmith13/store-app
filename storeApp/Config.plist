@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>storeLocations</key>
+	<dict>
+		<key>store 0</key>
+		<dict>
+			<key>latitude</key>
+			<string>31.091145</string>
+			<key>longitude</key>
+			<string>-88.238500</string>
+			<key>name</key>
+			<string>JR FOOD #5</string>
+		</dict>
+		<key>store 1</key>
+		<dict>
+			<key>latitude</key>
+			<string>31.335413</string>
+			<key>longitude</key>
+			<string>-89.327992</string>
+			<key>name</key>
+			<string>JR FOOD #66</string>
+		</dict>
+		<key>store 2</key>
+		<dict>
+			<key>latitude</key>
+			<string>31.324448</string>
+			<key>longitude</key>
+			<string>-89.348191</string>
+			<key>name</key>
+			<string>JR FOOD #114</string>
+		</dict>
+		<key>store 3</key>
+		<dict>
+			<key>latitude</key>
+			<string></string>
+			<key>longitude</key>
+			<string></string>
+			<key>New item</key>
+			<string></string>
+		</dict>
+	</dict>
+	<key>myJR</key>
+	<string>jfm-logo</string>
+	<key>barcode</key>
+	<string>barcodeIcon</string>
+	<key>more</key>
+	<string>moreIcon</string>
+	<key>location</key>
+	<string>locationIcon</string>
+	<key>background</key>
+	<string>appBackground</string>
+	<key>icon</key>
+	<string>clarkIcon</string>
+	<key>colors</key>
+	<dict>
+		<key>lines</key>
+		<string>.81 .81 .82 1</string>
+		<key>offBlack</key>
+		<string>.11 .11 .11 1</string>
+		<key>green</key>
+		<string>.10 .61 .40 1</string>
+		<key>primary</key>
+		<string>.10 .86 .10 1</string>
+		<key>secondary</key>
+		<string>.0 .0 .99 1</string>
+	</dict>
+</dict>
+</plist>
