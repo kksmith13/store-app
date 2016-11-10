@@ -97,11 +97,13 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         APIClient
             .sharedInstance
             .loadStores(success: { (responseObject) -> Void in
+                    print(responseObject)
                     for (_, stores) in responseObject["stores"] {
+                        print(stores)
                         let lat = stores["latitude"].stringValue
                         let long = stores["longitude"].stringValue
                         let location = MapStore(latitude: Double(lat)!, longitude: Double(long)!)
-                        location.title = stores["_id"].stringValue
+                        location.title = stores["name"].stringValue
                         self.locatorMap.addAnnotation(location)
                         
                     }

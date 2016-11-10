@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 extension UIViewController {
     
@@ -20,6 +21,21 @@ extension UIViewController {
         imageViewBackground.contentMode = UIViewContentMode.scaleAspectFill
         view.addSubview(imageViewBackground)
         view.sendSubview(toBack: imageViewBackground)
-        //view.backgroundColor = UIColor(patternImage: backgroundImage)
+        navigationController?.navigationBar.barTintColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "primaryColor")!)
+    }
+    
+    func getSettingsFromAPI() {
+        APIClient
+            .sharedInstance
+            .loadSettings(success: {(responseObject) -> Void in
+                let defaults = UserDefaults.standard
+                defaults.setValue(("#" + responseObject["setting"][0]["primaryColor"].stringValue), forKey: "primaryColor")
+                defaults.setValue(("#" + responseObject["setting"][0]["secondaryColor"].stringValue), forKey: "secondaryColor")
+                //print(responseObject["setting"][0]["appIcon"]["data"].stringValue)
+                defaults.setValue(responseObject["setting"][0]["appIcon"]["data"].stringValue, forKey: "icon")
+                },
+                          failure: {(error) -> Void in
+                            print(error)
+            })
     }
 }

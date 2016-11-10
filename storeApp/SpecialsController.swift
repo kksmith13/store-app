@@ -15,7 +15,6 @@ class SpecialsController: AppViewController, UITableViewDelegate, UITableViewDat
     var hasFetchedCoupons = Bool()
     var isLoggedIn = Bool()
     var coupons = NSMutableArray()
-    var decodedImage = UIImage()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,10 +105,7 @@ class SpecialsController: AppViewController, UITableViewDelegate, UITableViewDat
         if hasData() {
             let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
             cell.textLabel?.text = couponDict["name"].stringValue
-            
-            let imageData = couponDict["image"]["data"].stringValue
-            let encodedImage = NSData(base64Encoded: imageData, options: .ignoreUnknownCharacters)
-            decodedImage = UIImage(data: encodedImage as! Data)!
+            let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
             cell.imageView!.image = decodedImage
 
         }
@@ -124,6 +120,7 @@ class SpecialsController: AppViewController, UITableViewDelegate, UITableViewDat
         let specialController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialSelectedController") as! SpecialSelectedViewController
         
         let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
+        let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
         specialController.data = couponDict
         specialController.image = decodedImage
         

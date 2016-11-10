@@ -12,6 +12,8 @@ import QuartzCore
 
 class CircleTabBarController: AppViewController {
     
+    let primaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "primaryColor")!)
+    let secondaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "secondaryColor")!)
     
     var buttonSelected = 0
     var isAtTop = false
@@ -64,10 +66,10 @@ class CircleTabBarController: AppViewController {
         middleButton.frame = CGRect(x: self.view.bounds.width/2 - 50, y: self.view.bounds.height - 75, width: 100, height: 100)
         middleButton.layer.cornerRadius = 50
         middleButton.addTarget(self, action: #selector(self.middleButtonPressed(_:)), for: UIControlEvents.touchUpInside)
-        
-        setButtonColor(button: leftButton, color: GLOBALS.lines)
-        setButtonColor(button: rightButton, color: GLOBALS.lines)
-        setButtonColor(button: middleButton, color: GLOBALS.green)
+
+        setButtonColor(button: leftButton, color: secondaryColor)
+        setButtonColor(button: rightButton, color: secondaryColor)
+        setButtonColor(button: middleButton, color: primaryColor)
         
         self.view.addSubview(leftButton)
         self.view.addSubview(rightButton)

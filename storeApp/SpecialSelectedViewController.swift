@@ -42,20 +42,7 @@ class SpecialSelectedViewController: AppViewController {
     }
     
     func configureView() {
-        
-        //configure date
-        let dateString = data["expires"].stringValue
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        let nsDate = dateFormatter.date(from: dateString)
-        
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        let date = dateFormatter.string(from: nsDate!)
-        
-        
-        
+        let date = Configuration.dateConvert(date: data["expires"].stringValue)
         imageView.image = image
         couponTitle.text = data["name"].stringValue
         details.text = data["details"].stringValue

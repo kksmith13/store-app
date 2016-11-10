@@ -25,6 +25,7 @@ class Home: CircleTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getSettingsFromAPI()
         configureTheme()
         configureIcon()
         buildCustomBar()
@@ -78,8 +79,8 @@ class Home: CircleTabBarController {
     
     // MARK: - Internal Functions
     
-    func configureIcon() {
-        let iconImage = Configuration.getImageFromConfig("icon", type: "png")
+    func configureIcon() {        
+        let iconImage = Configuration.convertBase64Image(image: UserDefaults.standard.string(forKey: "icon")!)
         iconImageView.image = iconImage
     }
     

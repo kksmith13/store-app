@@ -24,6 +24,7 @@ class APIClient {
 //    #endif
     //let baseAPIURL    = "http://10.0.0.56:3000/api"
     let baseAPIURL = "http://127.0.0.1:3000/api"
+    let loginVerifyBase  = "http://127.0.0.1:3000"
     
     // MARK: - Internal Functions
     func getAccessToken() -> String? {
@@ -107,10 +108,10 @@ class APIClient {
     func isAuthenticated(success: @escaping (JSON) -> Void,
                          failure: @escaping (NSError) -> Void){
         
-        let authenticateURL:URLConvertible = baseAPIURL + "/verify"
         let verifyHeaders:NSDictionary = setupGETHeaders()
+        let verifyURL:URLConvertible = loginVerifyBase + "/verify"
         
-        GET(urlString: authenticateURL,
+        GET(urlString: verifyURL,
             headers: verifyHeaders,
             success: {(responseObject) -> Void in
                 success(responseObject)
@@ -122,7 +123,7 @@ class APIClient {
                success: @escaping (JSON) -> Void,
                failure: @escaping (NSError) -> Void) {
         
-        let loginURL:URLConvertible = baseAPIURL + "/login"
+        let loginURL:URLConvertible = loginVerifyBase + "/login"
         let loginHeaders:NSDictionary = ["Accept" : "application/json"]
         
         return POST(urlString: loginURL,
@@ -152,6 +153,20 @@ class APIClient {
                    failure: failure)
     }
     
+    func loadSettings(success: @escaping (JSON) -> Void,
+                    failure: @escaping (NSError) -> Void) {
+        
+        let storesURL:URLConvertible = baseAPIURL + "/settings"
+        let loadStoresHeaders = setupGETHeaders()
+        
+        return GET(urlString: storesURL,
+                   headers: loadStoresHeaders,
+                   success: {(responseObject) -> Void in
+                    success(responseObject)
+            },
+                   failure: failure)
+    }
+    
     func loadStores(success: @escaping (JSON) -> Void,
                     failure: @escaping (NSError) -> Void) {
         
@@ -169,7 +184,7 @@ class APIClient {
     func loadCoupons(success: @escaping (JSON) -> Void,
                      failure: @escaping (NSError) -> Void) {
         
-        let couponsURL:URLConvertible = "http://localhost:3000/coupons"
+        let couponsURL:URLConvertible = baseAPIURL + "/coupons"
         let loadCouponsHeaders = setupGETHeaders()
         
         return GET(urlString: couponsURL,
