@@ -23,8 +23,8 @@ class APIClient {
 //    let baseAPIURL    = "http://codesmiths.com/api"
 //    #endif
     //let baseAPIURL    = "http://10.0.0.56:3000/api"
-    let baseAPIURL = "http://127.0.0.1:3000/api"
-    let loginVerifyBase  = "http://127.0.0.1:3000"
+    let baseAPIURL = "http://10.0.0.47:3000/api"
+    let loginVerifyBase  = "http://10.0.0.47:3000"
     
     // MARK: - Internal Functions
     func getAccessToken() -> String? {

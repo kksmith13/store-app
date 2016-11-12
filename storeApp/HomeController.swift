@@ -25,11 +25,15 @@ class Home: CircleTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getSettingsFromAPI()
-        configureTheme()
-        configureIcon()
-        buildCustomBar()
-
+        Configuration
+            .getSettingsFromAPI(success: {(response) -> Void in
+                self.configureTheme()
+                self.configureIcon()
+                self.buildCustomBar()
+            },
+                  failure: {(error) -> Void in
+                    print(error)
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {

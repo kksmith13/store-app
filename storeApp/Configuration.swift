@@ -119,6 +119,25 @@ class Configuration : NSObject {
         return decodedImage
     }
     
+    static func getSettingsFromAPI(success: @escaping (AnyObject!) -> Void,
+                                   failure: @escaping (NSError) -> Void) {
+        APIClient
+            .sharedInstance
+            .loadSettings(success: {(responseObject) -> Void in
+                let defaults = UserDefaults.standard
+                defaults.setValue(("#" + responseObject["setting"][0]["primaryColor"].stringValue), forKey: "primaryColor")
+                defaults.setValue(("#" + responseObject["setting"][0]["secondaryColor"].stringValue), forKey: "secondaryColor")
+                //print(responseObject["setting"][0]["appIcon"]["data"].stringValue)
+                defaults.setValue(responseObject["setting"][0]["appIcon"]["data"].stringValue, forKey: "icon")
+                defaults.synchronize()
+                success(responseObject as AnyObject!)
+                },
+                          failure: {(error) -> Void in
+                            failure(error)
+                            print(error)
+            })
+    }
+    
 }
 
 

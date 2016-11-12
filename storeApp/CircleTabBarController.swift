@@ -12,9 +12,6 @@ import QuartzCore
 
 class CircleTabBarController: AppViewController {
     
-    let primaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "primaryColor")!)
-    let secondaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "secondaryColor")!)
-    
     var buttonSelected = 0
     var isAtTop = false
     
@@ -55,7 +52,9 @@ class CircleTabBarController: AppViewController {
     }
     
     func buildCustomBar() {
-    
+        
+        let primaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "primaryColor")!)
+        let secondaryColor = Configuration.hexStringToUIColor(hex: UserDefaults.standard.string(forKey: "secondaryColor")!)
         
         leftButton.frame = CGRect(x: 0, y: self.view.bounds.height - 49, width: self.view.bounds.width/2, height: 49)
         leftButton.addTarget(self, action: #selector(self.leftButtonPressed(_:)), for: UIControlEvents.touchUpInside)

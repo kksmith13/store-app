@@ -14,6 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let defaults = UserDefaults.standard
+        //Handle first time launch settings
+        if !defaults.bool(forKey: "HasLaunchedOnce"){
+            defaults.setValue("#FFFFFF", forKey: "primaryColor")
+            defaults.setValue("#000000", forKey: "secondaryColor")
+            defaults.setValue("0", forKey: "icon")
+            defaults.set(true, forKey: "HasLaunchedOnce")
+            defaults.synchronize()
+        }
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .lightContent
         return true
