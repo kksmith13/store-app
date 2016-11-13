@@ -17,7 +17,7 @@ class RootViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        //updateLoggedInStatus()
         //Do some logic to check if logged in?
         self.performSegue(withIdentifier: "goHome", sender: self)
     }
@@ -27,15 +27,19 @@ class RootViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    fileprivate func updateLoggedInStatus() {
+            APIClient
+                .sharedInstance
+                .isAuthenticated(success: {(responseObject) -> Void in
+                    if responseObject["status"].stringValue == "200" {
+                        UserDefaults.standard.setIsLoggedIn(value: true)
+                    } else {
+                        UserDefaults.standard.setIsLoggedIn(value: false)
+                    }
+                },
+                    failure: {(error) -> Void in
+                        print(error)
+            })
     }
-    */
 
 }

@@ -9,137 +9,33 @@
 import Foundation
 import UIKit
 
-class LoginViewController : AppViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    
-    @IBOutlet weak var tableView: UITableView!
-    var email: UITextField! { didSet { email.delegate = self } }
-    var password: UITextField! { didSet { password.delegate = self } }
+class LoginViewController : AppViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.delegate   = self
-        tableView.dataSource = self
-    }
-    
-    //MARK: - Table View Functions
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        view = LoginCell()
+        view.backgroundColor = .white
         
-        if (section == 0){
-            return 2
-        } else {
-            return 1
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = UITableViewCell()
-        if (indexPath.section == 0 && indexPath.row == 0) {
-            cell =  tableView.dequeueReusableCell(withIdentifier: "EmailCellID", for: indexPath as IndexPath)
-            
-            email = self.view.viewWithTag(10) as! UITextField
-            
-        } else if (indexPath.section == 0 && indexPath.row == 1) {
-            cell =  tableView.dequeueReusableCell(withIdentifier: "PasswordCellID", for: indexPath as IndexPath)
-            
-            password = self.view.viewWithTag(11) as! UITextField
-            
-        } else if (indexPath.section == 1 && indexPath.row == 0) {
-            cell =  tableView.dequeueReusableCell(withIdentifier: "LoginButtonCellID", for: indexPath as IndexPath)
-            
-            let loginButton:UIButton = self.view.viewWithTag(1) as! UIButton
-            loginButton.addTarget(self, action: #selector(self.onLoginPressed(_:)), for: .touchUpInside)
-            
-        } else {
-            cell.textLabel?.text = ""
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    // MARK: - Button functions
-    
-    func onLoginPressed(_ button: UIButton) {
-        
-        if(password.text?.characters.count == 0 || email.text?.characters.count == 0) {
-            showAlert(title: "Error", message: "Email or password is empty.")
-        } else {
-            let params:NSDictionary = [ "email"    : email.text!,
-                                        "password" : password.text!]
-            
-            APIClient
-                .sharedInstance
-                .login(params: params,
-                       success: {(responseObject) -> Void in
-                        if responseObject["success"].stringValue == "false"{
-                            self.showAlert(title: "Error", message: "Invalid email or password")
-                        } else {
-                            _ = self.navigationController?.popViewController(animated: true)
-                            
-                        }
-                    },
-                       failure: {(error) -> Void in
-                        self.showAlert(title: "Could Not Login", message: error.localizedDescription)
-                })
-        }
+        observeKeyboardNotification()
         
     }
-
-    /*
-     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-     
-      Configure the cell...
-     
-     return cell
-     }
-     */
     
-    /*
-      Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-      Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
+    fileprivate func observeKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
+    }
     
-    /*
-      Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-      Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-      Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
+    func keyboardShow() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: -30, width: self.view.frame.width, height: self.view.frame.height)
+            }, completion: nil)
+    }
     
-    /*
-      Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
-    
-    
-    
+    func keyboardHide() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            }, completion: nil)
+    }
 }

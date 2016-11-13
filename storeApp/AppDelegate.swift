@@ -14,16 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let defaults = UserDefaults.standard
-        //Handle first time launch settings
-        if !defaults.bool(forKey: "HasLaunchedOnce"){
-            defaults.setValue("#FFFFFF", forKey: "primaryColor")
-            defaults.setValue("#000000", forKey: "secondaryColor")
-            defaults.setValue("0", forKey: "icon")
-            defaults.set(true, forKey: "HasLaunchedOnce")
-            defaults.synchronize()
-        }
         // Override point for customization after application launch.
+        initOnFirstLaunch()
         UIApplication.shared.statusBarStyle = .lightContent
         return true
     }
@@ -48,6 +40,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func initOnFirstLaunch() {
+        let defaults = UserDefaults.standard
+        //defaults. TODO: Handle last updated
+        //Handle first time launch settings
+        if !defaults.bool(forKey: "HasLaunchedOnce"){
+            defaults.setValue("#FFFFFF", forKey: "primaryColor")
+            defaults.setValue("#000000", forKey: "secondaryColor")
+            defaults.setValue("0", forKey: "icon")
+            defaults.set(true, forKey: "HasLaunchedOnce")
+            defaults.synchronize()
+        }
     }
 
 

@@ -21,6 +21,13 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        
+        
         locatorMap.delegate = self;
         
         //For use in foreground
@@ -43,13 +50,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         let initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
         centerMapOnLocation(initialLocation)
         addLocationsToMap()
-        
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
     }
     
     override func viewWillDisappear(_ animated: Bool) {

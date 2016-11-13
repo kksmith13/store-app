@@ -105,6 +105,10 @@ class APIClient {
         }
     
     // MARK: - External Functions
+    func isLoggedIn() -> Bool {
+        return UserDefaults.standard.isLoggedIn()
+    }
+    
     func isAuthenticated(success: @escaping (JSON) -> Void,
                          failure: @escaping (NSError) -> Void){
         
@@ -115,8 +119,12 @@ class APIClient {
             headers: verifyHeaders,
             success: {(responseObject) -> Void in
                 success(responseObject)
+                UserDefaults.standard.setIsLoggedIn(value: true)
             },
-            failure: failure)
+            failure:{(error) -> Void in
+                failure(error)
+                UserDefaults.standard.setIsLoggedIn(value: false)
+        })
     }
     
     func login(params: NSDictionary,
@@ -132,7 +140,7 @@ class APIClient {
                     success: {(responseObject) -> Void in
                         print(responseObject)
                         self.setAccessToken(token: responseObject["authtoken"].stringValue)
-                        
+                        UserDefaults.standard.setIsLoggedIn(value: true)
                         success(responseObject)
                     },
                     failure: failure)
@@ -147,6 +155,7 @@ class APIClient {
         return GET(urlString: logoutURL,
                    headers: logoutHeaders,
                    success: {(responseObject) -> Void in
+                        UserDefaults.standard.setIsLoggedIn(value: false)
                         success(responseObject)
                         try! self.keychain.remove(self.APITokenKey)
                    },

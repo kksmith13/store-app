@@ -25,20 +25,11 @@ class Home: CircleTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Configuration
-            .getSettingsFromAPI(success: {(response) -> Void in
-                self.configureTheme()
-                self.configureIcon()
-                self.buildCustomBar()
-            },
-                  failure: {(error) -> Void in
-                    print(error)
-        })
+        initSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        
         if(isAtTop == false){
             checkLogin()
         }
@@ -52,6 +43,21 @@ class Home: CircleTabBarController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func initSettings() {
+        Configuration
+            .getSettingsFromAPI(success: {(response) -> Void in
+                self.configureTheme()
+                self.configureIcon()
+                self.buildCustomBar()
+                },
+                    failure: {(error) -> Void in
+                    print(error)
+                    self.configureTheme()
+                    self.configureIcon()
+                    self.buildCustomBar()
+            })
     }
         
     func buildLoginButton(){
@@ -89,20 +95,12 @@ class Home: CircleTabBarController {
     }
     
     func checkLogin() {
-        APIClient
-            .sharedInstance
-            .isAuthenticated(success: {(responseObject) -> Void in
-                if responseObject["status"].stringValue == "200" {
-                    if(self.view.subviews.contains(self.loginButton)) {
-                        self.loginButton.removeFromSuperview()
-                    }
-                } else {
-                    self.buildLoginButton()
-                }
-            },
-                failure: {(error) -> Void in
-                    print(error)
-        })
+        print(!UserDefaults.standard.isLoggedIn())
+        if !UserDefaults.standard.isLoggedIn() {
+            buildLoginButton()
+        } else {
+            loginButton.removeFromSuperview()
+        }
     }
     
 }
