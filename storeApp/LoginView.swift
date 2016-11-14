@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginCell: UIView {
+class LoginView: UIView {
     
     let logoImageView: UIImageView = {
         let image = UIImage(named: "logo")
@@ -39,6 +39,7 @@ class LoginCell: UIView {
         button.backgroundColor = .green
         button.setTitle("Login", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(nil, action: #selector(LoginController.finishLoggingIn), for: .touchUpInside)
         return button
     }()
     

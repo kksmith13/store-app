@@ -9,22 +9,20 @@
 import UIKit
 import SwiftyJSON
 
-class Home: CircleTabBarController {
-    @IBOutlet var iconImageView: UIImageView!
-    let loginButton = UIButton()
-    
+class HomeController: CircleTabBarController {
     override var isAtTop: Bool {
         didSet {
             if isAtTop == true {
-                self.loginButton.removeFromSuperview()
+                
             } else {
-                checkLogin()
             }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view = HomeView()
         initSettings()
     }
     
@@ -49,58 +47,30 @@ class Home: CircleTabBarController {
         Configuration
             .getSettingsFromAPI(success: {(response) -> Void in
                 self.configureTheme()
-                self.configureIcon()
                 self.buildCustomBar()
                 },
                     failure: {(error) -> Void in
                     print(error)
                     self.configureTheme()
-                    self.configureIcon()
                     self.buildCustomBar()
             })
-    }
-        
-    func buildLoginButton(){
-        
-        let buttonHeight = (self.view.bounds.height)*(0.065)
-        loginButton.layer.cornerRadius = 8
-        loginButton.setTitleColor(UIColor.white, for: UIControlState())
-        loginButton.titleLabel!.font = UIFont(name: ".SFUIText-Light", size: 20)
-        loginButton.setTitle("Sign In", for: UIControlState())
-        loginButton.frame = CGRect(x: 16, y: (self.view.bounds.height - 49)/2 - (buttonHeight/2), width: self.view.bounds.width-32, height: buttonHeight)
-        loginButton.layer.borderWidth = 1
-        loginButton.layer.borderColor = GLOBALS.lines.cgColor
-        loginButton.addTarget(self, action: #selector(Home.onLoginPressed(_:)), for: .touchDown)
-        loginButton.addTarget(self, action: #selector(Home.onLoginReleased(_:)), for: .touchUpInside)
-        
-        self.view.addSubview(loginButton)
-    }
-    
-    func onLoginPressed(_ button:UIButton) {
-        button.backgroundColor = UIColor(red:0.81, green:0.81, blue:0.82, alpha:1.0)
     }
     
     func onLoginReleased(_ button:UIButton) {
         button.backgroundColor = .clear
-        let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as UIViewController
-        navigationController?.pushViewController(loginController, animated: true)
-        
-    }
-    
-    // MARK: - Internal Functions
-    
-    func configureIcon() {        
-        let iconImage = Configuration.convertBase64Image(image: UserDefaults.standard.string(forKey: "icon")!)
-        iconImageView.image = iconImage
+        let loginController = LoginController()
+        navigationController?.present(loginController, animated: true, completion: {
+            //maybe do something??
+        })
     }
     
     func checkLogin() {
         print(!UserDefaults.standard.isLoggedIn())
-        if !UserDefaults.standard.isLoggedIn() {
-            buildLoginButton()
-        } else {
-            loginButton.removeFromSuperview()
-        }
+//        if !UserDefaults.standard.isLoggedIn() {
+//            buildLoginButton()
+//        } else {
+//            loginButton.removeFromSuperview()
+//        }
     }
     
 }

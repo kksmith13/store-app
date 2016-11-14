@@ -6,15 +6,18 @@
 //  Copyright © 2016 Codesmiths. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-class LoginViewController : AppViewController, UITextFieldDelegate {
+protocol LoginControllerDelegate {
+    func finishLoggingIn()
+}
+class LoginController : AppViewController, LoginControllerDelegate, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view = LoginView()
         
-        view = LoginCell()
         view.backgroundColor = .white
         
         observeKeyboardNotification()
@@ -37,5 +40,14 @@ class LoginViewController : AppViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             }, completion: nil)
+    }
+    
+    func finishLoggingIn() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+        
+        mainNavigationController.viewControllers = [HomeController()]
+        UserDefaults.standard.setIsLoggedIn(value: true)
+        dismiss(animated: true, completion: nil)
     }
 }

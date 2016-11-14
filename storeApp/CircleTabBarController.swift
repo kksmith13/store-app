@@ -11,6 +11,7 @@ import UIKit
 import QuartzCore
 
 class CircleTabBarController: AppViewController {
+    static let sharedInstance = CircleTabBarController()
     
     var buttonSelected = 0
     var isAtTop = false

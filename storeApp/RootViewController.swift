@@ -26,20 +26,5 @@ class RootViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    fileprivate func updateLoggedInStatus() {
-            APIClient
-                .sharedInstance
-                .isAuthenticated(success: {(responseObject) -> Void in
-                    if responseObject["status"].stringValue == "200" {
-                        UserDefaults.standard.setIsLoggedIn(value: true)
-                    } else {
-                        UserDefaults.standard.setIsLoggedIn(value: false)
-                    }
-                },
-                    failure: {(error) -> Void in
-                        print(error)
-            })
-    }
 
 }
