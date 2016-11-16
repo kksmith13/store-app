@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class HomeController: CircleTabBarController {
+class HomeController: UIViewController {
     override var isAtTop: Bool {
         didSet {
             if isAtTop == true {

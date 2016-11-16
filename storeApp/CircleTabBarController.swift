@@ -11,14 +11,14 @@ import UIKit
 import QuartzCore
 
 class CircleTabBarController: AppViewController {
-    static let sharedInstance = CircleTabBarController()
     
     var buttonSelected = 0
     var isAtTop = false
     
+    let specialsController = Specials(collectionViewLayout: UICollectionViewFlowLayout())
     let storeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StoreController") as UIViewController
     let foodController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodController") as UIViewController
-    let specialsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialsController") as UIViewController
+    //let specialsController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialsController") as UIViewController
     
     let leftButton = UIButton()
     let rightButton = UIButton()
@@ -94,7 +94,7 @@ class CircleTabBarController: AppViewController {
         let middleBottomFrame = CGRect(x: self.view.bounds.width/2 - 50, y: self.view.bounds.height - 75, width: 100, height: 100)
 
         
-        UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
             if (self.leftButton.frame == leftTopFrame){
                 self.leftButton.frame = leftBottomFrame
                 self.rightButton.frame = rightBottomFrame
@@ -144,7 +144,7 @@ class CircleTabBarController: AppViewController {
         
         //self.navigationController?.performSegue(withIdentifier: "goToStore", sender: self)
         
-        UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
             self.foodController.view.frame = self.viewOnScreen
             self.specialsController.view.frame = self.viewOnScreen
             self.storeController.view.frame = self.viewOnScreen
@@ -156,7 +156,7 @@ class CircleTabBarController: AppViewController {
     
     func animateViewDown() {
         UIApplication.shared.isStatusBarHidden = false
-        UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
             self.foodController.view.frame = self.viewOffScreen
             self.specialsController.view.frame = self.viewOffScreen
             self.storeController.view.frame = self.viewOffScreen

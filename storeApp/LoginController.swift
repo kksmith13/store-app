@@ -17,8 +17,8 @@ class LoginController : AppViewController, LoginControllerDelegate, UITextFieldD
         super.viewDidLoad()
 
         view = LoginView()
-        
         view.backgroundColor = .white
+        navigationController?.navigationBar.isHidden = true
         
         observeKeyboardNotification()
         
@@ -47,7 +47,8 @@ class LoginController : AppViewController, LoginControllerDelegate, UITextFieldD
         guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
         
         mainNavigationController.viewControllers = [HomeController()]
-        UserDefaults.standard.setIsLoggedIn(value: true)
+        //UserDefaults.standard.setIsLoggedIn(value: true)
+        view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }
 }
