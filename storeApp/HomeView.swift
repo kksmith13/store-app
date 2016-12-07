@@ -49,13 +49,4 @@ class HomeView: UIView {
     func onLoginPressed(_ button:UIButton) {
         button.backgroundColor = UIColor(red:0.81, green:0.81, blue:0.82, alpha:1.0)
     }
-    
-    func checkLogin() {
-        print(!UserDefaults.standard.isLoggedIn())
-        if !UserDefaults.standard.isLoggedIn() {
-            addSubview(loginButton)
-        } else {
-            loginButton.removeFromSuperview()
-        }
-    }
 }

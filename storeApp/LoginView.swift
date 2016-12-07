@@ -43,6 +43,16 @@ class LoginView: UIView {
         return button
     }()
     
+    let cancelButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .red
+        button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(nil, action: #selector(LoginController.cancelLoggingIn), for: .touchUpInside)
+        return button
+    }()
+
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -50,6 +60,7 @@ class LoginView: UIView {
         addSubview(emailTextField)
         addSubview(passwordTextField)
         addSubview(loginButton)
+        addSubview(cancelButton)
         
         _ = logoImageView.anchor(centerYAnchor, left: nil, bottom: nil, right: nil, topConstant: -250, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 160, heightConstant: 160)
         logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -59,6 +70,8 @@ class LoginView: UIView {
         _ = passwordTextField.anchor(emailTextField.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 16, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
         
         _ = loginButton.anchor(passwordTextField.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 16, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
+        
+        _ = cancelButton.anchor(loginButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 16, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 30)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -18,9 +18,6 @@ class MainNavigationController: UINavigationController {
     }
     
     func showHomeController() {
-//        let layout = UICollectionViewFlowLayout()
-//        let specials = Specials(collectionViewLayout: layout)
-//        pushViewController(specials, animated: true)
         let homeController = HomeController()
         pushViewController(homeController, animated: true)
     }

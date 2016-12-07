@@ -47,7 +47,16 @@ class LoginController : AppViewController, LoginControllerDelegate, UITextFieldD
         guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
         
         mainNavigationController.viewControllers = [HomeController()]
-        //UserDefaults.standard.setIsLoggedIn(value: true)
+        UserDefaults.standard.setIsLoggedIn(value: true)
+        view.endEditing(true)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func cancelLoggingIn() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+        
+        mainNavigationController.viewControllers = [HomeController()]
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
     }

@@ -113,7 +113,8 @@ class MyStoreController: AppViewController, UICollectionViewDelegate, UICollecti
             case 3:
                 let moreController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "moreController") as UIViewController
                 
-                parent?.navigationController?.pushViewController(moreController, animated: true)
+                navigationController?.pushViewController(moreController, animated: true)
+                //parent?.navigationController?.pushViewController(moreController, animated: true)
                 break;
             default:
                 print("how did you even..")

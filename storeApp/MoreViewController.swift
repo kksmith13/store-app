@@ -61,6 +61,7 @@ class MoreViewController: AppViewController, UITableViewDelegate, UITableViewDat
             .sharedInstance
             .logout(success: { (responseObject) -> Void in
                 print("Successfully logged out!")
+                UserDefaults.standard.setIsLoggedIn(value: false)
                 _ = self.navigationController?.popViewController(animated: true)
                 },
                     failure: { (error) in

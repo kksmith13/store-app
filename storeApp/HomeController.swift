@@ -9,29 +9,18 @@
 import UIKit
 import SwiftyJSON
 
-class HomeController: UIViewController {
-    override var isAtTop: Bool {
-        didSet {
-            if isAtTop == true {
-                
-            } else {
-            }
-        }
-    }
+class HomeController: CircleTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view = HomeView()
         initSettings()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        if(isAtTop == false){
-            checkLogin()
-        }
-
+        self.viewDidLoad()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -62,15 +51,6 @@ class HomeController: UIViewController {
         navigationController?.present(loginController, animated: true, completion: {
             //maybe do something??
         })
-    }
-    
-    func checkLogin() {
-        print(!UserDefaults.standard.isLoggedIn())
-//        if !UserDefaults.standard.isLoggedIn() {
-//            buildLoginButton()
-//        } else {
-//            loginButton.removeFromSuperview()
-//        }
     }
     
 }
