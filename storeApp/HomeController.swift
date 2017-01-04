@@ -13,14 +13,11 @@ class HomeController: CircleTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = HomeView()
         initSettings()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
-        self.viewDidLoad()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -36,11 +33,15 @@ class HomeController: CircleTabBarController {
         Configuration
             .getSettingsFromAPI(success: {(response) -> Void in
                 self.configureTheme()
+                self.view = HomeView()
+                self.view.backgroundColor = Configuration.hexStringToUIColor(hex: "b2b2b2")
                 self.buildCustomBar()
                 },
                     failure: {(error) -> Void in
                     print(error)
                     self.configureTheme()
+                    self.view = HomeView()
+                    self.view.backgroundColor = Configuration.hexStringToUIColor(hex: "b2b2b2")
                     self.buildCustomBar()
             })
     }

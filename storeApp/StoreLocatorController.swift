@@ -12,40 +12,64 @@ import SwiftyJSON
 
 
 class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate {
-
-    @IBOutlet weak var locatorMap: MKMapView!
     
-    let locationManager = CLLocationManager()
+    var position = 0
+
+    lazy var locatorMap: MKMapView = {
+        let mv = MKMapView()
+        mv.delegate = self
+        mv.showsUserLocation = true
+        return mv
+    }()
+    
+    lazy var locationManager: CLLocationManager = {
+        let lm = CLLocationManager()
+        lm.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            lm.delegate = self
+            lm.desiredAccuracy = kCLLocationAccuracyBest
+            lm.startUpdatingLocation()
+        }
+        return lm
+    }()
+    
+    let storeInfo: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
+    }()
+    
+    let shButton: UIButton = {
+        //let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 49, y: 0, width: 49, height: 49))
+        let button = UIButton()
+        button.addTarget(nil, action: #selector(showMore), for: .touchDown)
+        button.backgroundColor = .red
+        return button
+    }()
+    
     let regionRadius: CLLocationDistance = 500
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(locatorMap)
+        view.addSubview(storeInfo)
+        storeInfo.addSubview(shButton)
+        
+        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 49, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        //locatorMap.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        
+        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 49, heightConstant: 49)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         
-        
-        locatorMap.delegate = self;
-        
-        //For use in foreground
-        locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
-        
         let currentLatitude = locationManager.location?.coordinate.latitude
         let currentLongitude = locationManager.location?.coordinate.longitude
-        
-        let currentLocation = MKPointAnnotation()
-        currentLocation.coordinate = CLLocationCoordinate2D(latitude: currentLatitude!, longitude: currentLongitude!)
-        currentLocation.title = "Current Location"
-        locatorMap.addAnnotation(currentLocation)
         
         let initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
         centerMapOnLocation(initialLocation)
@@ -66,17 +90,17 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     //function that sets annotations on map
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation.isKind(of: MKPointAnnotation.self) {
+        if annotation.isKind(of: MKPointAnnotation.self) || annotation is MKUserLocation {
             return nil
         }
         
         var locationView = locatorMap.dequeueReusableAnnotationView(withIdentifier: "Store")
         
         if locationView == nil {
-            let storeImage = Configuration.getImageFromConfig("myJR", type: "png")
+            let storeImage = UIImage(named: "logo")
             let imageSize = CGSize(width: 50, height: 50)
             UIGraphicsBeginImageContext(imageSize)
-            storeImage.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+            storeImage?.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
             let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
@@ -97,16 +121,16 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         APIClient
             .sharedInstance
             .loadStores(success: { (responseObject) -> Void in
-                    print(responseObject)
-                    for (_, stores) in responseObject["stores"] {
-                        print(stores)
-                        let lat = stores["latitude"].stringValue
-                        let long = stores["longitude"].stringValue
-                        let location = MapStore(latitude: Double(lat)!, longitude: Double(long)!)
-                        location.title = stores["name"].stringValue
-                        self.locatorMap.addAnnotation(location)
-                        
-                    }
+                print(responseObject)
+                for (_, stores) in responseObject["stores"] {
+                    print(stores)
+                    let lat = stores["latitude"].stringValue
+                    let long = stores["longitude"].stringValue
+                    let location = MapStore(latitude: Double(lat)!, longitude: Double(long)!)
+                    location.title = stores["name"].stringValue
+                    self.locatorMap.addAnnotation(location)
+                    
+                }
                 },
                         failure: {(error) -> Void in
                             self.showAlert(title: "Failed loading stores", message: error.localizedDescription)
@@ -121,16 +145,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     
     // MARK: - User Routing
-    
-    //Functions to handle location changing
-//    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let location = locations.last! as CLLocation
-//        
-//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-//        
-//        locatorMap.setRegion(region, animated: true)
-//    }
     
     // Function to handle selecting an annotation
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -172,15 +186,18 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         renderer.lineWidth = 5.0
         return renderer
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    //MARK: - Extra Bar Methods
+    func showMore() {
+        if position == 0 {
+            _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 200, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+            _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+            position = 1
+        } else {
+            _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 49, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+            _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+            position = 0
+        }
     }
-    */
-
+    
 }

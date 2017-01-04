@@ -12,4 +12,6 @@ class Coupon: NSObject {
     
     var thumbnailImage: UIImage?
     var title: String?
+    var expires: String?
+    var details: String?
 }

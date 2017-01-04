@@ -102,9 +102,9 @@ class MyStoreController: AppViewController, UICollectionViewDelegate, UICollecti
         switch((indexPath as NSIndexPath).item) {
             case 0:
                 //performSegueWithIdentifier("showMap", sender: self)
-                let mapController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "storeLocator") as UIViewController
+                let storeController = StoreLocatorController()
                 
-                parent?.navigationController?.pushViewController(mapController, animated: true)
+                navigationController?.pushViewController(storeController, animated: true)
                 break;
             case 1:
                 break;

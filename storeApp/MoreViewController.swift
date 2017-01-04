@@ -62,7 +62,11 @@ class MoreViewController: AppViewController, UITableViewDelegate, UITableViewDat
             .logout(success: { (responseObject) -> Void in
                 print("Successfully logged out!")
                 UserDefaults.standard.setIsLoggedIn(value: false)
-                _ = self.navigationController?.popViewController(animated: true)
+                let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+                guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+                
+                mainNavigationController.viewControllers = [HomeController()]
+                mainNavigationController.popToRootViewController(animated: true)
                 },
                     failure: { (error) in
                         print(error)

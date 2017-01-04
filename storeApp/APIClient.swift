@@ -17,6 +17,8 @@ class APIClient {
     
     let keychain = Keychain(service: "com.codesmiths.storeapp")
     let APITokenKey      = "authToken"
+    //let baseAPIURL = "http://192.168.1.235:3000/api"
+    //let loginVerifyBase = "http://192.168.1.235"
     //let baseAPIURL = "http://10.0.0.47:3000/api"
     //let loginVerifyBase  = "http://10.0.0.47:3000"
     let baseAPIURL = "http://127.0.0.1:3000/api"

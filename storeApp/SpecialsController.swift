@@ -121,7 +121,7 @@ class SpecialsController: AppViewController, UITableViewDelegate, UITableViewDat
         
         let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
         let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
-        specialController.data = couponDict
+        //specialController.data = couponDict
         specialController.image = decodedImage
         
         parent?.navigationController?.pushViewController(specialController, animated: true)

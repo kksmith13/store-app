@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = MainNavigationController()
         
-        UserDefaults.standard.setIsLoggedIn(value: false)
+        //UserDefaults.standard.setIsLoggedIn(value: false)
         
         return true
     }

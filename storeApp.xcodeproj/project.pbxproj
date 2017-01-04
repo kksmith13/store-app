@@ -24,7 +24,6 @@
 		8300327B1D561AF70046848A /* SpecialsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300327A1D561AF70046848A /* SpecialsController.swift */; };
 		8300327F1D640D660046848A /* StoreLocatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300327E1D640D660046848A /* StoreLocatorController.swift */; };
 		830032811D64129B0046848A /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830032801D64129B0046848A /* MoreViewController.swift */; };
-		830032831D66119F0046848A /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830032821D66119F0046848A /* RootViewController.swift */; };
 		830032861D76185C0046848A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830032851D76185C0046848A /* APIClient.swift */; };
 		8300328F1D810A620046848A /* AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8300328E1D810A620046848A /* AppViewController.swift */; };
 		8307CAC61DAF121D00EADCFC /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8307CAC51DAF121D00EADCFC /* LoginController.swift */; };
@@ -38,6 +37,7 @@
 		83329D6E1DDA90F600A1D258 /* UIView+helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6D1DDA90F600A1D258 /* UIView+helpers.swift */; };
 		83329D701DDBCB0300A1D258 /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6F1DDBCB0300A1D258 /* Coupon.swift */; };
 		83329D721DDBCD1200A1D258 /* MapStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D711DDBCD1200A1D258 /* MapStore.swift */; };
+		8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */; };
 		83AA87F21DB41CB400AF0402 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */; };
 		83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */; };
 		D8931C6E205EFE2A1CA0F117 /* Pods_storeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D49B904B80CB5F85916BA1 /* Pods_storeApp.framework */; };
@@ -80,7 +80,6 @@
 		8300327A1D561AF70046848A /* SpecialsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialsController.swift; sourceTree = "<group>"; };
 		8300327E1D640D660046848A /* StoreLocatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorController.swift; sourceTree = "<group>"; };
 		830032801D64129B0046848A /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		830032821D66119F0046848A /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		830032851D76185C0046848A /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		8300328C1D7F82070046848A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8300328E1D810A620046848A /* AppViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +95,7 @@
 		83329D6D1DDA90F600A1D258 /* UIView+helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+helpers.swift"; sourceTree = "<group>"; };
 		83329D6F1DDBCB0300A1D258 /* Coupon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
 		83329D711DDBCD1200A1D258 /* MapStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapStore.swift; path = ../../../../../.Trash/MapStore.swift; sourceTree = "<group>"; };
+		8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorView.swift; sourceTree = "<group>"; };
 		83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialSelectedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,7 +154,6 @@
 		8300321B1D4954010046848A /* storeApp */ = {
 			isa = PBXGroup;
 			children = (
-				83329D711DDBCD1200A1D258 /* MapStore.swift */,
 				830032871D7628D80046848A /* Model */,
 				830032731D538FA70046848A /* Views */,
 				8300326A1D4C61430046848A /* Controllers */,
@@ -164,7 +163,6 @@
 				8300321C1D4954010046848A /* AppDelegate.swift */,
 				83329D651DD90DE300A1D258 /* MainNavigationController.swift */,
 				8300328E1D810A620046848A /* AppViewController.swift */,
-				830032821D66119F0046848A /* RootViewController.swift */,
 				830032201D4954010046848A /* Main.storyboard */,
 				83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */,
 				830032621D4BE8070046848A /* images */,
@@ -238,6 +236,7 @@
 				83329D611DD8EFA500A1D258 /* LoginView.swift */,
 				83329D671DD913A600A1D258 /* HomeView.swift */,
 				83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */,
+				8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -254,6 +253,7 @@
 		830032871D7628D80046848A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				83329D711DDBCD1200A1D258 /* MapStore.swift */,
 				83329D6F1DDBCB0300A1D258 /* Coupon.swift */,
 			);
 			name = Model;
@@ -447,6 +447,7 @@
 				8300327F1D640D660046848A /* StoreLocatorController.swift in Sources */,
 				83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */,
 				8300325D1D4BC50C0046848A /* ThemeViewController.swift in Sources */,
+				8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */,
 				8300324C1D4962C10046848A /* Configuration.swift in Sources */,
 				83329D601DD8CFCF00A1D258 /* UserDefaults+helpers.swift in Sources */,
 				83329D641DD8F42A00A1D258 /* UIImageView+helpers.swift in Sources */,
@@ -466,7 +467,6 @@
 				8300327B1D561AF70046848A /* SpecialsController.swift in Sources */,
 				83329D6C1DDA8DDB00A1D258 /* CouponCell.swift in Sources */,
 				830032791D561ADB0046848A /* FoodController.swift in Sources */,
-				830032831D66119F0046848A /* RootViewController.swift in Sources */,
 				830032811D64129B0046848A /* MoreViewController.swift in Sources */,
 				83329D6A1DDA8A3300A1D258 /* Specials.swift in Sources */,
 				83329D681DD913A600A1D258 /* HomeView.swift in Sources */,

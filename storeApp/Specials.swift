@@ -14,6 +14,7 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var hasFetchedCoupons = Bool()
     var isLoggedIn = Bool()
     var coupons = [Coupon]()
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,15 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         hasFetchedCoupons = false
         fetchCoupons()
         self.view.backgroundColor = UIColor.green
+        
+        if #available(iOS 10.0, *) {
+            collectionView?.refreshControl = refreshControl
+        } else {
+            collectionView?.addSubview(refreshControl)
+        }
+        
+        refreshControl.addTarget(self, action: #selector(Specials.fetchCoupons), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Fetching coupons...", attributes: [:])
     }
     
     func fetchCoupons() {
@@ -37,8 +47,13 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                     let decodedImage = Configuration.convertBase64Image(image: item["image"]["data"].stringValue)
                     let coupon = Coupon()
                     coupon.title = item["name"].stringValue
+                    coupon.details = item["details"].stringValue
+                    coupon.expires = item["expires"].stringValue
+                    
                     coupon.thumbnailImage = decodedImage
                     self.coupons.append(coupon)
+                    
+                    
                 }
                 
                 self.hasFetchedCoupons = true
@@ -61,6 +76,8 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                     self.isLoggedIn = false
                     self.collectionView?.reloadData()
                     }
+                
+                self.refreshControl.endRefreshing()
                 },
                              failure: {(error) -> Void in
                                 print(error)
@@ -85,6 +102,19 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let specialController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialSelectedController") as! SpecialSelectedViewController
+        
+        //let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
+        //let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
+        specialController.image = coupons[indexPath.item].thumbnailImage
+        specialController.expires = coupons[indexPath.item].expires
+        specialController.titl = coupons[indexPath.item].title
+        specialController.detail = coupons[indexPath.item].details
+        
+        navigationController?.pushViewController(specialController, animated: true)
     }
     
     

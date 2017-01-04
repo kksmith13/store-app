@@ -42,14 +42,45 @@ class LoginController : AppViewController, LoginControllerDelegate, UITextFieldD
             }, completion: nil)
     }
     
-    func finishLoggingIn() {
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+    func onLoginPressed(_ button: UIButton) {
         
-        mainNavigationController.viewControllers = [HomeController()]
-        UserDefaults.standard.setIsLoggedIn(value: true)
-        view.endEditing(true)
-        dismiss(animated: true, completion: nil)
+    }
+
+    
+    func finishLoggingIn() {
+        let email = self.view.subviews[1] as! UITextField
+        let emailText = email.text!
+        let password = self.view.subviews[2] as! UITextField
+        let passwordText = password.text!
+        
+        if(passwordText.characters.count == 0 || emailText.characters.count == 0) {
+            showAlert(title: "Error", message: "Email or password is empty.")
+        } else {
+        
+        let params:NSDictionary = [ "email"    : emailText,
+                                    "password" : passwordText]
+        
+            APIClient
+                .sharedInstance
+                .login(params: params,
+                       success: {(responseObject) -> Void in
+                        if responseObject["success"].stringValue == "false"{
+                            self.showAlert(title: "Error", message: "Invalid email or password")
+                        } else {
+                            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+                            guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+                            
+                            mainNavigationController.viewControllers = [HomeController()]
+                            UserDefaults.standard.setIsLoggedIn(value: true)
+                            self.view.endEditing(true)
+                            self.dismiss(animated: true, completion: nil)
+                            
+                        }
+                    },
+                       failure: {(error) -> Void in
+                        self.showAlert(title: "Could Not Login", message: error.localizedDescription)
+                })
+        }
     }
     
     func cancelLoggingIn() {

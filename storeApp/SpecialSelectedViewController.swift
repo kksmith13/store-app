@@ -15,7 +15,9 @@ class SpecialSelectedViewController: AppViewController {
     @IBOutlet var details: UILabel!
     @IBOutlet var expiration: UILabel!
     
-    var data:JSON!
+    var expires:String!
+    var detail:String!
+    var titl:String!
     var image:UIImage!
     
     override func viewDidLoad() {
@@ -42,10 +44,10 @@ class SpecialSelectedViewController: AppViewController {
     }
     
     func configureView() {
-        let date = Configuration.dateConvert(date: data["expires"].stringValue)
+        let date = Configuration.dateConvert(date: expires)
         imageView.image = image
-        couponTitle.text = data["name"].stringValue
-        details.text = data["details"].stringValue
+        couponTitle.text = titl
+        details.text = detail
         expiration.text = date
     }
     

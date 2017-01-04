@@ -12,7 +12,7 @@ class MainNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        //updateLoggedInStatus()
+        updateLoggedInStatus()
         
         perform(#selector(showHomeController), with: nil, afterDelay: 0.01)
     }

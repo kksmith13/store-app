@@ -33,7 +33,7 @@ class CouponCell: UICollectionViewCell {
     
     let disclosureArrow: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
+        imageView.image = UIImage(named: "forward")
         return imageView
     }()
     
