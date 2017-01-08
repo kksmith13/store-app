@@ -11,9 +11,14 @@ import MapKit
 import SwiftyJSON
 
 
-class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, StoreCellDelegate {
     
     var position = 0
+    let regionRadius: CLLocationDistance = 500
+    
+    var initialLocation: CLLocation?
+    
+    var locations = [MapStore]()
 
     lazy var locatorMap: MKMapView = {
         let mv = MKMapView()
@@ -35,33 +40,57 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     let storeInfo: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
+        view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         return view
     }()
     
     let shButton: UIButton = {
         //let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 49, y: 0, width: 49, height: 49))
         let button = UIButton()
-        button.addTarget(nil, action: #selector(showMore), for: .touchDown)
+        //button.addTarget(nil, action: #selector(showMore), for: .touchDown)
         button.backgroundColor = .red
         return button
     }()
     
-    let regionRadius: CLLocationDistance = 500
+    let seperatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+    
+    lazy var tableView: UITableView = {
+        let tv = UITableView()
+        tv.delegate = self
+        tv.dataSource = self
+        tv.tableFooterView = UIView()
+        tv.sectionHeaderHeight = UITableViewAutomaticDimension
+        tv.estimatedRowHeight = 24.0
+        tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        tv.contentInset = UIEdgeInsetsMake(0, 0, 16, 0)
+        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+        return tv
+    }()
+    
+    let cellId = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
+        
         view.addSubview(locatorMap)
         view.addSubview(storeInfo)
         storeInfo.addSubview(shButton)
+        storeInfo.addSubview(seperatorView)
+        storeInfo.addSubview(tableView)
         
-        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 49, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        //locatorMap.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
+        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 275, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         
-        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 49, heightConstant: 49)
+        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 16, widthConstant: 20, heightConstant: 20)
+        _ = seperatorView.anchor(storeInfo.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 36, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 1)
+        
+        _ = tableView.anchor(seperatorView.topAnchor, left: view.leftAnchor, bottom: storeInfo.bottomAnchor , right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 8, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,14 +100,53 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         let currentLatitude = locationManager.location?.coordinate.latitude
         let currentLongitude = locationManager.location?.coordinate.longitude
         
-        let initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
-        centerMapOnLocation(initialLocation)
+        initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
+        centerMapOnLocation(initialLocation!)
         addLocationsToMap()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.isStatusBarHidden = true
         UIApplication.shared.statusBarStyle = .lightContent
+    }
+    
+    //MARK: - Internal Functions
+    func sortLocations() {
+        locations.sort {Int($0.distance!) < Int($1.distance!)}
+    }
+    
+    //MARK: - StoreCell Delegate Methods
+    func openDirections(cell: StoreCell){
+        guard tableView.indexPath(for: cell) != nil else {
+            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
+            return
+        }
+        
+        let index = tableView.indexPath(for: cell)?.row
+        let regionDistance: CLLocationDistance = 10000
+        let coordinates = locations[index!].coordinate
+        let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        
+        mapItem.name = locations[index!].address
+        mapItem.openInMaps(launchOptions: options)
+        
+    }
+    
+    func openDetails(cell: StoreCell) {
+        guard tableView.indexPath(for: cell) != nil else {
+            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
+            return
+        }
+        
+        let index = tableView.indexPath(for: cell)?.row
+        let storeDetailsController = StoreDetailsController()
+        navigationController?.pushViewController(storeDetailsController, animated: true)
     }
     
     // MARK: - Map Functions
@@ -127,10 +195,18 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                     let lat = stores["latitude"].stringValue
                     let long = stores["longitude"].stringValue
                     let location = MapStore(latitude: Double(lat)!, longitude: Double(long)!)
-                    location.title = stores["name"].stringValue
+                    let distance = location.location.distance(from: self.initialLocation!)
+                    print(distance)
+                    location.address = stores["address"].stringValue
+                    location.price = stores["gasPrice"].stringValue
+                    location.distance = distance
+                    self.locations.append(location)
                     self.locatorMap.addAnnotation(location)
                     
                 }
+                
+                self.sortLocations()
+                self.tableView.reloadData()
                 },
                         failure: {(error) -> Void in
                             self.showAlert(title: "Failed loading stores", message: error.localizedDescription)
@@ -159,7 +235,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         
         let directions = MKDirections(request: directionsRequest)
         
-        directions.calculate{
+        directions.calculate {
             response, error in
             
             guard let response = response else {
@@ -185,6 +261,30 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         renderer.strokeColor = UIColor.blue
         renderer.lineWidth = 5.0
         return renderer
+    }
+    
+    //MARK: - TV Delegate Methods
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return locations.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! StoreCell
+        cell.delegate = self
+        cell.store = locations[indexPath.item]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 84
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
     }
     
     //MARK: - Extra Bar Methods

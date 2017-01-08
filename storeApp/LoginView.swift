@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol LoginViewDelegate {
+    func finishLoggingIn()
+    func cancelLoggingIn()
+}
+
 class LoginView: UIView {
     
     let logoImageView: UIImageView = {

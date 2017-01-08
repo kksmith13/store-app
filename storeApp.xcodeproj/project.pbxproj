@@ -38,6 +38,9 @@
 		83329D701DDBCB0300A1D258 /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6F1DDBCB0300A1D258 /* Coupon.swift */; };
 		83329D721DDBCD1200A1D258 /* MapStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D711DDBCD1200A1D258 /* MapStore.swift */; };
 		8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */; };
+		8365FD121E1D9C8F0058B999 /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD111E1D9C8F0058B999 /* StoreCell.swift */; };
+		8365FD151E22D3FD0058B999 /* StoreDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD141E22D3FD0058B999 /* StoreDetailsController.swift */; };
+		8365FD181E22D4E30058B999 /* StoreDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD171E22D4E30058B999 /* StoreDetailsView.swift */; };
 		83AA87F21DB41CB400AF0402 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */; };
 		83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */; };
 		D8931C6E205EFE2A1CA0F117 /* Pods_storeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D49B904B80CB5F85916BA1 /* Pods_storeApp.framework */; };
@@ -96,6 +99,9 @@
 		83329D6F1DDBCB0300A1D258 /* Coupon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
 		83329D711DDBCD1200A1D258 /* MapStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapStore.swift; path = ../../../../../.Trash/MapStore.swift; sourceTree = "<group>"; };
 		8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorView.swift; sourceTree = "<group>"; };
+		8365FD111E1D9C8F0058B999 /* StoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
+		8365FD141E22D3FD0058B999 /* StoreDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreDetailsController.swift; sourceTree = "<group>"; };
+		8365FD171E22D4E30058B999 /* StoreDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreDetailsView.swift; sourceTree = "<group>"; };
 		83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialSelectedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				830032871D7628D80046848A /* Model */,
+				8365FD101E1D9C740058B999 /* Cells */,
 				830032731D538FA70046848A /* Views */,
 				8300326A1D4C61430046848A /* Controllers */,
 				8300325B1D4BC4B20046848A /* AbstractControllers */,
@@ -219,12 +226,12 @@
 		8300326A1D4C61430046848A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8365FD131E22D3EC0058B999 /* Stores */,
 				83AA87F31DC7CC1600AF0402 /* Specials */,
 				8300321E1D4954010046848A /* HomeController.swift */,
 				8307CAC51DAF121D00EADCFC /* LoginController.swift */,
 				830032761D5565D20046848A /* MyStoreController.swift */,
 				830032781D561ADB0046848A /* FoodController.swift */,
-				8300327E1D640D660046848A /* StoreLocatorController.swift */,
 				830032801D64129B0046848A /* MoreViewController.swift */,
 			);
 			name = Controllers;
@@ -233,10 +240,9 @@
 		830032731D538FA70046848A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8365FD161E22D4030058B999 /* Stores */,
 				83329D611DD8EFA500A1D258 /* LoginView.swift */,
 				83329D671DD913A600A1D258 /* HomeView.swift */,
-				83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */,
-				8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -257,6 +263,33 @@
 				83329D6F1DDBCB0300A1D258 /* Coupon.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		8365FD101E1D9C740058B999 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */,
+				8365FD111E1D9C8F0058B999 /* StoreCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		8365FD131E22D3EC0058B999 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				8300327E1D640D660046848A /* StoreLocatorController.swift */,
+				8365FD141E22D3FD0058B999 /* StoreDetailsController.swift */,
+			);
+			name = Stores;
+			sourceTree = "<group>";
+		};
+		8365FD161E22D4030058B999 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */,
+				8365FD171E22D4E30058B999 /* StoreDetailsView.swift */,
+			);
+			name = Stores;
 			sourceTree = "<group>";
 		};
 		83AA87F31DC7CC1600AF0402 /* Specials */ = {
@@ -447,10 +480,13 @@
 				8300327F1D640D660046848A /* StoreLocatorController.swift in Sources */,
 				83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */,
 				8300325D1D4BC50C0046848A /* ThemeViewController.swift in Sources */,
+				8365FD121E1D9C8F0058B999 /* StoreCell.swift in Sources */,
+				8365FD151E22D3FD0058B999 /* StoreDetailsController.swift in Sources */,
 				8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */,
 				8300324C1D4962C10046848A /* Configuration.swift in Sources */,
 				83329D601DD8CFCF00A1D258 /* UserDefaults+helpers.swift in Sources */,
 				83329D641DD8F42A00A1D258 /* UIImageView+helpers.swift in Sources */,
+				8365FD181E22D4E30058B999 /* StoreDetailsView.swift in Sources */,
 				8307CAC61DAF121D00EADCFC /* LoginController.swift in Sources */,
 				830032651D4C00E10046848A /* CircleTabBarController.swift in Sources */,
 				83329D621DD8EFA500A1D258 /* LoginView.swift in Sources */,

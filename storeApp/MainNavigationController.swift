@@ -19,6 +19,7 @@ class MainNavigationController: UINavigationController {
     
     func showHomeController() {
         let homeController = HomeController()
+        
         pushViewController(homeController, animated: true)
     }
     

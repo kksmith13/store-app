@@ -8,10 +8,7 @@
 
 import UIKit
 
-protocol LoginControllerDelegate {
-    func finishLoggingIn()
-}
-class LoginController : AppViewController, LoginControllerDelegate, UITextFieldDelegate {
+class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
