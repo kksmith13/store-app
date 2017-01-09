@@ -13,11 +13,37 @@ import SwiftyJSON
 
 class StoreDetailsController: AppViewController {
     
+    let mainView: StoreDetailsView = {
+        let mv = StoreDetailsView()
+        return mv
+    }()
+    
+    let optionsBar: OptionsBar = {
+        let ob = OptionsBar()
+        return ob
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view = StoreDetailsView()
-        view.backgroundColor = UIColor(red: 0/255, green: 255/255, blue: 255/255, alpha: 1)
+        setupView()
+        setupOptions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+    }
+    
+    private func setupView() {
+        view.addSubview(mainView)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: mainView)
+        view.addConstraintsWithFormat(format: "V:|[v0]-50-|", views: mainView)
+    }
+    
+    private func setupOptions() {
+        view.addSubview(optionsBar)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: optionsBar)
+        view.addConstraintsWithFormat(format: "V:[v0(50)]|", views: optionsBar)
     }
     
     

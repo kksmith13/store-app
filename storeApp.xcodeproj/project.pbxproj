@@ -36,11 +36,15 @@
 		83329D6C1DDA8DDB00A1D258 /* CouponCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */; };
 		83329D6E1DDA90F600A1D258 /* UIView+helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6D1DDA90F600A1D258 /* UIView+helpers.swift */; };
 		83329D701DDBCB0300A1D258 /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D6F1DDBCB0300A1D258 /* Coupon.swift */; };
-		83329D721DDBCD1200A1D258 /* MapStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D711DDBCD1200A1D258 /* MapStore.swift */; };
 		8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */; };
 		8365FD121E1D9C8F0058B999 /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD111E1D9C8F0058B999 /* StoreCell.swift */; };
 		8365FD151E22D3FD0058B999 /* StoreDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD141E22D3FD0058B999 /* StoreDetailsController.swift */; };
 		8365FD181E22D4E30058B999 /* StoreDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD171E22D4E30058B999 /* StoreDetailsView.swift */; };
+		8365FD1A1E22EAEF0058B999 /* OptionsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD191E22EAEF0058B999 /* OptionsBar.swift */; };
+		8365FD1C1E22F53A0058B999 /* OptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD1B1E22F53A0058B999 /* OptionsCell.swift */; };
+		8365FD1E1E22F5E60058B999 /* BaseCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD1D1E22F5E60058B999 /* BaseCVCell.swift */; };
+		8365FD221E22F6DC0058B999 /* BaseTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD211E22F6DC0058B999 /* BaseTVCell.swift */; };
+		8365FD241E23434E0058B999 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8365FD231E23434E0058B999 /* Store.swift */; };
 		83AA87F21DB41CB400AF0402 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */; };
 		83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */; };
 		D8931C6E205EFE2A1CA0F117 /* Pods_storeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35D49B904B80CB5F85916BA1 /* Pods_storeApp.framework */; };
@@ -97,11 +101,15 @@
 		83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponCell.swift; sourceTree = "<group>"; };
 		83329D6D1DDA90F600A1D258 /* UIView+helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+helpers.swift"; sourceTree = "<group>"; };
 		83329D6F1DDBCB0300A1D258 /* Coupon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
-		83329D711DDBCD1200A1D258 /* MapStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapStore.swift; path = ../../../../../.Trash/MapStore.swift; sourceTree = "<group>"; };
 		8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorView.swift; sourceTree = "<group>"; };
 		8365FD111E1D9C8F0058B999 /* StoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
 		8365FD141E22D3FD0058B999 /* StoreDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreDetailsController.swift; sourceTree = "<group>"; };
 		8365FD171E22D4E30058B999 /* StoreDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreDetailsView.swift; sourceTree = "<group>"; };
+		8365FD191E22EAEF0058B999 /* OptionsBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsBar.swift; sourceTree = "<group>"; };
+		8365FD1B1E22F53A0058B999 /* OptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsCell.swift; sourceTree = "<group>"; };
+		8365FD1D1E22F5E60058B999 /* BaseCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCVCell.swift; sourceTree = "<group>"; };
+		8365FD211E22F6DC0058B999 /* BaseTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTVCell.swift; sourceTree = "<group>"; };
+		8365FD231E23434E0058B999 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		83AA87F11DB41CB400AF0402 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83AA87F41DC7CC7500AF0402 /* SpecialSelectedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialSelectedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -259,7 +267,7 @@
 		830032871D7628D80046848A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				83329D711DDBCD1200A1D258 /* MapStore.swift */,
+				8365FD231E23434E0058B999 /* Store.swift */,
 				83329D6F1DDBCB0300A1D258 /* Coupon.swift */,
 			);
 			name = Model;
@@ -268,8 +276,8 @@
 		8365FD101E1D9C740058B999 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */,
-				8365FD111E1D9C8F0058B999 /* StoreCell.swift */,
+				8365FD201E22F6CE0058B999 /* TV Cells */,
+				8365FD1F1E22F6BF0058B999 /* CV Cells */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -288,8 +296,28 @@
 			children = (
 				8365FD0C1E1B2AF50058B999 /* StoreLocatorView.swift */,
 				8365FD171E22D4E30058B999 /* StoreDetailsView.swift */,
+				8365FD191E22EAEF0058B999 /* OptionsBar.swift */,
 			);
 			name = Stores;
+			sourceTree = "<group>";
+		};
+		8365FD1F1E22F6BF0058B999 /* CV Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8365FD1D1E22F5E60058B999 /* BaseCVCell.swift */,
+				83329D6B1DDA8DDB00A1D258 /* CouponCell.swift */,
+				8365FD1B1E22F53A0058B999 /* OptionsCell.swift */,
+			);
+			name = "CV Cells";
+			sourceTree = "<group>";
+		};
+		8365FD201E22F6CE0058B999 /* TV Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8365FD211E22F6DC0058B999 /* BaseTVCell.swift */,
+				8365FD111E1D9C8F0058B999 /* StoreCell.swift */,
+			);
+			name = "TV Cells";
 			sourceTree = "<group>";
 		};
 		83AA87F31DC7CC1600AF0402 /* Specials */ = {
@@ -481,8 +509,11 @@
 				83AA87F51DC7CC7500AF0402 /* SpecialSelectedViewController.swift in Sources */,
 				8300325D1D4BC50C0046848A /* ThemeViewController.swift in Sources */,
 				8365FD121E1D9C8F0058B999 /* StoreCell.swift in Sources */,
+				8365FD1A1E22EAEF0058B999 /* OptionsBar.swift in Sources */,
 				8365FD151E22D3FD0058B999 /* StoreDetailsController.swift in Sources */,
+				8365FD221E22F6DC0058B999 /* BaseTVCell.swift in Sources */,
 				8365FD0D1E1B2AF50058B999 /* StoreLocatorView.swift in Sources */,
+				8365FD1E1E22F5E60058B999 /* BaseCVCell.swift in Sources */,
 				8300324C1D4962C10046848A /* Configuration.swift in Sources */,
 				83329D601DD8CFCF00A1D258 /* UserDefaults+helpers.swift in Sources */,
 				83329D641DD8F42A00A1D258 /* UIImageView+helpers.swift in Sources */,
@@ -493,14 +524,15 @@
 				830032771D5565D20046848A /* MyStoreController.swift in Sources */,
 				8300328F1D810A620046848A /* AppViewController.swift in Sources */,
 				8300325F1D4BC6FD0046848A /* Globals.swift in Sources */,
-				83329D721DDBCD1200A1D258 /* MapStore.swift in Sources */,
 				8300321F1D4954010046848A /* HomeController.swift in Sources */,
 				83329D6E1DDA90F600A1D258 /* UIView+helpers.swift in Sources */,
 				83329D661DD90DE300A1D258 /* MainNavigationController.swift in Sources */,
 				83329D701DDBCB0300A1D258 /* Coupon.swift in Sources */,
 				8300325A1D4BC4390046848A /* UIViewController+Theme.swift in Sources */,
 				830032861D76185C0046848A /* APIClient.swift in Sources */,
+				8365FD1C1E22F53A0058B999 /* OptionsCell.swift in Sources */,
 				8300327B1D561AF70046848A /* SpecialsController.swift in Sources */,
+				8365FD241E23434E0058B999 /* Store.swift in Sources */,
 				83329D6C1DDA8DDB00A1D258 /* CouponCell.swift in Sources */,
 				830032791D561ADB0046848A /* FoodController.swift in Sources */,
 				830032811D64129B0046848A /* MoreViewController.swift in Sources */,

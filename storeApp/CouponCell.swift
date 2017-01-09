@@ -8,12 +8,7 @@
 
 import UIKit
 
-class CouponCell: UICollectionViewCell {
-    override init(frame: CGRect){
-        super.init(frame: frame)
-        setupViews()
-    }
-    
+class CouponCell: BaseCVCell {
     var coupon: Coupon? {
         didSet {
             titleLabel.text = coupon?.title
@@ -43,7 +38,8 @@ class CouponCell: UICollectionViewCell {
         return view
     }()
     
-    func setupViews() {
+    override func setupViews() {
+        super.setupViews()
         addSubview(thumbnailImageView)
         addSubview(titleLabel)
         addSubview(disclosureArrow)
@@ -57,9 +53,5 @@ class CouponCell: UICollectionViewCell {
         addConstraintsWithFormat(format: "V:|-8-[v0(108)]-8-[v1(1)]|", views: thumbnailImageView, seperatorView)
         addConstraintsWithFormat(format: "V:|-54-[v0(16)]", views: disclosureArrow)
         addConstraintsWithFormat(format: "V:|-32-[v0]-32-|", views: titleLabel)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

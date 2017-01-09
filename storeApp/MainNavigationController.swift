@@ -19,7 +19,7 @@ class MainNavigationController: UINavigationController {
     
     func showHomeController() {
         let homeController = HomeController()
-        
+        //let homeController = StoreDetailsController()
         pushViewController(homeController, animated: true)
     }
     

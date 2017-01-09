@@ -18,7 +18,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     var initialLocation: CLLocation?
     
-    var locations = [MapStore]()
+    var locations = [Store]()
 
     lazy var locatorMap: MKMapView = {
         let mv = MKMapView()
@@ -192,16 +192,18 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                 print(responseObject)
                 for (_, stores) in responseObject["stores"] {
                     print(stores)
-                    let lat = stores["latitude"].stringValue
-                    let long = stores["longitude"].stringValue
-                    let location = MapStore(latitude: Double(lat)!, longitude: Double(long)!)
-                    let distance = location.location.distance(from: self.initialLocation!)
-                    print(distance)
-                    location.address = stores["address"].stringValue
-                    location.price = stores["gasPrice"].stringValue
-                    location.distance = distance
-                    self.locations.append(location)
-                    self.locatorMap.addAnnotation(location)
+                    let lat = stores["latitude"].doubleValue
+                    let long = stores["longitude"].doubleValue
+                    let store = Store(latitude: lat, longitude: long)
+                    let distance = store.location().distance(from: self.initialLocation!)
+                    store.name = stores["name"].stringValue
+                    store.zipcode = stores["zipcode"].stringValue
+                    store.phone = stores["phoneNumber"].stringValue
+                    store.address = stores["address"].stringValue
+                    store.price = stores["gasPrice"].stringValue
+                    store.distance = distance
+                    self.locations.append(store)
+                    self.locatorMap.addAnnotation(store)
                     
                 }
                 

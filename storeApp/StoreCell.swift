@@ -13,23 +13,16 @@ protocol StoreCellDelegate: class {
     func openDetails(cell: StoreCell)
 }
 
-class StoreCell: UITableViewCell {
+class StoreCell: BaseTVCell {
     
     var delegate: StoreCellDelegate?
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.delegate = nil
-        //delegate?.buttonTapped(cell: self)
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        setupViews()
-    }
-    
-    var store: MapStore? {
+    var store: Store? {
         didSet {
             guard let store = store else {
                 return
@@ -112,7 +105,7 @@ class StoreCell: UITableViewCell {
     
     
     
-    func setupViews() {
+    override func setupViews() {
         addSubview(addressLabel)
         addSubview(locationLabel)
         addSubview(distanceLabel)
@@ -124,7 +117,6 @@ class StoreCell: UITableViewCell {
         //horizontal constraints
         addConstraintsWithFormat(format: "H:|-16-[v0]-24-[v1(68)]-16-|", views: addressLabel, distanceLabel)
         addConstraintsWithFormat(format: "H:|-16-[v0]-24-[v1(68)]-16-|", views: locationLabel, milesLabel)
-        //addConstraintsWithFormat(format: "H:|-16-[v0(96)][v1(60)]-24-[v2(68)]-16-|", views: directionsButton, detailsButton, priceLabel)
         addConstraintsWithFormat(format: "H:|-16-[v0(96)]", views: directionsButton)
         addConstraintsWithFormat(format: "H:[v0(60)]-24-[v1(68)]-16-|", views: detailsButton, priceLabel)
 
@@ -132,9 +124,5 @@ class StoreCell: UITableViewCell {
         addConstraintsWithFormat(format: "V:|-8-[v0(22)]-4-[v1(20)]-8-[v2(14)]-8-|", views: addressLabel, locationLabel, directionsButton)
         addConstraintsWithFormat(format: "V:|-8-[v0(22)]-4-[v1(20)]-8-[v2(14)]-8-|", views: addressLabel, locationLabel, detailsButton)
         addConstraintsWithFormat(format: "V:|-8-[v0(18)]-4-[v1(14)]-12-[v2(20)]-8-|", views: distanceLabel, milesLabel, priceLabel)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
