@@ -11,12 +11,16 @@ import SwiftyJSON
 
 class HomeController: CustomTabBarController {
     
+    let mainView: HomeView = {
+        let mv = HomeView()
+        mv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50)
+        return mv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Home"
-        
-        let mainView = HomeView()
-        mainView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50)
+
         view.addSubview(mainView)
         view.sendSubview(toBack: mainView)
     }

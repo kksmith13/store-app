@@ -83,7 +83,7 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
         view.addConstraint(NSLayoutConstraint(item: centerButton, attribute: .centerX, relatedBy: .equal, toItem: view.self, attribute: .centerX, multiplier: 1, constant: 0))
         
         centerButton.addConstraint(NSLayoutConstraint(item: centerButtonImage, attribute: .centerX, relatedBy: .equal, toItem: centerButton.self, attribute: .centerX, multiplier: 1, constant: 0))
-                centerButton.addConstraint(NSLayoutConstraint(item: centerButtonTitle, attribute: .centerX, relatedBy: .equal, toItem: centerButton.self, attribute: .centerX, multiplier: 1, constant: 0))
+        centerButton.addConstraint(NSLayoutConstraint(item: centerButtonTitle, attribute: .centerX, relatedBy: .equal, toItem: centerButton.self, attribute: .centerX, multiplier: 1, constant: 0))
         
         centerButton.addConstraint(NSLayoutConstraint(item: centerButtonImage, attribute: .centerY, relatedBy: .equal, toItem: centerButton.self, attribute: .centerY, multiplier: 1, constant: -8))
     }

@@ -8,10 +8,11 @@
 
 import UIKit
 
-class Coupon: NSObject {
+class Special: NSObject {
     
     var thumbnailImage: UIImage?
     var title: String?
     var expires: String?
     var details: String?
+    var type: String?
 }

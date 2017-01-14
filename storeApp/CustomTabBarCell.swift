@@ -35,7 +35,6 @@ class CustomTabBarCell: BaseCVCell {
         addConstraintsWithFormat(format: "V:|-[v0(24)]-4-[v1(10)]", views: imageView, titleLabel)
         
         addConstraint(NSLayoutConstraint(item: imageView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
-        layoutIfNeeded()
         
     }
 }

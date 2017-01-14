@@ -21,7 +21,7 @@ class StoreDetailsController: AppViewController {
     }()
     
     let optionsBar: OptionsBarView = {
-        let ob = OptionsBar()
+        let ob = OptionsBarView()
         return ob
     }()
     

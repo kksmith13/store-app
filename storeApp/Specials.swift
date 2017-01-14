@@ -11,21 +11,23 @@ import SwiftyJSON
 
 class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var hasFetchedCoupons = Bool()
+    var hasFetchedSpecials = Bool()
     var isLoggedIn = Bool()
-    var coupons = [Coupon]()
+    var specials = [Special]()
     let refreshControl = UIRefreshControl()
+    
+    let specialId = "specialId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Coupons"
+        navigationItem.title = "Specials"
         collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
-        collectionView?.register(CouponCell.self, forCellWithReuseIdentifier: "CouponID")
+        collectionView?.register(SpecialCell.self, forCellWithReuseIdentifier: specialId)
 
-        hasFetchedCoupons = false
-        fetchCoupons()
+        hasFetchedSpecials = false
+        fetchSpecials()
         self.view.backgroundColor = UIColor.green
         
         if #available(iOS 10.0, *) {
@@ -34,34 +36,35 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
             collectionView?.addSubview(refreshControl)
         }
         
-        refreshControl.addTarget(self, action: #selector(Specials.fetchCoupons), for: .valueChanged)
-        refreshControl.attributedTitle = NSAttributedString(string: "Fetching coupons...", attributes: [:])
+        refreshControl.addTarget(self, action: #selector(Specials.fetchSpecials), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Fetching specials...", attributes: [:])
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
     
-    func fetchCoupons() {
-        coupons.removeAll()
+    func fetchSpecials() {
+        specials.removeAll()
         APIClient
             .sharedInstance
             .loadCoupons(success: { (responseObject) -> Void in
                 for(_, item) in responseObject["coupons"] {
                     
                     let decodedImage = Configuration.convertBase64Image(image: item["image"]["data"].stringValue)
-                    let coupon = Coupon()
-                    coupon.title = item["name"].stringValue
-                    coupon.details = item["details"].stringValue
-                    coupon.expires = item["expires"].stringValue
+                    let special = Special()
+                    special.title = item["name"].stringValue
+                    special.details = item["details"].stringValue
+                    special.expires = item["expires"].stringValue
+                    special.type = item["type"].stringValue
                     
-                    coupon.thumbnailImage = decodedImage
-                    self.coupons.append(coupon)
+                    special.thumbnailImage = decodedImage
+                    self.specials.append(special)
                     
                     
                 }
                 
-                self.hasFetchedCoupons = true
+                self.hasFetchedSpecials = true
                 self.checkLogin()
                 },
                          failure: {(error) -> Void in
@@ -90,13 +93,13 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return coupons.count
+        return specials.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CouponID", for: indexPath) as! CouponCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: specialId, for: indexPath) as! SpecialCell
         
-        cell.coupon = coupons[indexPath.item]
+        cell.special = specials[indexPath.item]
         
         return cell
     }
@@ -110,14 +113,14 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let specialController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialSelectedController") as! SpecialSelectedViewController
+        let specialController = SpecialDetailsController()
         
         //let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
         //let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
-        specialController.image = coupons[indexPath.item].thumbnailImage
-        specialController.expires = coupons[indexPath.item].expires
-        specialController.titl = coupons[indexPath.item].title
-        specialController.detail = coupons[indexPath.item].details
+//        specialController.image = coupons[indexPath.item].thumbnailImage
+//        specialController.expires = coupons[indexPath.item].expires
+//        specialController.titl = coupons[indexPath.item].title
+//        specialController.detail = coupons[indexPath.item].details
         
         navigationController?.pushViewController(specialController, animated: true)
     }
