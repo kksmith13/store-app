@@ -125,9 +125,12 @@ class Configuration : NSObject {
             .sharedInstance
             .loadSettings(success: {(responseObject) -> Void in
                 let defaults = UserDefaults.standard
-                defaults.setValue(("#" + responseObject["setting"][0]["primaryColor"].stringValue), forKey: "primaryColor")
-                defaults.setValue(("#" + responseObject["setting"][0]["secondaryColor"].stringValue), forKey: "secondaryColor")
-                //print(responseObject["setting"][0]["appIcon"]["data"].stringValue)
+                let primary = responseObject["setting"][0]["primaryColor"].stringValue
+                let secondary = responseObject["setting"][0]["secondaryColor"].stringValue
+                let primaryUIC = Configuration.hexStringToUIColor(hex: primary)
+                let secondaryUIC = Configuration.hexStringToUIColor(hex: secondary)
+                defaults.setColor(color: primaryUIC, forKey: "primaryColor")
+                defaults.setColor(color: secondaryUIC, forKey: "secondaryColor")
                 defaults.setValue(responseObject["setting"][0]["appIcon"]["data"].stringValue, forKey: "icon")
                 defaults.synchronize()
                 success(responseObject as AnyObject!)

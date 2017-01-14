@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OptionsBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class OptionsBarView: BaseView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -25,9 +25,7 @@ class OptionsBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     let cellId = "cellId"
     let cellNames = ["Call Us", "Directions", "Email Us", "Website"]
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    override func setupViews() {
         collectionView.register(OptionsCell.self, forCellWithReuseIdentifier: cellId)
         
         addSubview(collectionView)
@@ -48,10 +46,6 @@ class OptionsBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width / 4, height: frame.height)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
 }

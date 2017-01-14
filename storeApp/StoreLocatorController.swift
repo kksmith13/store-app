@@ -38,7 +38,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         return lm
     }()
     
-    let storeInfo: UIView = {
+    lazy var storeInfo: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         return view
@@ -76,41 +76,41 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.allowsSelection = false
         tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
         
-        view.addSubview(locatorMap)
-        view.addSubview(storeInfo)
-        storeInfo.addSubview(shButton)
-        storeInfo.addSubview(seperatorView)
-        storeInfo.addSubview(tableView)
-        
-        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 275, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-        
-        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 16, widthConstant: 20, heightConstant: 20)
-        _ = seperatorView.anchor(storeInfo.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 36, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 1)
-        
-        _ = tableView.anchor(seperatorView.topAnchor, left: view.leftAnchor, bottom: storeInfo.bottomAnchor , right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 8, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        setupViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
+        navigationItem.title = ""
         
         let currentLatitude = locationManager.location?.coordinate.latitude
         let currentLongitude = locationManager.location?.coordinate.longitude
         
         initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
         centerMapOnLocation(initialLocation!)
-        addLocationsToMap()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        UIApplication.shared.isStatusBarHidden = true
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     
     //MARK: - Internal Functions
+    func setupViews() {
+        view.addSubview(locatorMap)
+        view.addSubview(storeInfo)
+        storeInfo.addSubview(shButton)
+        storeInfo.addSubview(seperatorView)
+        storeInfo.addSubview(tableView)
+        
+        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 64, leftConstant: 0, bottomConstant: 275, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        
+        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 16, widthConstant: 20, heightConstant: 20)
+        _ = seperatorView.anchor(storeInfo.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 36, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 1)
+        
+        _ = tableView.anchor(seperatorView.topAnchor, left: view.leftAnchor, bottom: storeInfo.bottomAnchor , right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 8, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        
+        addLocationsToMap()
+    }
+
     func sortLocations() {
         locations.sort {Int($0.distance!) < Int($1.distance!)}
     }
@@ -146,6 +146,10 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         
         let index = tableView.indexPath(for: cell)?.row
         let storeDetailsController = StoreDetailsController()
+        storeDetailsController.navigationItem.title = "Store Details"
+        navigationItem.title = "Stores"
+        print(locations[index!].address)
+        storeDetailsController.store = locations[index!]
         navigationController?.pushViewController(storeDetailsController, animated: true)
     }
     
@@ -197,6 +201,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                     let store = Store(latitude: lat, longitude: long)
                     let distance = store.location().distance(from: self.initialLocation!)
                     store.name = stores["name"].stringValue
+                    store.city = stores["city"].stringValue
+                    store.state = stores["state"].stringValue
                     store.zipcode = stores["zipcode"].stringValue
                     store.phone = stores["phoneNumber"].stringValue
                     store.address = stores["address"].stringValue
@@ -283,10 +289,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 84
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
     }
     
     //MARK: - Extra Bar Methods

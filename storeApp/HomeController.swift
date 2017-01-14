@@ -9,41 +9,29 @@
 import UIKit
 import SwiftyJSON
 
-class HomeController: CircleTabBarController {
+class HomeController: CustomTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initSettings()
+        navigationItem.title = "Home"
+        
+        let mainView = HomeView()
+        mainView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50)
+        view.addSubview(mainView)
+        view.sendSubview(toBack: mainView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func initSettings() {
-        Configuration
-            .getSettingsFromAPI(success: {(response) -> Void in
-                self.configureTheme()
-                self.view = HomeView()
-                self.view.backgroundColor = Configuration.hexStringToUIColor(hex: "b2b2b2")
-                self.buildCustomBar()
-                },
-                    failure: {(error) -> Void in
-                    print(error)
-                    self.configureTheme()
-                    self.view = HomeView()
-                    self.view.backgroundColor = Configuration.hexStringToUIColor(hex: "b2b2b2")
-                    self.buildCustomBar()
-            })
     }
     
     func onLoginReleased(_ button:UIButton) {

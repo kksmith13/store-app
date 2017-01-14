@@ -19,7 +19,7 @@ class HomeView: UIView {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 8
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel!.font = UIFont(name: ".SFUIText-Light", size: 20)
+        button.titleLabel!.font = .systemFont(ofSize: 20, weight: UIFontWeightLight)
         button.setTitle("Sign In", for: .normal)
         button.layer.borderWidth = 1
         button.layer.borderColor = GLOBALS.lines.cgColor
@@ -32,7 +32,7 @@ class HomeView: UIView {
         super.init(frame: frame)
         
         addSubview(logoImageView)
-        _ = logoImageView.anchor(centerYAnchor, left: nil, bottom: nil, right: nil, topConstant: -250, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 160, heightConstant: 160)
+        _ = logoImageView.anchor(centerYAnchor, left: nil, bottom: nil, right: nil, topConstant: -175, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 75, heightConstant: 75)
         logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         if !UserDefaults.standard.isLoggedIn() {

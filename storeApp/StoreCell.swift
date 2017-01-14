@@ -15,7 +15,8 @@ protocol StoreCellDelegate: class {
 
 class StoreCell: BaseTVCell {
     
-    var delegate: StoreCellDelegate?
+    //if delegate is just var, will create strong reference cycle (memory leak)
+    weak var delegate: StoreCellDelegate?
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -37,21 +38,21 @@ class StoreCell: BaseTVCell {
     
     let addressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: ".SFUIText-Light", size: 16)
+        label.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightLight)
         label.text = "NWC Dale Earnghardt Blvd & Centergrove Rd"
         return label
     }()
     
     let locationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: ".SFUIText-Light", size: 14)
+        label.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
         label.text = "Hattiesburg, MS, 39401"
         return label
     }()
     
     let distanceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: ".SFUIText-Light", size: 20)
+        label.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightLight)
         label.textAlignment = .center
         label.text = "123.4"
         return label
@@ -59,7 +60,7 @@ class StoreCell: BaseTVCell {
     
     let milesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: ".SFUIText-Light", size: 12)
+        label.font = UIFont.systemFont(ofSize: 12, weight: UIFontWeightLight)
         label.textAlignment = .center
         label.text = "miles"
         return label
@@ -67,7 +68,7 @@ class StoreCell: BaseTVCell {
     
     let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: ".SFUIText-Light", size: 14)
+        label.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
         label.textAlignment = .center
         label.text = "$-.--"
         return label
@@ -78,7 +79,7 @@ class StoreCell: BaseTVCell {
         let color = UIColor(red: 0/255, green: 122/255, blue: 1, alpha: 1)
         button.setTitle("Directions", for: .normal)
         button.setTitleColor(color, for: .normal)
-        button.titleLabel!.font = UIFont(name: ".SFUIText-Light", size: 14)
+        button.titleLabel!.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(directionsPressed(sender:)), for: .touchDown)
         return button
@@ -89,7 +90,7 @@ class StoreCell: BaseTVCell {
         let color = UIColor(red: 0/255, green: 122/255, blue: 1, alpha: 1)
         button.setTitle("Details", for: .normal)
         button.setTitleColor(color, for: .normal)
-        button.titleLabel!.font = UIFont(name: ".SFUIText-Light", size: 14)
+        button.titleLabel!.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
         button.contentHorizontalAlignment = .right
         button.addTarget(self, action: #selector(detailsPressed(sender:)), for: .touchDown)
         return button

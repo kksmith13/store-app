@@ -13,18 +13,23 @@ import SwiftyJSON
 
 class StoreDetailsController: AppViewController {
     
-    let mainView: StoreDetailsView = {
+    var store: Store?
+    
+    lazy var mainView: StoreDetailsView = {
         let mv = StoreDetailsView()
         return mv
     }()
     
-    let optionsBar: OptionsBar = {
+    let optionsBar: OptionsBarView = {
         let ob = OptionsBar()
         return ob
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //navigationItem.title = "Store Details"
+        //navigationController?.navigationBar.tintColor = .white
+        mainView.store = store
         setupView()
         setupOptions()
     }
@@ -32,6 +37,8 @@ class StoreDetailsController: AppViewController {
     override func viewWillAppear(_ animated: Bool) {
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
+        print(navigationController?.navigationBar.backItem?.title)
+        
     }
     
     private func setupView() {

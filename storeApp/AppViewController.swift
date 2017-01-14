@@ -12,6 +12,7 @@ class AppViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UserDefaults.standard.colorForKey(key: "backgroundColor")
     }
     
     func showAlert(title:String, message:String) {

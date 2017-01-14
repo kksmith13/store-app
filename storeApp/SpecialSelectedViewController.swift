@@ -26,16 +26,9 @@ class SpecialSelectedViewController: AppViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
+        navigationController?.navigationBar.isHidden = false
         
         configureView()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
-        UIApplication.shared.isStatusBarHidden = true
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     
     override func didReceiveMemoryWarning() {

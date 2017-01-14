@@ -6,12 +6,13 @@
 //  Copyright © 2017 Codesmiths. All rights reserved.
 //
 
-import UIKit
 import MapKit
 
 class Store: NSObject, MKAnnotation{
     var name: String?
     var address: String?
+    var city: String?
+    var state: String?
     var zipcode: String?
     var phone: String?
     var price: String?

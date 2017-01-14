@@ -101,9 +101,7 @@ class MyStoreController: AppViewController, UICollectionViewDelegate, UICollecti
         print((indexPath as NSIndexPath).item)
         switch((indexPath as NSIndexPath).item) {
             case 0:
-                //performSegueWithIdentifier("showMap", sender: self)
                 let storeController = StoreLocatorController()
-                
                 navigationController?.pushViewController(storeController, animated: true)
                 break;
             case 1:

@@ -18,6 +18,7 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.title = "Coupons"
         collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
@@ -35,6 +36,10 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         
         refreshControl.addTarget(self, action: #selector(Specials.fetchCoupons), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: "Fetching coupons...", attributes: [:])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     func fetchCoupons() {
