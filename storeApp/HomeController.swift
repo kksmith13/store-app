@@ -13,7 +13,7 @@ class HomeController: CustomTabBarController {
     
     let mainView: HomeView = {
         let mv = HomeView()
-        mv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50)
+        mv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50 - 64)
         return mv
     }()
     
@@ -23,14 +23,6 @@ class HomeController: CustomTabBarController {
 
         view.addSubview(mainView)
         view.sendSubview(toBack: mainView)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

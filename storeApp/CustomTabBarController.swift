@@ -48,8 +48,8 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
     }()
     
     let cellId = "tbCell"
-    let cellNames  = ["About", "Coupons", "", "Stuff", "More"]
-    let cellImages = ["info", "coupon", "", "more", "more"]
+    let cellNames  = ["About", "Specials", "", "Stuff", "Settings"]
+    let cellImages = ["info", "coupon", "", "more", "gear"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,8 +133,10 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
             transition.type = kCATransitionMoveIn
             transition.subtype = kCATransitionFromLeft
             self.navigationController?.view.layer.add(transition, forKey: nil)
-            let specialsController = Specials(collectionViewLayout: UICollectionViewFlowLayout())
+            let specialsController = SpecialsController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(specialsController, animated: true)
+            
+        
         default:
             break
             

@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class SpecialsController: AppCollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var hasFetchedSpecials = Bool()
     var isLoggedIn = Bool()
@@ -22,7 +22,6 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         super.viewDidLoad()
 
         navigationItem.title = "Specials"
-        collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(SpecialCell.self, forCellWithReuseIdentifier: specialId)
 
@@ -36,7 +35,7 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
             collectionView?.addSubview(refreshControl)
         }
         
-        refreshControl.addTarget(self, action: #selector(Specials.fetchSpecials), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(SpecialsController.fetchSpecials), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: "Fetching specials...", attributes: [:])
     }
     
@@ -55,8 +54,8 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
                     let special = Special()
                     special.title = item["name"].stringValue
                     special.details = item["details"].stringValue
-                    special.expires = item["expires"].stringValue
                     special.type = item["type"].stringValue
+                    special.convertExpiration(date: item["expires"].stringValue)
                     
                     special.thumbnailImage = decodedImage
                     self.specials.append(special)
@@ -99,6 +98,7 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: specialId, for: indexPath) as! SpecialCell
         
+        cell.backgroundColor = .white
         cell.special = specials[indexPath.item]
         
         return cell
@@ -110,6 +110,10 @@ class Specials: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(16, 0, 16, 0)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

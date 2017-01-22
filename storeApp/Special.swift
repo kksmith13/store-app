@@ -15,4 +15,8 @@ class Special: NSObject {
     var expires: String?
     var details: String?
     var type: String?
+    
+    func convertExpiration(date: String) {
+        expires = Configuration.dateConvert(date: date)
+    }
 }

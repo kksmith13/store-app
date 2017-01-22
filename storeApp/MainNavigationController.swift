@@ -16,7 +16,7 @@ class MainNavigationController: UINavigationController {
     }
     
     fileprivate func configureTheme(){
-        let backgroundColor = UIColor.init(red: 230/255, green: 232/255, blue: 225/255, alpha: 1)
+        let backgroundColor = UIColor.init(red: 223/255, green: 223/255, blue: 223/255, alpha: 1)
         UserDefaults.standard.setColor(color: backgroundColor, forKey: "backgroundColor")
         
         let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")

@@ -13,6 +13,7 @@ class SpecialCell: BaseCVCell {
         didSet {
             titleLabel.text = special?.title
             thumbnailImageView.image = special?.thumbnailImage
+            expirationLabel.text = "Expires: " + (special?.expires)!
             
             if special?.type == "deal" {
                 specialType.image = UIImage(named: "deal")
@@ -27,8 +28,18 @@ class SpecialCell: BaseCVCell {
         return imageView
     }()
     
+    let expirationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 10, weight: UIFontWeightLight)
+        return label
+    }()
+
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: UIFontWeightLight)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.sizeToFit()
         return label
     }()
     
@@ -48,16 +59,21 @@ class SpecialCell: BaseCVCell {
         super.setupViews()
         addSubview(thumbnailImageView)
         addSubview(titleLabel)
+        addSubview(expirationLabel)
         addSubview(specialType)
         addSubview(seperatorView)
 
         //horizontal constraints
-        addConstraintsWithFormat(format: "H:|-16-[v0(108)]-8-[v1]-8-[v2(16)]-16-|", views: thumbnailImageView, titleLabel, specialType)
+        addConstraintsWithFormat(format: "H:|[v0(124)]-8-[v1]-8-[v2(16)]-16-|", views: thumbnailImageView, titleLabel, specialType)
         addConstraintsWithFormat(format: "H:|[v0]|", views: seperatorView)
         
         //vertical constraints
-        addConstraintsWithFormat(format: "V:|-8-[v0(108)]-8-[v1(1)]|", views: thumbnailImageView, seperatorView)
+        addConstraintsWithFormat(format: "V:|[v0(124)][v1(1)]|", views: thumbnailImageView, seperatorView)
         addConstraintsWithFormat(format: "V:|-54-[v0(16)]", views: specialType)
-        addConstraintsWithFormat(format: "V:|-32-[v0]-32-|", views: titleLabel)
+        addConstraintsWithFormat(format: "V:[v0]", views: titleLabel)
+        
+        titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
+        
+        _ = expirationLabel.anchor(nil, left: thumbnailImageView.rightAnchor, bottom: titleLabel.topAnchor, right: specialType.leftAnchor, topConstant: 0, leftConstant: 8, bottomConstant: 4, rightConstant: 8, widthConstant: 0, heightConstant: 0)
     }
 }
