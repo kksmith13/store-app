@@ -9,6 +9,7 @@
 import MapKit
 
 class Store: NSObject, MKAnnotation{
+    var position: Int?
     var name: String?
     var address: String?
     var city: String?

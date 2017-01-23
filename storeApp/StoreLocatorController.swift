@@ -14,7 +14,7 @@ import SwiftyJSON
 class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, StoreCellDelegate {
     
     var position = 0
-    let regionRadius: CLLocationDistance = 500
+    let regionRadius: CLLocationDistance = 3000
     
     var initialLocation: CLLocation?
     
@@ -75,8 +75,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.allowsSelection = false
         tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
         
         setupViews()
@@ -113,6 +111,12 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
 
     func sortLocations() {
         locations.sort {Int($0.distance!) < Int($1.distance!)}
+    }
+    
+    func setPosition() {
+        for (i, store) in locations.enumerated() {
+            store.position = i
+        }
     }
     
     //MARK: - StoreCell Delegate Methods
@@ -165,26 +169,36 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
             return nil
         }
         
-        var locationView = locatorMap.dequeueReusableAnnotationView(withIdentifier: "Store")
-        
-        if locationView == nil {
-            let storeImage = UIImage(named: "logo")
-            let imageSize = CGSize(width: 50, height: 50)
-            UIGraphicsBeginImageContext(imageSize)
-            storeImage?.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
-            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
+        if let annotation = annotation as? Store {
             
-            locationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "Store")
-            locationView?.canShowCallout = true
-            locationView!.image = resizedImage
+            let storeIdentifier = "store"
+            var annotationView: MKAnnotationView?
+            if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: storeIdentifier) {
+                annotationView = dequeuedAnnotationView
+                annotationView?.annotation = annotation
+            }
+            else {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: storeIdentifier)
+                annotationView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            }
             
+            if let annotationView = annotationView {
+                // Configure your annotation view here
+                //annotationView.canShowCallout = true
+                let storeImage = UIImage(named: "exxon")
+                let imageSize = CGSize(width: 50, height: 25)
+                UIGraphicsBeginImageContext(imageSize)
+                storeImage?.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
+                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                UIGraphicsEndImageContext()
+                annotationView.image = resizedImage
+            }
             
-        } else {
-            locationView!.annotation = annotation
+            return annotationView
+
         }
         
-        return locationView
+        return nil
     }
     
     //function that adds set annotations to map
@@ -213,6 +227,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                 }
                 
                 self.sortLocations()
+                self.setPosition()
                 self.tableView.reloadData()
                 },
                         failure: {(error) -> Void in
@@ -224,6 +239,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     // Function to handle annotation accessoryView presses
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
     }
     
     
@@ -232,7 +248,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     // Function to handle selecting an annotation
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let directionsRequest = MKDirectionsRequest()
-        let selectedLoc = view.annotation
+        let selectedLoc = view.annotation as? Store
+        tableView.selectRow(at: IndexPath.init(row: (selectedLoc?.position)!, section: 0), animated: true, scrollPosition: .middle)
         let selectedPlacemark = MKPlacemark(coordinate: (selectedLoc?.coordinate)!, addressDictionary: nil)
         let selectedMapItem = MKMapItem(placemark: selectedPlacemark)
         
@@ -265,7 +282,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         
-        renderer.strokeColor = UIColor.blue
+        renderer.strokeColor = .blue
         renderer.lineWidth = 5.0
         return renderer
     }
