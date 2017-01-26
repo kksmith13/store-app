@@ -11,7 +11,12 @@ import MapKit
 import SwiftyJSON
 
 
-class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, StoreCellDelegate {
+class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, StoreCellDelegate {
+    @available(iOS 8.0, *)
+    public func updateSearchResults(for searchController: UISearchController) {
+        //
+    }
+
     
     var position = 0
     let regionRadius: CLLocationDistance = 3000
@@ -72,10 +77,12 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     }()
     
     let cellId = "cellId"
+    let headerId = "headerId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(LocatorTableHeader.self, forHeaderFooterViewReuseIdentifier: headerId)
         
         setupViews()
     }
@@ -94,18 +101,17 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     func setupViews() {
         view.addSubview(locatorMap)
         view.addSubview(storeInfo)
-        storeInfo.addSubview(shButton)
-        storeInfo.addSubview(seperatorView)
-        storeInfo.addSubview(tableView)
+
+        view.addSubview(tableView)
         
         _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 64, leftConstant: 0, bottomConstant: 275, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-        
+        _ = tableView.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+/*
         _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 16, widthConstant: 20, heightConstant: 20)
         _ = seperatorView.anchor(storeInfo.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 36, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 1)
         
         _ = tableView.anchor(seperatorView.topAnchor, left: view.leftAnchor, bottom: storeInfo.bottomAnchor , right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 8, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        
+*/
         addLocationsToMap()
     }
 
@@ -185,13 +191,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
             if let annotationView = annotationView {
                 // Configure your annotation view here
                 //annotationView.canShowCallout = true
-                let storeImage = UIImage(named: "exxon")
-                let imageSize = CGSize(width: 50, height: 25)
-                UIGraphicsBeginImageContext(imageSize)
-                storeImage?.draw(in: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
-                let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
-                annotationView.image = resizedImage
+                let storeImage = UIImage(named: "clark-marker")
+                annotationView.image = storeImage
             }
             
             return annotationView
@@ -304,7 +305,17 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
+        return 104
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! LocatorTableHeader
+        //header.backgroundColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1)
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
     }
     
     //MARK: - Extra Bar Methods

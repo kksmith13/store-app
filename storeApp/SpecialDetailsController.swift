@@ -11,6 +11,8 @@ import SwiftyJSON
 
 class SpecialDetailsController: AppViewController {
     
+    var special: Special?
+    
     let specialView: SpecialView = {
         let sv = SpecialView()
         sv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -21,6 +23,7 @@ class SpecialDetailsController: AppViewController {
         super.viewDidLoad()
         
         view = specialView
+        specialView.special = special
     }
     
     override func viewDidLayoutSubviews() {
@@ -31,14 +34,5 @@ class SpecialDetailsController: AppViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-//    func configureView() {
-//        let date = Configuration.dateConvert(date: expires)
-//        imageView.image = image
-//        couponTitle.text = titl
-//        details.text = detail
-//        expiration.text = date
-//    }
-    
     
 }

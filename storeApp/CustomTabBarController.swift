@@ -125,7 +125,14 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            break
+            let transition = CATransition()
+            transition.duration = 0.5
+            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.type = kCATransitionMoveIn
+            transition.subtype = kCATransitionFromLeft
+            self.navigationController?.view.layer.add(transition, forKey: nil)
+            let aboutController = AboutController()
+            navigationController?.pushViewController(aboutController, animated: true)
         case 1:
             let transition = CATransition()
             transition.duration = 0.5
@@ -135,6 +142,9 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
             self.navigationController?.view.layer.add(transition, forKey: nil)
             let specialsController = SpecialsController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(specialsController, animated: true)
+        case 4:
+            let settingsController = SettingsController()
+            navigationController?.pushViewController(settingsController, animated: true)
             
         
         default:

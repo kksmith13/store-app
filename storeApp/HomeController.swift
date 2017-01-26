@@ -19,10 +19,22 @@ class HomeController: CustomTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Home"
 
         view.addSubview(mainView)
         view.sendSubview(toBack: mainView)
+    }
+    
+    //possibly change to viewWillAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationItem.title = "Home"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationItem.title = ""
     }
 
     override func didReceiveMemoryWarning() {

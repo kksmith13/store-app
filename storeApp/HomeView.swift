@@ -10,9 +10,9 @@ import UIKit
 
 class HomeView: UIView {
     let logoImageView: UIImageView = {
-        let image = Configuration.convertBase64Image(image: UserDefaults.standard.string(forKey: "icon")!)
-        let imageView = UIImageView(image: image)
-        return imageView
+        let iv = UIImageView()
+        iv.image = UIImage(named: "clark-tBanner")
+        return iv
     }()
     
     lazy var loginButton: UIButton = {
@@ -32,8 +32,7 @@ class HomeView: UIView {
         super.init(frame: frame)
         
         addSubview(logoImageView)
-        _ = logoImageView.anchor(centerYAnchor, left: nil, bottom: nil, right: nil, topConstant: -175, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 75, heightConstant: 75)
-        logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        _ = logoImageView.anchor(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
         if !UserDefaults.standard.isLoggedIn() {
             addSubview(loginButton)

@@ -27,7 +27,7 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
 
         hasFetchedSpecials = false
         fetchSpecials()
-        self.view.backgroundColor = UIColor.green
+        view.backgroundColor = UIColor.green
         
         if #available(iOS 10.0, *) {
             collectionView?.refreshControl = refreshControl
@@ -118,13 +118,7 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let specialController = SpecialDetailsController()
-        
-        //let couponDict:JSON = coupons.object(at: indexPath.row) as! JSON
-        //let decodedImage = Configuration.convertBase64Image(image: couponDict["image"]["data"].stringValue)
-//        specialController.image = coupons[indexPath.item].thumbnailImage
-//        specialController.expires = coupons[indexPath.item].expires
-//        specialController.titl = coupons[indexPath.item].title
-//        specialController.detail = coupons[indexPath.item].details
+        specialController.special = specials[indexPath.row]
         
         navigationController?.pushViewController(specialController, animated: true)
     }

@@ -28,25 +28,32 @@ class StoreCell: BaseTVCell {
             guard let store = store else {
                 return
             }
+            nameLabel.text = store.name
             addressLabel.text = store.address
+            locationLabel.text = store.city! + ", " + store.state! + " " + store.zipcode!
             priceLabel.text = "$" + (store.price)!
             distanceLabel.text = String(format: "%.1f", (store.distance)!/1609.344)
-            print(store.price)
-            //directionsButton.tag = store.index!
         }
     }
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightMedium)
+        label.text = ""
+        return label
+    }()
+    
     let addressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightLight)
-        label.text = "NWC Dale Earnghardt Blvd & Centergrove Rd"
+        label.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
+        label.text = ""
         return label
     }()
     
     let locationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
-        label.text = "Hattiesburg, MS, 39401"
+        label.text = ""
         return label
     }()
     
@@ -54,7 +61,7 @@ class StoreCell: BaseTVCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightLight)
         label.textAlignment = .center
-        label.text = "123.4"
+        label.text = ""
         return label
     }()
     
@@ -68,7 +75,7 @@ class StoreCell: BaseTVCell {
     
     let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
+        label.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightLight)
         label.textAlignment = .center
         label.text = "$-.--"
         return label
@@ -88,7 +95,7 @@ class StoreCell: BaseTVCell {
     lazy var detailsButton: UIButton = {
         let button = UIButton()
         let color = UIColor(red: 0/255, green: 122/255, blue: 1, alpha: 1)
-        button.setTitle("Details", for: .normal)
+        button.setTitle("View Details", for: .normal)
         button.setTitleColor(color, for: .normal)
         button.titleLabel!.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
         button.contentHorizontalAlignment = .right
@@ -107,6 +114,7 @@ class StoreCell: BaseTVCell {
     
     
     override func setupViews() {
+        addSubview(nameLabel)
         addSubview(addressLabel)
         addSubview(locationLabel)
         addSubview(distanceLabel)
@@ -116,14 +124,16 @@ class StoreCell: BaseTVCell {
         addSubview(detailsButton)
         
         //horizontal constraints
-        addConstraintsWithFormat(format: "H:|-16-[v0]-24-[v1(68)]-16-|", views: addressLabel, distanceLabel)
+        addConstraintsWithFormat(format: "H:|-16-[v0]-24-[v1(68)]-16-|", views: nameLabel, distanceLabel)
+        addConstraintsWithFormat(format: "H:|-16-[v0]", views: addressLabel)
         addConstraintsWithFormat(format: "H:|-16-[v0]-24-[v1(68)]-16-|", views: locationLabel, milesLabel)
         addConstraintsWithFormat(format: "H:|-16-[v0(96)]", views: directionsButton)
-        addConstraintsWithFormat(format: "H:[v0(60)]-24-[v1(68)]-16-|", views: detailsButton, priceLabel)
+        addConstraintsWithFormat(format: "H:[v0]-36-[v1(68)]-16-|", views: detailsButton, priceLabel)
 
         //vertical constraints
-        addConstraintsWithFormat(format: "V:|-8-[v0(22)]-4-[v1(20)]-8-[v2(14)]-8-|", views: addressLabel, locationLabel, directionsButton)
-        addConstraintsWithFormat(format: "V:|-8-[v0(22)]-4-[v1(20)]-8-[v2(14)]-8-|", views: addressLabel, locationLabel, detailsButton)
-        addConstraintsWithFormat(format: "V:|-8-[v0(18)]-4-[v1(14)]-12-[v2(20)]-8-|", views: distanceLabel, milesLabel, priceLabel)
+        addConstraintsWithFormat(format: "V:|-[v0(18)]-4-[v1(16)]-4-[v2(16)]-[v3(16)]-|", views: nameLabel, addressLabel, locationLabel, directionsButton)
+        addConstraintsWithFormat(format: "V:|-[v0(18)]-4-[v1(16)]-4-[v2(16)]-[v3(16)]-|", views: nameLabel, addressLabel, locationLabel, detailsButton)
+        addConstraintsWithFormat(format: "V:|-[v0(18)]-4-[v1(14)]", views: distanceLabel, milesLabel)
+        addConstraintsWithFormat(format: "V:[v0(22)]-|", views: priceLabel)
     }
 }
