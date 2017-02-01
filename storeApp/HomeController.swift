@@ -13,7 +13,6 @@ class HomeController: CustomTabBarController {
     
     let mainView: HomeView = {
         let mv = HomeView()
-        mv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50 - 64)
         return mv
     }()
     
@@ -21,6 +20,7 @@ class HomeController: CustomTabBarController {
         super.viewDidLoad()
 
         view.addSubview(mainView)
+        _ = mainView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         view.sendSubview(toBack: mainView)
     }
     
@@ -35,11 +35,6 @@ class HomeController: CustomTabBarController {
         super.viewWillDisappear(animated)
         
         navigationItem.title = ""
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func onLoginReleased(_ button:UIButton) {

@@ -1,17 +1,16 @@
 //
-//  MainController.swift
+//  SignupController.swift
 //  storeApp
 //
-//  Created by Kyle Smith on 1/11/17.
+//  Created by Kyle Smith on 2/1/17.
 //  Copyright © 2017 Codesmiths. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class MainController: CustomTabBarController {
+class SignupController: AppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
 }

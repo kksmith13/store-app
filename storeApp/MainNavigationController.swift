@@ -16,8 +16,14 @@ class MainNavigationController: UINavigationController {
     }
     
     fileprivate func configureTheme(){
-        let backgroundColor = UIColor.init(red: 223/255, green: 223/255, blue: 223/255, alpha: 1)
+        let backgroundColor = UIColor.init(red: 239/255, green: 238/255, blue: 244/255, alpha: 1)
         UserDefaults.standard.setColor(color: backgroundColor, forKey: "backgroundColor")
+        
+        let linkColor = UIColor.init(red: 0, green: 122/255, blue: 175/255, alpha: 1)
+        UserDefaults.standard.setColor(color: linkColor, forKey: "linkColor")
+        
+        let linesColor = UIColor.init(red: 206/255, green: 206/255, blue: 210/255, alpha: 1)
+        UserDefaults.standard.setColor(color: linesColor, forKey: "linesColor")
         
         let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
         navigationBar.barTintColor = primaryColor

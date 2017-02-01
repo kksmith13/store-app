@@ -17,12 +17,13 @@ class HomeView: UIView {
     
     lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
+        let borderColor = UserDefaults.standard.colorForKey(key: "linesColor")
         button.layer.cornerRadius = 8
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel!.font = .systemFont(ofSize: 20, weight: UIFontWeightLight)
         button.setTitle("Sign In", for: .normal)
         button.layer.borderWidth = 1
-        button.layer.borderColor = GLOBALS.lines.cgColor
+        button.layer.borderColor = borderColor?.cgColor
         button.addTarget(nil, action: #selector(onLoginPressed), for: .touchDown)
         button.addTarget(nil, action: #selector(HomeController.onLoginReleased), for: .touchUpInside)
         return button
@@ -34,10 +35,10 @@ class HomeView: UIView {
         addSubview(logoImageView)
         _ = logoImageView.anchor(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
-        if !UserDefaults.standard.isLoggedIn() {
+        //if !UserDefaults.standard.isLoggedIn() {
             addSubview(loginButton)
             _ = loginButton.anchor(logoImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 32, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
-        }
+        //}
         
     }
     

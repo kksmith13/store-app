@@ -10,11 +10,20 @@ import UIKit
 
 class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegate {
     
+    
+    lazy var loginView: LoginView = {
+        let lv = LoginView()
+        return lv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view = LoginView()
-        view.backgroundColor = .white
+        view.addSubview(loginView)
+        _ = loginView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        
+        loginView.emailTextField.delegate = self
+        loginView.passwordTextField.delegate = self
         navigationController?.navigationBar.isHidden = true
         
         observeKeyboardNotification()
@@ -44,12 +53,10 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
 
     
     func finishLoggingIn() {
-        let email = self.view.subviews[1] as! UITextField
-        let emailText = email.text!
-        let password = self.view.subviews[2] as! UITextField
-        let passwordText = password.text!
+        let emailText = loginView.emailTextField.text
+        let passwordText = loginView.passwordTextField.text
         
-        if(passwordText.characters.count == 0 || emailText.characters.count == 0) {
+        if(passwordText?.characters.count == 0 || emailText?.characters.count == 0) {
             showAlert(title: "Error", message: "Email or password is empty.")
         } else {
         
@@ -61,7 +68,7 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                 .login(params: params,
                        success: {(responseObject) -> Void in
                         if responseObject["success"].stringValue == "false"{
-                            self.showAlert(title: "Error", message: "Invalid email or password")
+                            self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
                             let rootViewController = UIApplication.shared.keyWindow?.rootViewController
                             guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
@@ -86,5 +93,27 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
         mainNavigationController.viewControllers = [HomeController()]
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
+    }
+    
+    func pushSignup() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+        
+        let signupController = SignupController()
+        mainNavigationController.viewControllers = [HomeController(), signupController]
+        view.endEditing(true)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("that")
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
     }
 }
