@@ -34,12 +34,11 @@ class HomeView: UIView {
         
         addSubview(logoImageView)
         _ = logoImageView.anchor(topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-        
-        if !UserDefaults.standard.isLoggedIn() {
-            addSubview(loginButton)
-            _ = loginButton.anchor(logoImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 32, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
-        }
-        
+    }
+    
+    func showLoginButton() {
+        addSubview(loginButton)
+        _ = loginButton.anchor(logoImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 32, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
     }
     
     required init?(coder aDecoder: NSCoder) {

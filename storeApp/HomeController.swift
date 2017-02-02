@@ -25,15 +25,18 @@ class HomeController: CustomTabBarController {
     }
     
     //possibly change to viewWillAppear
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         navigationItem.title = "Home"
+        if UserDefaults.standard.isLoggedIn() {
+            mainView.loginButton.removeFromSuperview()
+        } else {
+            mainView.showLoginButton()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         navigationItem.title = ""
     }
     

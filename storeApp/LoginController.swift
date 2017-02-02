@@ -95,6 +95,7 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
                             UserDefaults.standard.setIsLoggedIn(value: true)
+                            self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
                         }
                     },

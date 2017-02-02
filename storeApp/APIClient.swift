@@ -34,7 +34,7 @@ class APIClient {
             try keychain.set(token, key: APITokenKey)
         }
         catch let error {
-            print(error)
+            debugPrint(error)
         }
     }
     
@@ -87,9 +87,6 @@ class APIClient {
             Alamofire
                 .request(urlString, method: .post, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: headers as? HTTPHeaders)
                 .responseJSON { (responseObject) -> Void in
-                    print("Here's what you're looking for...")
-                    print(responseObject)
-    
                     if responseObject.result.isSuccess {
                         let resJSON = JSON(responseObject.result.value!)
                         success(resJSON)
@@ -117,7 +114,11 @@ class APIClient {
             headers: verifyHeaders,
             success: {(responseObject) -> Void in
                 success(responseObject)
-                UserDefaults.standard.setIsLoggedIn(value: true)
+                if(responseObject["status"] == 200) {
+                    UserDefaults.standard.setIsLoggedIn(value: true)
+                } else {
+                    UserDefaults.standard.setIsLoggedIn(value: false)
+                }
             },
             failure:{(error) -> Void in
                 failure(error)
@@ -136,7 +137,6 @@ class APIClient {
                     parameters: params,
                     headers: loginHeaders,
                     success: {(responseObject) -> Void in
-                        print(responseObject)
                         self.setAccessToken(token: responseObject["authtoken"].stringValue)
                         UserDefaults.standard.setIsLoggedIn(value: true)
                         success(responseObject)
@@ -147,7 +147,7 @@ class APIClient {
     func logout(success: @escaping (JSON) -> Void,
                 failure: @escaping (NSError) -> Void) {
         
-        let logoutURL:URLConvertible = baseAPIURL + "/logout"
+        let logoutURL:URLConvertible = loginVerifyBase + "/logout"
         let logoutHeaders = setupGETHeaders()
         
         return GET(urlString: logoutURL,
@@ -213,7 +213,6 @@ class APIClient {
                     parameters: params,
                     headers: createUserHeaders,
                     success: {(responseObject) -> Void in
-                        print(responseObject)
                         success(responseObject)
         },
                     failure: failure)

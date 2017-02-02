@@ -16,8 +16,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     public func updateSearchResults(for searchController: UISearchController) {
         //
     }
-
-    
     var position = 0
     let regionRadius: CLLocationDistance = 3000
     
@@ -49,20 +47,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         return view
     }()
     
-    let shButton: UIButton = {
-        //let button = UIButton(frame: CGRect(x: UIScreen.main.bounds.width - 49, y: 0, width: 49, height: 49))
-        let button = UIButton()
-        //button.addTarget(nil, action: #selector(showMore), for: .touchDown)
-        button.backgroundColor = .red
-        return button
-    }()
-    
-    let seperatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
-    }()
-    
     lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.delegate = self
@@ -83,6 +67,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         super.viewDidLoad()
         tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LocatorTableHeader.self, forHeaderFooterViewReuseIdentifier: headerId)
+        definesPresentationContext = true
         
         setupViews()
     }
@@ -104,14 +89,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
 
         view.addSubview(tableView)
         
-        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 64, leftConstant: 0, bottomConstant: 275, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 64, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 300)
         _ = tableView.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-/*
-        _ = shButton.anchor(storeInfo.topAnchor, left: nil, bottom: nil, right: storeInfo.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 16, widthConstant: 20, heightConstant: 20)
-        _ = seperatorView.anchor(storeInfo.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 36, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 1)
-        
-        _ = tableView.anchor(seperatorView.topAnchor, left: view.leftAnchor, bottom: storeInfo.bottomAnchor , right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 8, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-*/
         addLocationsToMap()
     }
 
@@ -157,7 +136,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         let index = tableView.indexPath(for: cell)?.row
         let storeDetailsController = StoreDetailsController()
         navigationItem.title = ""
-        print(locations[index!].address as Any)
         storeDetailsController.store = locations[index!]
         navigationController?.pushViewController(storeDetailsController, animated: true)
     }
@@ -207,9 +185,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         APIClient
             .sharedInstance
             .loadStores(success: { (responseObject) -> Void in
-                print(responseObject)
                 for (_, stores) in responseObject["stores"] {
-                    print(stores)
                     let lat = stores["latitude"].doubleValue
                     let long = stores["longitude"].doubleValue
                     let store = Store(latitude: lat, longitude: long)
@@ -316,19 +292,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
-    }
-    
-    //MARK: - Extra Bar Methods
-    func showMore() {
-        if position == 0 {
-            _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 200, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-            _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-            position = 1
-        } else {
-            _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 49, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-            _ = storeInfo.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-            position = 0
-        }
     }
     
 }

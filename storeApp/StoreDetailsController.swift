@@ -121,7 +121,6 @@ class StoreDetailsController: AppViewController, UITableViewDelegate, UITableVie
         case 4:
             if let url = URL(string: "tel://" + (store?.phone)!) , UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.openURL(url)
-                print(url)
             } else {
                 showAlert(title: "Call Unavailable", message: "This device is not capable of making a phone call")
             }

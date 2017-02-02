@@ -74,7 +74,7 @@ class Configuration : NSObject {
                 },
                           failure: {(error) -> Void in
                             failure(error)
-                            print(error)
+                            debugPrint(error)
             })
     }
     

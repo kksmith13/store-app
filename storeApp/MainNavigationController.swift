@@ -41,7 +41,7 @@ class MainNavigationController: UINavigationController {
         Configuration
             .getSettingsFromAPI(success: {(response) -> Void in },
                                 failure: {(error) -> Void in
-                                    print(error)
+                                    debugPrint(error)
             })
     }
     
@@ -57,7 +57,7 @@ class MainNavigationController: UINavigationController {
                                 self.goHome()
                             },
                              failure: {(error) -> Void in
-                                print(error)
+                                debugPrint(error)
                                 self.goHome()
             })
     }

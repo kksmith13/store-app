@@ -87,7 +87,7 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
                 self.refreshControl.endRefreshing()
                 },
                              failure: {(error) -> Void in
-                                print(error)
+                                debugPrint(error)
             })
     }
     

@@ -138,6 +138,13 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
                 let websiteController = WebsiteController()
                 navigationController?.pushViewController(websiteController, animated: true)
             }
+        case 6:
+            APIClient.sharedInstance.logout(success: {(responseObject) -> Void in
+                debugPrint("Logged out")
+                UserDefaults.standard.setIsLoggedIn(value: false)
+            }, failure: {(error) -> Void in
+                self.showAlert(title: "Error", message: error.localizedDescription)
+            })
         default:
             break
         }

@@ -34,7 +34,7 @@ class SignupController: AppViewController, UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print(textField.frame.midY)
+        //create some variable based on height to change how much the screen pops up
         let updateY = textField.frame.midY * 0.20
 
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -177,7 +177,7 @@ class SignupController: AppViewController, UITextFieldDelegate {
                 .createUser(params: params,
                        success: {(responseObject) -> Void in
                         if responseObject["success"].stringValue == "false"{
-                            print(responseObject)
+                            debugPrint(responseObject)
                             self.showAlert(title: "Error", message: responseObject["message"].stringValue)
                         } else {
                             self.showAlertWithPop(title: "Success", message: responseObject["message"].stringValue)

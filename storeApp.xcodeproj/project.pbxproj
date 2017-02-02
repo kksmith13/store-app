@@ -20,8 +20,6 @@
 		831E5A041E372034007B2FE7 /* EmploymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A031E372034007B2FE7 /* EmploymentController.swift */; };
 		831E5A071E37236B007B2FE7 /* WebsiteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A061E37236B007B2FE7 /* WebsiteController.swift */; };
 		831E5A091E39614A007B2FE7 /* LocatorTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A081E39614A007B2FE7 /* LocatorTableHeader.swift */; };
-		831E5A0B1E397321007B2FE7 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A0A1E397321007B2FE7 /* CustomSearchBar.swift */; };
-		831E5A0D1E39732E007B2FE7 /* CustomSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A0C1E39732E007B2FE7 /* CustomSearchBarController.swift */; };
 		831E5A0F1E424D86007B2FE7 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A0E1E424D86007B2FE7 /* SignupController.swift */; };
 		831E5A111E424E71007B2FE7 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A101E424E71007B2FE7 /* SignupView.swift */; };
 		831E5A1D1E42638C007B2FE7 /* LeftPaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A1C1E42638C007B2FE7 /* LeftPaddedTextField.swift */; };
@@ -95,8 +93,6 @@
 		831E5A031E372034007B2FE7 /* EmploymentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmploymentController.swift; sourceTree = "<group>"; };
 		831E5A061E37236B007B2FE7 /* WebsiteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebsiteController.swift; sourceTree = "<group>"; };
 		831E5A081E39614A007B2FE7 /* LocatorTableHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocatorTableHeader.swift; sourceTree = "<group>"; };
-		831E5A0A1E397321007B2FE7 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
-		831E5A0C1E39732E007B2FE7 /* CustomSearchBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBarController.swift; sourceTree = "<group>"; };
 		831E5A0E1E424D86007B2FE7 /* SignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
 		831E5A101E424E71007B2FE7 /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		831E5A1C1E42638C007B2FE7 /* LeftPaddedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftPaddedTextField.swift; sourceTree = "<group>"; };
@@ -234,8 +230,6 @@
 				83329D631DD8F42A00A1D258 /* UIImageView+helpers.swift */,
 				83329D5F1DD8CFCF00A1D258 /* UserDefaults+helpers.swift */,
 				83FFDA2B1E293D3E0098E9FB /* NSUserDefaults+helpers.swift */,
-				831E5A0A1E397321007B2FE7 /* CustomSearchBar.swift */,
-				831E5A0C1E39732E007B2FE7 /* CustomSearchBarController.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -622,7 +616,6 @@
 				8365FD1E1E22F5E60058B999 /* BaseCVCell.swift in Sources */,
 				83622BD61E351F84006869DD /* StoreAmenitiesController.swift in Sources */,
 				8300324C1D4962C10046848A /* Configuration.swift in Sources */,
-				831E5A0B1E397321007B2FE7 /* CustomSearchBar.swift in Sources */,
 				83329D601DD8CFCF00A1D258 /* UserDefaults+helpers.swift in Sources */,
 				83329D641DD8F42A00A1D258 /* UIImageView+helpers.swift in Sources */,
 				8365FD181E22D4E30058B999 /* StoreDetailsView.swift in Sources */,
@@ -641,7 +634,6 @@
 				83329D701DDBCB0300A1D258 /* Special.swift in Sources */,
 				830032861D76185C0046848A /* APIClient.swift in Sources */,
 				8365FD1C1E22F53A0058B999 /* OptionsCell.swift in Sources */,
-				831E5A0D1E39732E007B2FE7 /* CustomSearchBarController.swift in Sources */,
 				8365FD241E23434E0058B999 /* Store.swift in Sources */,
 				83329D6C1DDA8DDB00A1D258 /* SpecialCell.swift in Sources */,
 				831E5A091E39614A007B2FE7 /* LocatorTableHeader.swift in Sources */,

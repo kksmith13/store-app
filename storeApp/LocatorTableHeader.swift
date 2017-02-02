@@ -16,8 +16,8 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         return label
     }()
     
-    lazy var searchController: CustomSearchController = {
-        let sc = CustomSearchController(searchResultsController: nil)
+    lazy var searchController: UISearchController = {
+        let sc = UISearchController(searchResultsController: nil)
         sc.searchResultsUpdater = self
         sc.delegate = self
         sc.searchBar.delegate = self
@@ -25,8 +25,6 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         sc.hidesNavigationBarDuringPresentation = false
         sc.definesPresentationContext = true
         sc.searchBar.searchBarStyle = .minimal
-        sc.searchBar.frame.size.width = UIScreen.main.bounds.width * 0.6
-        //sc.searchBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.6, height: 44)
         return sc
     }()
     
@@ -36,11 +34,15 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         setupViews()
     }
     
+    deinit {
+        searchController.searchBar.removeFromSuperview()
+        searchController.searchBar.endEditing(true)
+    }
+    
     func setupViews() {
         
         addSubview(searchController.searchBar)
         addSubview(thisLabel)
-        addConstraint(NSLayoutConstraint(item: searchController.searchBar, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
         
         addConstraintsWithFormat(format: "H:[v0(50)]-|", views: thisLabel)
         addConstraintsWithFormat(format: "V:|-12-[v0(20)]", views: thisLabel)
@@ -53,7 +55,7 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print(searchController.searchBar.frame.size)
+        
     }
     
     override func layoutSubviews() {
