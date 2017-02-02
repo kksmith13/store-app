@@ -201,4 +201,21 @@ class APIClient {
             },
                    failure: failure)
     }
+    
+    func createUser(params: NSDictionary,
+                    success: @escaping (JSON) -> Void,
+                    failure: @escaping (NSError) -> Void) {
+        
+        let createUserURL:URLConvertible = baseAPIURL + "/users"
+        let createUserHeaders:NSDictionary = ["Accept" : "application/json"]
+        
+        return POST(urlString: createUserURL,
+                    parameters: params,
+                    headers: createUserHeaders,
+                    success: {(responseObject) -> Void in
+                        print(responseObject)
+                        success(responseObject)
+        },
+                    failure: failure)
+    }
 }

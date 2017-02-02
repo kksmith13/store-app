@@ -25,6 +25,12 @@ class MainNavigationController: UINavigationController {
         let linesColor = UIColor.init(red: 206/255, green: 206/255, blue: 210/255, alpha: 1)
         UserDefaults.standard.setColor(color: linesColor, forKey: "linesColor")
         
+        let redColor = UIColor.init(red: 255/255, green: 59/255, blue: 48/255, alpha: 1)
+        UserDefaults.standard.setColor(color: redColor, forKey: "redColor")
+        
+        let greenColor = UIColor.init(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        UserDefaults.standard.setColor(color: greenColor, forKey: "greenColor")
+        
         let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
         navigationBar.barTintColor = primaryColor
         navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]

@@ -24,6 +24,7 @@
 		831E5A0D1E39732E007B2FE7 /* CustomSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A0C1E39732E007B2FE7 /* CustomSearchBarController.swift */; };
 		831E5A0F1E424D86007B2FE7 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A0E1E424D86007B2FE7 /* SignupController.swift */; };
 		831E5A111E424E71007B2FE7 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A101E424E71007B2FE7 /* SignupView.swift */; };
+		831E5A1D1E42638C007B2FE7 /* LeftPaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831E5A1C1E42638C007B2FE7 /* LeftPaddedTextField.swift */; };
 		832DEF951E371101001F8404 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832DEF941E371101001F8404 /* SettingsController.swift */; };
 		83329D601DD8CFCF00A1D258 /* UserDefaults+helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D5F1DD8CFCF00A1D258 /* UserDefaults+helpers.swift */; };
 		83329D621DD8EFA500A1D258 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83329D611DD8EFA500A1D258 /* LoginView.swift */; };
@@ -98,6 +99,7 @@
 		831E5A0C1E39732E007B2FE7 /* CustomSearchBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearchBarController.swift; sourceTree = "<group>"; };
 		831E5A0E1E424D86007B2FE7 /* SignupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
 		831E5A101E424E71007B2FE7 /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		831E5A1C1E42638C007B2FE7 /* LeftPaddedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftPaddedTextField.swift; sourceTree = "<group>"; };
 		832DEF941E371101001F8404 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		83329D5F1DD8CFCF00A1D258 /* UserDefaults+helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+helpers.swift"; sourceTree = "<group>"; };
 		83329D611DD8EFA500A1D258 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				830032871D7628D80046848A /* Model */,
 				8365FD101E1D9C740058B999 /* Cells */,
 				831E5A121E424E82007B2FE7 /* View/Controller Groups */,
+				831E5A1E1E42639A007B2FE7 /* Abstract Classes */,
 				8300325B1D4BC4B20046848A /* AbstractControllers */,
 				830032581D4BC4220046848A /* Extensions */,
 				830032841D7618130046848A /* Services */,
@@ -240,6 +243,7 @@
 		8300325B1D4BC4B20046848A /* AbstractControllers */ = {
 			isa = PBXGroup;
 			children = (
+				83B1DD261E25DC6900B2DCD6 /* BaseView.swift */,
 				8300328E1D810A620046848A /* AppViewController.swift */,
 				83FFDA321E2AC93E0098E9FB /* AppCollectionViewController.swift */,
 			);
@@ -351,6 +355,14 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
+		831E5A1E1E42639A007B2FE7 /* Abstract Classes */ = {
+			isa = PBXGroup;
+			children = (
+				831E5A1C1E42638C007B2FE7 /* LeftPaddedTextField.swift */,
+			);
+			name = "Abstract Classes";
+			sourceTree = "<group>";
+		};
 		8365FD101E1D9C740058B999 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,7 +385,6 @@
 		8365FD161E22D4030058B999 /* Stores Views */ = {
 			isa = PBXGroup;
 			children = (
-				83B1DD261E25DC6900B2DCD6 /* BaseView.swift */,
 				8365FD171E22D4E30058B999 /* StoreDetailsView.swift */,
 				8365FD191E22EAEF0058B999 /* OptionsBarView.swift */,
 			);
@@ -478,7 +489,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Codesmiths;
 				TargetAttributes = {
 					830032181D4954010046848A = {
@@ -596,6 +607,7 @@
 			files = (
 				831E5A0F1E424D86007B2FE7 /* SignupController.swift in Sources */,
 				831E5A071E37236B007B2FE7 /* WebsiteController.swift in Sources */,
+				831E5A1D1E42638C007B2FE7 /* LeftPaddedTextField.swift in Sources */,
 				83FFDA331E2AC93E0098E9FB /* AppCollectionViewController.swift in Sources */,
 				8300327F1D640D660046848A /* StoreLocatorController.swift in Sources */,
 				83FFDA3A1E2D1D070098E9FB /* LocatorCell.swift in Sources */,

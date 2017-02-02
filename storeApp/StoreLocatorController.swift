@@ -157,7 +157,7 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         let index = tableView.indexPath(for: cell)?.row
         let storeDetailsController = StoreDetailsController()
         navigationItem.title = ""
-        print(locations[index!].address)
+        print(locations[index!].address as Any)
         storeDetailsController.store = locations[index!]
         navigationController?.pushViewController(storeDetailsController, animated: true)
     }

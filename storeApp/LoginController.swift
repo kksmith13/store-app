@@ -50,13 +50,37 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
     func onLoginPressed(_ button: UIButton) {
         
     }
-
     
-    func finishLoggingIn() {
-        let emailText = loginView.emailTextField.text
-        let passwordText = loginView.passwordTextField.text
+    // MARK: - TF Delegate Methods
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (string == " ") {
+            return false
+        }
         
-        if(passwordText?.characters.count == 0 || emailText?.characters.count == 0) {
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    //MARK: - Internal Functions
+    func pushSignup() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
+        
+        let signupController = SignupController()
+        mainNavigationController.viewControllers = [HomeController(), signupController]
+        view.endEditing(true)
+        dismiss(animated: true, completion: nil)
+    }
+
+    func finishLoggingIn() {
+        let emailText = loginView.emailTextField.text!
+        let passwordText = loginView.passwordTextField.text!
+        
+        if(passwordText.characters.count == 0 || emailText.characters.count == 0) {
             showAlert(title: "Error", message: "Email or password is empty.")
         } else {
         
@@ -70,14 +94,8 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                         if responseObject["success"].stringValue == "false"{
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
-                            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-                            guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
-                            
-                            mainNavigationController.viewControllers = [HomeController()]
                             UserDefaults.standard.setIsLoggedIn(value: true)
-                            self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
-                            
                         }
                     },
                        failure: {(error) -> Void in
@@ -93,27 +111,5 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
         mainNavigationController.viewControllers = [HomeController()]
         view.endEditing(true)
         dismiss(animated: true, completion: nil)
-    }
-    
-    func pushSignup() {
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
-        
-        let signupController = SignupController()
-        mainNavigationController.viewControllers = [HomeController(), signupController]
-        view.endEditing(true)
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("that")
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
     }
 }

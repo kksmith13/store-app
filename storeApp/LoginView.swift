@@ -13,7 +13,7 @@ protocol LoginViewDelegate {
     func cancelLoggingIn()
 }
 
-class LoginView: UIView {
+class LoginView: BaseView {
     
     let logoImageView: UIImageView = {
         let image = UIImage(named: "logo")
@@ -23,17 +23,22 @@ class LoginView: UIView {
     
     let emailTextField: LeftPaddedTextField = {
         let textField = LeftPaddedTextField()
+        let borderColor = UserDefaults.standard.colorForKey(key: "linesColor")
         textField.placeholder = "Enter Email"
-        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderColor = borderColor?.cgColor
         textField.layer.borderWidth = 1
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.spellCheckingType = .no
         textField.keyboardType = .emailAddress
         return textField
     }()
 
     let passwordTextField: LeftPaddedTextField = {
         let textField = LeftPaddedTextField()
+        let borderColor = UserDefaults.standard.colorForKey(key: "linesColor")
         textField.placeholder = "Enter password"
-        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderColor = borderColor?.cgColor
         textField.layer.borderWidth = 1
         textField.isSecureTextEntry = true
         return textField
@@ -52,8 +57,9 @@ class LoginView: UIView {
     
     let cancelButton: UIButton = {
         let button = UIButton(type: .system)
+        let backgroundColor = UIColor.init(red: 255/255, green: 59/255, blue: 48/255, alpha: 1)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightLight)
-        button.backgroundColor = UIColor.init(red: 255/255, green: 59/255, blue: 48/255, alpha: 1)
+        button.backgroundColor = backgroundColor
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(nil, action: #selector(LoginController.cancelLoggingIn), for: .touchUpInside)
@@ -87,7 +93,6 @@ class LoginView: UIView {
     
     let signupButton: UIButton = {
         let button = UIButton(type: .system)
-        let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
         let borderColor = UserDefaults.standard.colorForKey(key: "linesColor")
         button.layer.borderWidth = 1
         button.layer.borderColor = borderColor?.cgColor
@@ -106,10 +111,9 @@ class LoginView: UIView {
         //button.addTarget(nil, action: #selector(LoginController.cancelLoggingIn), for: .touchUpInside)
         return button
     }()
-
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func setupViews() {
+        super.setupViews()
         
         addSubview(logoImageView)
         addSubview(emailTextField)
@@ -149,22 +153,6 @@ class LoginView: UIView {
         
         _ = signupButton.anchor(signupLabel.bottomAnchor, left: signupView.leftAnchor, bottom: nil, right: signupView.rightAnchor, topConstant: 32, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 44)
         
-        
-        
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class LeftPaddedTextField: UITextField {
-    
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + 10, y: bounds.origin.y, width: bounds.width + 10, height: bounds.height)
-    }
 }
