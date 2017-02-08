@@ -25,6 +25,9 @@ class MainNavigationController: UINavigationController {
         let linesColor = UIColor.init(red: 206/255, green: 206/255, blue: 210/255, alpha: 1)
         UserDefaults.standard.setColor(color: linesColor, forKey: "linesColor")
         
+        let grayText = UIColor.init(red: 142/255, green: 142/255, blue: 142/255, alpha: 1)
+        UserDefaults.standard.setColor(color: grayText, forKey: "grayText")
+        
         let redColor = UIColor.init(red: 255/255, green: 59/255, blue: 48/255, alpha: 1)
         UserDefaults.standard.setColor(color: redColor, forKey: "redColor")
         

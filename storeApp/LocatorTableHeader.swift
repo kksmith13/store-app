@@ -35,7 +35,7 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
     }
     
     deinit {
-        searchController.searchBar.removeFromSuperview()
+        searchController.isActive = false
         searchController.searchBar.endEditing(true)
     }
     

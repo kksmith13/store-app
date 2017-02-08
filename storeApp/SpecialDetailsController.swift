@@ -24,6 +24,8 @@ class SpecialDetailsController: AppViewController {
         
         view = specialView
         specialView.special = special
+        
+        navigationItem.title = special?.type?.capitalized
     }
     
     override func viewDidLayoutSubviews() {
