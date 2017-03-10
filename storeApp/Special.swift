@@ -17,6 +17,6 @@ class Special: NSObject {
     var type: String?
     
     func convertExpiration(date: String) {
-        expires = Configuration.dateConvert(date: date)
+        expires = Configuration.dateToString(date: date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .medium)
     }
 }

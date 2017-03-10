@@ -52,8 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //defaults. TODO: Handle last updated
         //Handle first time launch settings
         if !defaults.bool(forKey: "HasLaunchedOnce"){
-            defaults.setValue("#FFFFFF", forKey: "primaryColor")
-            defaults.setValue("#000000", forKey: "secondaryColor")
+            defaults.setValue("#004078", forKey: "primaryColor")
+            defaults.setValue("#FFF708", forKey: "secondaryColor")
             defaults.setValue("0", forKey: "icon")
             defaults.set(true, forKey: "HasLaunchedOnce")
             defaults.synchronize()

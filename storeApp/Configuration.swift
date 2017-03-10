@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Configuration : NSObject {
+class Configuration: NSObject {
     
     static func hexStringToUIColor(hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -32,15 +32,15 @@ class Configuration : NSObject {
         )
     }
     
-    static func dateConvert(date:String) -> String{
+    static func dateToString(date: String, dateFormat: String, dateStyle: DateFormatter.Style) -> String{
         
         let dateString = date
         let dateFormatter = DateFormatter()
         dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.dateFormat = dateFormat
         let nsDate = dateFormatter.date(from: dateString)
         
-        dateFormatter.dateStyle = .medium
+        dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .none
         let convertedDate = dateFormatter.string(from: nsDate!)
         

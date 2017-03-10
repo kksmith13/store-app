@@ -55,6 +55,22 @@ class APIClient {
         return verifyHeaders
     }
     
+    func setupPUTHeaders() -> NSDictionary {
+        var token:String
+        
+        if getAccessToken() != nil {
+            token = "Bearer " + getAccessToken()!
+        } else {
+            token = ""
+        }
+        
+        let verifyHeaders:NSDictionary = [
+            "Authorization": token,
+            "Accept"       : "application/json" ]
+        
+        return verifyHeaders
+    }
+    
     // MARK: - REST API Functions
     
     func GET(urlString: URLConvertible,
@@ -97,7 +113,28 @@ class APIClient {
                         failure(error as NSError)
                     }
             }
+    }
+    
+    func PUT(urlString:URLConvertible,
+              parameters:NSDictionary,
+              headers:NSDictionary,
+              success: @escaping (JSON) -> Void,
+              failure: @escaping (NSError) -> Void) {
+        
+        Alamofire
+            .request(urlString, method: .put, parameters: parameters as? Parameters, encoding: URLEncoding.default, headers: headers as? HTTPHeaders)
+            .responseJSON { (responseObject) -> Void in
+                if responseObject.result.isSuccess {
+                    let resJSON = JSON(responseObject.result.value!)
+                    success(resJSON)
+                }
+                
+                if responseObject.result.isFailure {
+                    let error : Error = responseObject.result.error!
+                    failure(error as NSError)
+                }
         }
+    }
     
     // MARK: - External Functions
     func isLoggedIn() -> Bool {
@@ -216,5 +253,21 @@ class APIClient {
                         success(responseObject)
         },
                     failure: failure)
+    }
+    
+    func updateUser(id: String,
+                    params: NSDictionary,
+                    success: @escaping (JSON) -> Void,
+                    failure: @escaping (NSError) -> Void){
+        
+        let updateUserURL:URLConvertible = loginVerifyBase + "/users/" + id + "/profile"
+        let updateUsersHeaders = setupPUTHeaders()
+        
+        return PUT(urlString: updateUserURL,
+                   parameters: params,
+                   headers: updateUsersHeaders,
+                   success: {(responseObject) -> Void in
+                        success(responseObject)},
+                   failure: failure)
     }
 }

@@ -94,8 +94,15 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                         if responseObject["success"].stringValue == "false"{
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
-                            UserDefaults.standard.setIsLoggedIn(value: true)
-                            UserDefaults.standard.setValue(responseObject["username"].stringValue, forKey: "username")
+                            let defaults = UserDefaults.standard
+                            defaults.setIsLoggedIn(value: true)
+                            print(responseObject["user"])
+                            let userData = responseObject["user"]
+                            let user = User.init(id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
+                            let encodedData = NSKeyedArchiver.archivedData(withRootObject: user)
+                            defaults.set(encodedData, forKey: "user")
+                            defaults.synchronize()
+                            //UserDefaults.standard.setValue(responseObject["username"].stringValue, forKey: "username")
                             self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
                         }

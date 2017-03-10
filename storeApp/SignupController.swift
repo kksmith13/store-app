@@ -8,10 +8,12 @@
 
 import UIKit
 
-class SignupController: AppViewController, UITextFieldDelegate {
+class SignupController: AppViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
     let signupView: SignupView = {
-        let sv = SignupView()
+        let sv = SignupView()//(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        //sv.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
     
@@ -22,8 +24,30 @@ class SignupController: AppViewController, UITextFieldDelegate {
         
         navigationItem.title = "Create Account"
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(SignupController.keyboardWillShow(notification:)),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(SignupController.keyboardWillHide(notification:)),
+            name: NSNotification.Name.UIKeyboardWillHide,
+            object: nil
+        )
+        
         view.addSubview(signupView)
+        
         _ = signupView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        signupView.delegate = self
+        signupView.isUserInteractionEnabled = true
+        signupView.isScrollEnabled = true
+        signupView.showsVerticalScrollIndicator = true
+        signupView.contentSize = CGSize(width: view.frame.width, height: 850)
+        
+        print(signupView.contentSize)
+
         signupView.firstNameField.delegate = self
         signupView.lastNameField.delegate = self
         signupView.emailField.delegate = self
@@ -31,25 +55,48 @@ class SignupController: AppViewController, UITextFieldDelegate {
         signupView.passwordField.delegate = self
         signupView.confirmField.delegate = self
         
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        //create some variable based on height to change how much the screen pops up
-        let updateY = textField.frame.midY * 0.20
-
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.frame = CGRect(x: 0, y: -updateY, width: self.view.frame.width, height: self.view.frame.height)
-        }, completion: nil)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        }, completion: nil)
         
-        textField.resignFirstResponder()
-        return true
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func adjustInsetForKeyboardShow(show: Bool, notification: NSNotification) {
+
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        guard let value = notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = value.cgRectValue.size
+        
+        //Can remove the +66 if user doesn't like movement
+        signupView.contentInset.bottom = keyboardFrame.height + 66
+        signupView.scrollIndicatorInsets.bottom = keyboardFrame.height + 66
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        signupView.contentInset = .zero
+        signupView.scrollIndicatorInsets = .zero
+    }
+
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        //create some variable based on height to change how much the screen pops up
+//        let updateY = textField.frame.midY * 0.20
+//
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            self.view.frame = CGRect(x: 0, y: -updateY, width: self.view.frame.width, height: self.view.frame.height)
+//        }, completion: nil)
+//    }
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+//            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        }, completion: nil)
+//        
+//        textField.resignFirstResponder()
+//        return true
+//    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         let okColor = UserDefaults.standard.colorForKey(key: "greenColor")?.cgColor
@@ -110,6 +157,11 @@ class SignupController: AppViewController, UITextFieldDelegate {
         return false
     }
     
+    //temporary solution, fix
+    func isDateValid(date: String) -> Bool {
+        return (date.characters.count > 1) ? true : false
+    }
+    
     func isPasswordValid(password: String) -> Bool {
         if password.characters.count > 5 {
             return true
@@ -147,6 +199,7 @@ class SignupController: AppViewController, UITextFieldDelegate {
         let last = signupView.lastNameField.text!
         let email = signupView.emailField.text!
         let phone = signupView.phoneField.text!
+        let dob = signupView.dateToSend
         let password = signupView.passwordField.text!
         let confirm = signupView.confirmField.text!
         
@@ -158,6 +211,8 @@ class SignupController: AppViewController, UITextFieldDelegate {
             showAlert(title: "Email Invalid", message: "Please input a valid email")
         } else if !isPhoneValid(phone: phone) {
             showAlert(title: "Phone Number Invalid", message: "Please Input a Valid Number")
+        } else if !isDateValid(date: dob) {
+            showAlert(title: "Birth Date Invalid", message: "Please Select a Birth Date")
         } else if !isPasswordValid(password: password) {
             showAlert(title: "Password Invalid", message: "Password must be 6 characters or longer")
         } else if !doPasswordsMatch(password: password, confirm: confirm) {
@@ -169,6 +224,7 @@ class SignupController: AppViewController, UITextFieldDelegate {
                                         "user_last"     : last,
                                         "user_email"    : email,
                                         "user_phone"    : phone,
+                                        "user_dob"      : dob,
                                         "user_password" : password,
                                         "user_confirm"  : confirm]
             

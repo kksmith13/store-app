@@ -46,7 +46,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return loggedInStatus ? 2 : 1
+            return loggedInStatus ? 3 : 1
         case 1:
             return 2
         case 2:
@@ -72,6 +72,8 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         case 0:
             if indexPath.row == 0 {
                 loggedInStatus ? (cell.textLabel?.text = "Profile") : (cell.textLabel?.text = "Log in or Join Clark's")
+            } else if indexPath.row == 1 {
+                cell.textLabel?.text = "Rewards Account"
             } else {
                 cell.textLabel?.text = "Change Password"
             }
@@ -105,7 +107,10 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         case 5:
             cell.textLabel?.text = "Tell a Friend"
         case 6:
-            cell.textLabel?.text = "Logout as " + UserDefaults.standard.string(forKey: "username")!
+            if let data = UserDefaults.standard.object(forKey: "user") {
+                let user = NSKeyedUnarchiver.unarchiveObject(with: data as! Data) as! User
+                cell.textLabel?.text = "Logout as " + user.email
+            }
         default:
             break
         }
@@ -134,6 +139,9 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
             if(!loggedInStatus) {
                 let loginController = LoginController()
                 present(loginController, animated: true, completion: nil)
+            } else if indexPath.row == 0 {
+                let profileController = ProfileController()
+                navigationController?.pushViewController(profileController, animated: true)
             }
         case 1:
             if indexPath.row == 0 {

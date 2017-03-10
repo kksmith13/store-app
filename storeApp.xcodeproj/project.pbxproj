@@ -46,6 +46,10 @@
 		83ABC6C31E2D4BFD00AD6D4C /* CellWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ABC6C21E2D4BFD00AD6D4C /* CellWithImage.swift */; };
 		83B1DD231E25DBB100B2DCD6 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1DD221E25DBB100B2DCD6 /* CustomTabBarController.swift */; };
 		83B1DD271E25DC6900B2DCD6 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B1DD261E25DC6900B2DCD6 /* BaseView.swift */; };
+		83DCE5591E70555400513CFD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE5581E70555400513CFD /* User.swift */; };
+		83DCE55B1E7061F000513CFD /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55A1E7061F000513CFD /* ProfileController.swift */; };
+		83DCE55D1E71090200513CFD /* CellWithTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55C1E71090200513CFD /* CellWithTextInput.swift */; };
+		83DCE55F1E71A9F100513CFD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55E1E71A9F100513CFD /* Helpers.swift */; };
 		83DD38C81E36C7320082B3D6 /* AboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD38C71E36C7320082B3D6 /* AboutController.swift */; };
 		83DD38CB1E36C8590082B3D6 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD38CA1E36C8590082B3D6 /* AboutView.swift */; };
 		83FFDA281E27221A0098E9FB /* CustomTabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FFDA271E27221A0098E9FB /* CustomTabBarCell.swift */; };
@@ -119,6 +123,10 @@
 		83ABC6C21E2D4BFD00AD6D4C /* CellWithImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellWithImage.swift; sourceTree = "<group>"; };
 		83B1DD221E25DBB100B2DCD6 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		83B1DD261E25DC6900B2DCD6 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		83DCE5581E70555400513CFD /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		83DCE55A1E7061F000513CFD /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		83DCE55C1E71090200513CFD /* CellWithTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellWithTextInput.swift; sourceTree = "<group>"; };
+		83DCE55E1E71A9F100513CFD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		83DD38C71E36C7320082B3D6 /* AboutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutController.swift; sourceTree = "<group>"; };
 		83DD38CA1E36C8590082B3D6 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		83FFDA271E27221A0098E9FB /* CustomTabBarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarCell.swift; sourceTree = "<group>"; };
@@ -249,6 +257,7 @@
 			children = (
 				8300324B1D4962C10046848A /* Configuration.swift */,
 				830032851D76185C0046848A /* APIClient.swift */,
+				83DCE55E1E71A9F100513CFD /* Helpers.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -258,6 +267,7 @@
 			children = (
 				8365FD231E23434E0058B999 /* Store.swift */,
 				83329D6F1DDBCB0300A1D258 /* Special.swift */,
+				83DCE5581E70555400513CFD /* User.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -268,6 +278,7 @@
 				832DEF941E371101001F8404 /* SettingsController.swift */,
 				831E5A031E372034007B2FE7 /* EmploymentController.swift */,
 				831E5A061E37236B007B2FE7 /* WebsiteController.swift */,
+				83DCE55A1E7061F000513CFD /* ProfileController.swift */,
 			);
 			name = "Settings Controllers";
 			sourceTree = "<group>";
@@ -403,6 +414,7 @@
 				83FFDA361E2D1CC00098E9FB /* Store Details Cells */,
 				8365FD111E1D9C8F0058B999 /* StoreCell.swift */,
 				831E5A081E39614A007B2FE7 /* LocatorTableHeader.swift */,
+				83DCE55C1E71090200513CFD /* CellWithTextInput.swift */,
 			);
 			name = "TV Cells";
 			sourceTree = "<group>";
@@ -608,6 +620,7 @@
 				831E5A041E372034007B2FE7 /* EmploymentController.swift in Sources */,
 				83DD38C81E36C7320082B3D6 /* AboutController.swift in Sources */,
 				83FFDA381E2D1CED0098E9FB /* InfoCell.swift in Sources */,
+				83DCE55B1E7061F000513CFD /* ProfileController.swift in Sources */,
 				83AA87F51DC7CC7500AF0402 /* SpecialDetailsController.swift in Sources */,
 				8365FD121E1D9C8F0058B999 /* StoreCell.swift in Sources */,
 				8365FD1A1E22EAEF0058B999 /* OptionsBarView.swift in Sources */,
@@ -622,6 +635,8 @@
 				83B1DD231E25DBB100B2DCD6 /* CustomTabBarController.swift in Sources */,
 				8307CAC61DAF121D00EADCFC /* LoginController.swift in Sources */,
 				83B1DD271E25DC6900B2DCD6 /* BaseView.swift in Sources */,
+				83DCE55D1E71090200513CFD /* CellWithTextInput.swift in Sources */,
+				83DCE5591E70555400513CFD /* User.swift in Sources */,
 				83329D621DD8EFA500A1D258 /* LoginView.swift in Sources */,
 				83FFDA281E27221A0098E9FB /* CustomTabBarCell.swift in Sources */,
 				83DD38CB1E36C8590082B3D6 /* AboutView.swift in Sources */,
@@ -639,6 +654,7 @@
 				831E5A091E39614A007B2FE7 /* LocatorTableHeader.swift in Sources */,
 				83FFDA351E2C7F170098E9FB /* StoreDetailsController.swift in Sources */,
 				832DEF951E371101001F8404 /* SettingsController.swift in Sources */,
+				83DCE55F1E71A9F100513CFD /* Helpers.swift in Sources */,
 				83329D6A1DDA8A3300A1D258 /* SpecialsController.swift in Sources */,
 				83FFDA2E1E2A79C50098E9FB /* SpecialView.swift in Sources */,
 				83329D681DD913A600A1D258 /* HomeView.swift in Sources */,
