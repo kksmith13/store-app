@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileController: AppViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileController: AppViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     lazy var tableView: UITableView = {
         let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -16,10 +16,47 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         tv.layoutMargins = .zero
         tv.delegate = self
         tv.dataSource = self
-        tv.tableFooterView = UIView(frame: .zero)
+        //tv.tableFooterView = UIView(frame: .zero)
         return tv
     }()
+
     
+    //MARK: - Static Cells
+    let emailCell: CellWithTextInput = {
+        let cell = CellWithTextInput()
+        cell.isUserInteractionEnabled = false
+        return cell
+    }()
+    
+    lazy var firstNameCell: CellWithTextInput = {
+        let cell = CellWithTextInput()
+        cell.textField.placeholder = "First Name"
+        cell.textField.delegate = self
+        return cell
+    }()
+    
+    lazy var lastNameCell: CellWithTextInput = {
+        let cell = CellWithTextInput()
+        cell.textField.placeholder = "Last Name"
+        cell.textField.delegate = self
+        return cell
+    }()
+    
+    lazy var phoneCell: CellWithTextInput = {
+        let cell = CellWithTextInput()
+        cell.textField.keyboardType = .numbersAndPunctuation
+        cell.textField.placeholder = "Phone Number"
+        cell.textField.delegate = self
+        return cell
+    }()
+    
+    lazy var dobCell: CellWithTextInput = {
+        let cell = CellWithTextInput()
+        cell.textField.delegate = self
+        return cell
+    }()
+    
+    //MARK: - Other Items
     let datePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.maximumDate = Calendar.current.date(byAdding: .year, value: 0, to: Date())
@@ -67,9 +104,34 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         return sw
     }()
     
+    //MARK: - Footer View Items
+    
+    let termsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12, weight: UIFontWeightLight)
+        label.text = "By completing this registration you agree to our"
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let termsButton: UIButton = {
+        let button = UIButton(type: .system)
+        let textColor = UserDefaults.standard.colorForKey(key: "linkColor")
+        let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFontWeightMedium)
+        button.setTitle("Terms and Conditions", for: .normal)
+        button.setTitleColor(textColor, for: .normal)
+        //button.addTarget(nil, action: #selector(LoginController.finishLoggingIn), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    
+    //MARK: - Variables
     var user: User?
     var age: Int?
     var tcId = "tcId"
+    var dateCell: UITextField?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +141,9 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         tableView.register(CellWithTextInput.self, forCellReuseIdentifier: tcId)
         view.addSubview(tableView)
         
+        setupKeyboardNotifications()
         setupUserData()
+        setupCells()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,6 +153,43 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    //MARK: - Keyboard Handling
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func setupKeyboardNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ProfileController.keyboardWillShow(notification:)),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ProfileController.keyboardWillHide(notification:)),
+            name: NSNotification.Name.UIKeyboardWillHide,
+            object: nil
+        )
+        
+    }
+    
+    func adjustInsetForKeyboardShow(show: Bool, notification: NSNotification) {
+        guard let value = notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = value.cgRectValue
+        let adjustmentHeight = (keyboardFrame.height + 20) * (show ? 1 : 0)
+        tableView.contentInset.bottom = adjustmentHeight
+        tableView.scrollIndicatorInsets.bottom = adjustmentHeight
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        adjustInsetForKeyboardShow(show: true, notification: notification)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        adjustInsetForKeyboardShow(show: false, notification: notification)
     }
     
     //MARK: - Internal Functions
@@ -101,33 +202,28 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         user?.alcohol == false ? (alcoholSwitch.isOn = false) : (alcoholSwitch.isOn = true)
         user?.lottery == false ? (lotterySwitch.isOn = false) : (lotterySwitch.isOn = true)
         
-        age = getUserAge()
+        age = Helpers.calculateAgeFromDate(dob: user!.dob)
+        print(age!)
     }
     
-    func getUserAge() -> Int {
-        //can't set dateStyle or it crashes
-        //let dob = Helpers.dateToString(date: (user?.dob)!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        let dob = dateFormatter.date(from: (user?.dob)!)
-        
-        let calendar = Calendar.current
-        let ageComponents = calendar.dateComponents([.year], from: dob!, to: Date())
-        let age = ageComponents.year!
-        return age
+    func setupCells() {
+        datePicker.date = Helpers.dateFromString(dateString: user!.dob, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        emailCell.textField.text = user?.email
+        firstNameCell.textField.text = user?.first
+        lastNameCell.textField.text = user?.last
+        phoneCell.textField.text = Helpers.formatPhoneNumber(phone: (user!.phone))
+        dobCell.textField.text = Helpers.formattedDateToString(date: user!.dob, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
     }
     
     func doneDob() {
-        print(datePicker.date)
-        
-        user?.dob = Helpers.datePickerToFormattedString(date: datePicker.date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        
-        tableView.reloadData()
-        resignFirstResponder()
+        let dob = dobCell
+        dob.textField.text = Helpers.datePickerToString(date: datePicker.date, dateStyle: .long)
+        dob.textField.resignFirstResponder()
     }
 
     func cancelDob() {
-        resignFirstResponder()
+        let dob = dobCell
+        dob.textField.resignFirstResponder()
     }
     
     func saveData(sender: UIBarButtonItem) {
@@ -137,66 +233,63 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         user?.alcohol = alcoholSwitch.isOn
         user?.lottery = lotterySwitch.isOn
         
-        //think about guarding user? there should be no instance where someone is in their profile without data.
-        let params:Dictionary<String, Any> = [ "first"    : user!.first,
-                                               "last"     : user!.last,
-                                               "dob"      : user!.dob,
-                                               "phone"    : user!.phone,
-                                               "tobacco"  : user!.tobacco,
-                                               "alcohol"  : user!.alcohol,
-                                               "lottery"  : user!.lottery]
+        let first = firstNameCell
+        let last = lastNameCell
+        let phone = phoneCell
         
-        
-        APIClient
-            .sharedInstance
-            .updateUser(id: (user?.id)!,
-                        params: params as NSDictionary,
-                        success: {(responseObject) -> Void in
-                            let defaults = UserDefaults.standard
-                            let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.user!)
-                            defaults.set(encodedData, forKey: "user")
-                            defaults.synchronize()
-                            _ = self.navigationController?.popViewController(animated: true)
-                            
-                    },
-                        failure: {(error) -> Void in
-                            self.showAlert(title: "Could Not Login", message: error.localizedDescription)
-            })
+        if !Helpers.isNameValid(name: first.textField.text!) {
+            showAlert(title: "First Name Invalid", message: "Must have two letters")
+        } else if !Helpers.isNameValid(name: last.textField.text!) {
+            showAlert(title: "Last Name Invalid", message: "Must have two letters")
+        } else if !Helpers.isPhoneValid(phone: phone.textField.text!) {
+            showAlert(title: "Phone Number Invalid", message: "Please Input a Valid Number")
+        } else if !Helpers.isDateValid(date: Helpers.datePickerToFormattedString(date: datePicker.date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")) {
+            showAlert(title: "Birth Date Invalid", message: "Please Select a Birth Date")
+        } else {
+            
+            user?.first = first.textField.text!
+            user?.last  = last.textField.text!
+            user?.phone = Helpers.unformatPhoneNumber(phone: phone.textField.text!)
+            user?.dob = Helpers.datePickerToFormattedString(date: datePicker.date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            
+            //turn off content if the user changes age to under 21 or 18
+            age = Helpers.calculateAgeFromDate(dob: user!.dob)
+            if(age! < 21) {
+                user?.alcohol = false
+                user?.lottery = false
+            }
+            
+            if (age! < 18) {
+                user?.tobacco = false
+            }
+            
+            //think about guarding user? there should be no instance where someone is in their profile without data.
+            let params:Dictionary<String, Any> = [ "first"    : user!.first,
+                                                   "last"     : user!.last,
+                                                   "dob"      : user!.dob,
+                                                   "phone"    : user!.phone,
+                                                   "tobacco"  : user!.tobacco,
+                                                   "alcohol"  : user!.alcohol,
+                                                   "lottery"  : user!.lottery]
+            
+            
+            APIClient
+                .sharedInstance
+                .updateUser(id: (user?.id)!,
+                            params: params as NSDictionary,
+                            success: {(responseObject) -> Void in
+                                let defaults = UserDefaults.standard
+                                let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.user!)
+                                defaults.set(encodedData, forKey: "user")
+                                defaults.synchronize()
+                                _ = self.navigationController?.popViewController(animated: true)
+                                
+                        },
+                            failure: {(error) -> Void in
+                                self.showAlert(title: "Could Not Login", message: error.localizedDescription)
+                })
         }
-    
-    //MARK: - TextField Functions
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if (string == " ") {
-//            return false
-//        }
-//        
-//        if textField == signupView.firstNameField || textField == signupView.lastNameField {
-//            let allowedCharacters = CharacterSet.letters
-//            let characterSet = CharacterSet(charactersIn: string)
-//            return allowedCharacters.isSuperset(of: characterSet)
-//        }
-//        
-//        if textField == signupView.phoneField {
-//            guard let text = textField.text else { return true }
-//            
-//            if(textField.text?.characters.count == 0 && range.location == 0) {
-//                textField.text = "(" + text
-//            }
-//            
-//            if(textField.text?.characters.count == 4 && range.location == 4) {
-//                textField.text = text + ") "
-//            }
-//            
-//            if(textField.text?.characters.count == 9 && range.location == 9) {
-//                textField.text = text + "-"
-//            }
-//            
-//            let newLength = text.characters.count + string.characters.count - range.length
-//            return newLength <= 14
-//        }
-//        
-//        return true
-//    }
+    }
     
     //MARK: - Table View Functions
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -215,25 +308,17 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
         cell.accessoryType = .disclosureIndicator
         if indexPath.section == 0 {
-            let textCell = tableView.dequeueReusableCell(withIdentifier: tcId, for: indexPath) as! CellWithTextInput
             switch(indexPath.row) {
             case 0:
-                textCell.textField.text = user?.email
-                textCell.isUserInteractionEnabled = false
+                return emailCell
             case 1:
-                textCell.textField.text = user?.first
-                textCell.textField.placeholder = "First Name"
+                return firstNameCell
             case 2:
-                textCell.textField.text = user?.last
-                textCell.textField.placeholder = "Last Name"
+                return lastNameCell
             case 3:
-                textCell.textField.keyboardType = .phonePad
-                textCell.textField.text = user?.phone
-                textCell.textField.placeholder = "Phone Number"
+                return phoneCell
             case 4:
-                let dateCell = textCell.textField
-                dateCell.text = Helpers.formattedDateToString(date: (user?.dob)!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
-                datePicker.date = Helpers.dateFromString(dateString: (user?.dob)!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                let dateCell = dobCell.textField
                 dateCell.inputView = datePicker
                 dateCell.inputAccessoryView = toolbar
                 
@@ -245,10 +330,10 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
                 toolbar.addSubview(cancelButton)
                 _ = cancelButton.anchor(toolbar.topAnchor, left: toolbar.leftAnchor, bottom: toolbar.bottomAnchor, right: nil, topConstant: 0, leftConstant: 16, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
                 
+                return dobCell
             default:
                 break
             }
-            return textCell
         } else if indexPath.section == 1 {
             cell.selectionStyle = .none
             switch(indexPath.row) {
@@ -277,9 +362,67 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         return ""
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //MARK: - TextField Functions
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let first = firstNameCell.textField
+        let last = lastNameCell.textField
+        let phone = phoneCell.textField
         
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
+        if (string == " ") {
+            return false
+        }
 
+        if textField == first || textField == last {
+            let allowedCharacters = CharacterSet.letters
+            let characterSet = CharacterSet(charactersIn: string)
+            return allowedCharacters.isSuperset(of: characterSet)
+        }
+
+        if textField == phone {
+            guard let text = textField.text else { return true }
+
+            if(textField.text?.characters.count == 0 && range.location == 0) {
+                textField.text = "(" + text
+            }
+
+            if(textField.text?.characters.count == 4 && range.location == 4) {
+                textField.text = text + ") "
+            }
+
+            if(textField.text?.characters.count == 9 && range.location == 9) {
+                textField.text = text + "-"
+            }
+
+            let newLength = text.characters.count + string.characters.count - range.length
+            let allowedCharacters = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            return newLength <= 14 && allowedCharacters.isSuperset(of: characterSet)
+        }
+        
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 1 {
+            let footerView = UIView()
+            footerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height, height: 0)
+            footerView.addSubview(termsLabel)
+            footerView.addSubview(termsButton)
+            
+            _ = termsLabel.anchor(footerView.topAnchor, left: footerView.leftAnchor, bottom: nil, right: footerView.rightAnchor, topConstant: 16, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+            _ = termsButton.anchor(termsLabel.bottomAnchor, left: footerView.leftAnchor, bottom: nil, right: footerView.rightAnchor, topConstant: 4, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+            return footerView
+        }
+        
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 64
+        }
+        
+        return 0
+    }
+
+}

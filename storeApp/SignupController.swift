@@ -103,7 +103,7 @@ class SignupController: AppViewController, UITextFieldDelegate, UIScrollViewDele
         let errorColor = UserDefaults.standard.colorForKey(key: "redColor")?.cgColor
         let text = textField.text!
         
-        if ((textField == signupView.firstNameField || textField == signupView.lastNameField) && isNameValid(name: text) || (textField == signupView.emailField && isEmailValid(email: text)) || (textField == signupView.phoneField) && isPhoneValid(phone: text) || (textField == signupView.passwordField) && isPasswordValid(password: text) || (textField == signupView.confirmField) && isPasswordValid(password: text) && doPasswordsMatch(password: signupView.passwordField.text!, confirm: text)) {
+        if ((textField == signupView.firstNameField || textField == signupView.lastNameField) && Helpers.isNameValid(name: text) || (textField == signupView.emailField && Helpers.isEmailValid(email: text)) || (textField == signupView.phoneField) && Helpers.isPhoneValid(phone: text) || (textField == signupView.passwordField) && Helpers.isPasswordValid(password: text) || (textField == signupView.confirmField) && Helpers.isPasswordValid(password: text) && Helpers.doPasswordsMatch(password: signupView.passwordField.text!, confirm: text)) {
             textField.layer.borderColor = okColor
         } else {
             textField.layer.borderColor = errorColor
@@ -143,55 +143,6 @@ class SignupController: AppViewController, UITextFieldDelegate, UIScrollViewDele
         return true
     }
     
-    func isEmailValid(email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: email)
-    }
-    
-    func isNameValid(name: String) -> Bool {
-        if name.characters.count > 1 {
-            return true
-        }
-        
-        return false
-    }
-    
-    //temporary solution, fix
-    func isDateValid(date: String) -> Bool {
-        return (date.characters.count > 1) ? true : false
-    }
-    
-    func isPasswordValid(password: String) -> Bool {
-        if password.characters.count > 5 {
-            return true
-        }
-        
-        return false
-    }
-    
-    func doPasswordsMatch(password: String, confirm: String) -> Bool {
-        if password == confirm {
-            return true
-        }
-        
-        return false
-    }
-    
-    func isPhoneValid(phone: String) -> Bool {
-        if phone.characters.count == 14 {
-            return true
-        }
-        
-        return false
-    }
-    
-//    func isPhoneValid(phone: String) -> Bool {
-//        let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
-//        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-//        return phoneTest.evaluate(with: phone)
-//    }
-    
     func finishSigningUp() {
         resignFirstResponder()
         
@@ -203,21 +154,21 @@ class SignupController: AppViewController, UITextFieldDelegate, UIScrollViewDele
         let password = signupView.passwordField.text!
         let confirm = signupView.confirmField.text!
         
-        if !isNameValid(name: first) {
+        if !Helpers.isNameValid(name: first) {
             showAlert(title: "First Name Invalid", message: "Must have two letters")
-        } else if !isNameValid(name: last) {
+        } else if !Helpers.isNameValid(name: last) {
             showAlert(title: "Last Name Invalid", message: "Must have two letters")
-        } else if !isEmailValid(email: email) {
+        } else if !Helpers.isEmailValid(email: email) {
             showAlert(title: "Email Invalid", message: "Please input a valid email")
-        } else if !isPhoneValid(phone: phone) {
+        } else if !Helpers.isPhoneValid(phone: phone) {
             showAlert(title: "Phone Number Invalid", message: "Please Input a Valid Number")
-        } else if !isDateValid(date: dob) {
+        } else if !Helpers.isDateValid(date: dob) {
             showAlert(title: "Birth Date Invalid", message: "Please Select a Birth Date")
-        } else if !isPasswordValid(password: password) {
+        } else if !Helpers.isPasswordValid(password: password) {
             showAlert(title: "Password Invalid", message: "Password must be 6 characters or longer")
-        } else if !doPasswordsMatch(password: password, confirm: confirm) {
+        } else if !Helpers.doPasswordsMatch(password: password, confirm: confirm) {
             showAlert(title: "Passwords do not match", message: "Please make sure that both passwords are the same")
-        } else if !isPasswordValid(password: password) {
+        } else if !Helpers.isPasswordValid(password: password) {
             showAlert(title: "Confirm Password Invald", message: "Confirm password must be 6 characters or longer")
         } else {
             let params:NSDictionary = [ "user_first"    : first,
