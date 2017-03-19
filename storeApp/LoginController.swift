@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SwiftyJSON
+import CoreData
 
 class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegate {
     
@@ -66,6 +68,40 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
     }
     
     //MARK: - Internal Functions
+    func clearUser() {
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if let context = delegate?.managedObjectContext {
+            do {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                let objects = try context.fetch(fetchRequest) as? [NSManagedObject]
+                for object in objects! {
+                    context.delete(object)
+                }
+                try context.save()
+            } catch let err {
+                print(err)
+            }
+        }
+    }
+    func setupUser(response: JSON) {
+        
+        let delegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if let context = delegate?.managedObjectContext {
+            let user  = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as! User
+            print(response["user"])
+            let userData = response["user"]
+            user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
+            
+            do {
+                try context.save()
+            } catch let err {
+                print(err)
+            }
+        }
+    }
+    
     func pushSignup() {
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
@@ -94,15 +130,8 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                         if responseObject["success"].stringValue == "false"{
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
-                            let defaults = UserDefaults.standard
-                            defaults.setIsLoggedIn(value: true)
-                            print(responseObject["user"])
-                            let userData = responseObject["user"]
-                            let user = User.init(id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
-                            let encodedData = NSKeyedArchiver.archivedData(withRootObject: user)
-                            defaults.set(encodedData, forKey: "user")
-                            defaults.synchronize()
-                            //UserDefaults.standard.setValue(responseObject["username"].stringValue, forKey: "username")
+                            self.clearUser()
+                            self.setupUser(response: responseObject)
                             self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
                         }

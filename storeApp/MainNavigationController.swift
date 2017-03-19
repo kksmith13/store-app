@@ -12,7 +12,6 @@ class MainNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateSettings()
-        updateLoggedInStatus()
     }
     
     fileprivate func configureTheme(){
@@ -42,8 +41,11 @@ class MainNavigationController: UINavigationController {
     
     fileprivate func updateSettings() {
         Configuration
-            .getSettingsFromAPI(success: {(response) -> Void in },
+            .getSettingsFromAPI(success: {(response) -> Void in
+                                    self.updateLoggedInStatus()
+                                },
                                 failure: {(error) -> Void in
+                                    self.updateLoggedInStatus()
                                     debugPrint(error)
             })
     }
@@ -52,11 +54,7 @@ class MainNavigationController: UINavigationController {
         APIClient
             .sharedInstance
             .isAuthenticated(success: {(responseObject) -> Void in
-                                if responseObject["status"].stringValue == "200" {
-                                    UserDefaults.standard.setIsLoggedIn(value: true)
-                                } else {
-                                    UserDefaults.standard.setIsLoggedIn(value: false)
-                                }
+                                responseObject["status"].stringValue == "200" ? (User.sharedInstance.isLoggedIn = true) : (User.sharedInstance.isLoggedIn = false)
                                 self.goHome()
                             },
                              failure: {(error) -> Void in
@@ -67,7 +65,7 @@ class MainNavigationController: UINavigationController {
     
     fileprivate func goHome() {
         configureTheme()
-        perform(#selector(showHomeController), with: nil, afterDelay: 0.01)
+        perform(#selector(showHomeController), with: nil, afterDelay: 0.20)
     }
     
     func showHomeController() {

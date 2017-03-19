@@ -50,6 +50,10 @@
 		83DCE55B1E7061F000513CFD /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55A1E7061F000513CFD /* ProfileController.swift */; };
 		83DCE55D1E71090200513CFD /* CellWithTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55C1E71090200513CFD /* CellWithTextInput.swift */; };
 		83DCE55F1E71A9F100513CFD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE55E1E71A9F100513CFD /* Helpers.swift */; };
+		83DCE58F1E7C53C600513CFD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE58E1E7C53C600513CFD /* CoreDataStack.swift */; };
+		83DCE5A21E7DA16300513CFD /* storeApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE5A01E7DA16300513CFD /* storeApp.xcdatamodeld */; };
+		83DCE5B11E7EF9EB00513CFD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE5AF1E7EF9EB00513CFD /* User+CoreDataClass.swift */; };
+		83DCE5B21E7EF9EB00513CFD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DCE5B01E7EF9EB00513CFD /* User+CoreDataProperties.swift */; };
 		83DD38C81E36C7320082B3D6 /* AboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD38C71E36C7320082B3D6 /* AboutController.swift */; };
 		83DD38CB1E36C8590082B3D6 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD38CA1E36C8590082B3D6 /* AboutView.swift */; };
 		83FFDA281E27221A0098E9FB /* CustomTabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FFDA271E27221A0098E9FB /* CustomTabBarCell.swift */; };
@@ -127,6 +131,10 @@
 		83DCE55A1E7061F000513CFD /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		83DCE55C1E71090200513CFD /* CellWithTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellWithTextInput.swift; sourceTree = "<group>"; };
 		83DCE55E1E71A9F100513CFD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		83DCE58E1E7C53C600513CFD /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		83DCE5A11E7DA16300513CFD /* storeApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = storeApp.xcdatamodel; sourceTree = "<group>"; };
+		83DCE5AF1E7EF9EB00513CFD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		83DCE5B01E7EF9EB00513CFD /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		83DD38C71E36C7320082B3D6 /* AboutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutController.swift; sourceTree = "<group>"; };
 		83DD38CA1E36C8590082B3D6 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		83FFDA271E27221A0098E9FB /* CustomTabBarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarCell.swift; sourceTree = "<group>"; };
@@ -170,6 +178,7 @@
 		830032101D4954010046848A = {
 			isa = PBXGroup;
 			children = (
+				83DCE58E1E7C53C600513CFD /* CoreDataStack.swift */,
 				8300321B1D4954010046848A /* storeApp */,
 				830032301D4954020046848A /* storeAppTests */,
 				8300323B1D4954020046848A /* storeAppUITests */,
@@ -192,7 +201,8 @@
 		8300321B1D4954010046848A /* storeApp */ = {
 			isa = PBXGroup;
 			children = (
-				830032871D7628D80046848A /* Model */,
+				83DCE5931E7D9FA800513CFD /* Core Data Models */,
+				830032871D7628D80046848A /* Models */,
 				8365FD101E1D9C740058B999 /* Cells */,
 				831E5A121E424E82007B2FE7 /* View/Controller Groups */,
 				831E5A1E1E42639A007B2FE7 /* Abstract Classes */,
@@ -206,6 +216,7 @@
 				830032231D4954010046848A /* Assets.xcassets */,
 				830032281D4954010046848A /* Info.plist */,
 				8307CAC21DAC1E7600EADCFC /* storeApp.entitlements */,
+				83DCE5A01E7DA16300513CFD /* storeApp.xcdatamodeld */,
 			);
 			name = storeApp;
 			path = ../../timelyRewards/storeApp/storeApp;
@@ -262,14 +273,14 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		830032871D7628D80046848A /* Model */ = {
+		830032871D7628D80046848A /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				8365FD231E23434E0058B999 /* Store.swift */,
 				83329D6F1DDBCB0300A1D258 /* Special.swift */,
 				83DCE5581E70555400513CFD /* User.swift */,
 			);
-			name = Model;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		831E5A051E37203E007B2FE7 /* Settings Controllers */ = {
@@ -426,6 +437,15 @@
 				83AA87F41DC7CC7500AF0402 /* SpecialDetailsController.swift */,
 			);
 			name = "Specials Controllers";
+			sourceTree = "<group>";
+		};
+		83DCE5931E7D9FA800513CFD /* Core Data Models */ = {
+			isa = PBXGroup;
+			children = (
+				83DCE5AF1E7EF9EB00513CFD /* User+CoreDataClass.swift */,
+				83DCE5B01E7EF9EB00513CFD /* User+CoreDataProperties.swift */,
+			);
+			name = "Core Data Models";
 			sourceTree = "<group>";
 		};
 		83FFDA361E2D1CC00098E9FB /* Store Details Cells */ = {
@@ -618,7 +638,10 @@
 				8300327F1D640D660046848A /* StoreLocatorController.swift in Sources */,
 				83FFDA3A1E2D1D070098E9FB /* LocatorCell.swift in Sources */,
 				831E5A041E372034007B2FE7 /* EmploymentController.swift in Sources */,
+				83DCE58F1E7C53C600513CFD /* CoreDataStack.swift in Sources */,
+				83DCE5B11E7EF9EB00513CFD /* User+CoreDataClass.swift in Sources */,
 				83DD38C81E36C7320082B3D6 /* AboutController.swift in Sources */,
+				83DCE5B21E7EF9EB00513CFD /* User+CoreDataProperties.swift in Sources */,
 				83FFDA381E2D1CED0098E9FB /* InfoCell.swift in Sources */,
 				83DCE55B1E7061F000513CFD /* ProfileController.swift in Sources */,
 				83AA87F51DC7CC7500AF0402 /* SpecialDetailsController.swift in Sources */,
@@ -635,6 +658,7 @@
 				83B1DD231E25DBB100B2DCD6 /* CustomTabBarController.swift in Sources */,
 				8307CAC61DAF121D00EADCFC /* LoginController.swift in Sources */,
 				83B1DD271E25DC6900B2DCD6 /* BaseView.swift in Sources */,
+				83DCE5A21E7DA16300513CFD /* storeApp.xcdatamodeld in Sources */,
 				83DCE55D1E71090200513CFD /* CellWithTextInput.swift in Sources */,
 				83DCE5591E70555400513CFD /* User.swift in Sources */,
 				83329D621DD8EFA500A1D258 /* LoginView.swift in Sources */,
@@ -731,7 +755,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -772,7 +796,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -882,6 +906,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		83DCE5A01E7DA16300513CFD /* storeApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				83DCE5A11E7DA16300513CFD /* storeApp.xcdatamodel */,
+			);
+			currentVersion = 83DCE5A11E7DA16300513CFD /* storeApp.xcdatamodel */;
+			path = storeApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 830032111D4954010046848A /* Project object */;
 }
