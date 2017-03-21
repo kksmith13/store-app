@@ -11,8 +11,7 @@ import CoreData
 
 
 extension User {
-    static let sharedInstance = User()
-
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<User> {
         return NSFetchRequest<User>(entityName: "User");
     }

@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class MainNavigationController: UINavigationController {
+    
+    var user = Helpers.getUserData() as? User
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateSettings()
@@ -54,7 +58,9 @@ class MainNavigationController: UINavigationController {
         APIClient
             .sharedInstance
             .isAuthenticated(success: {(responseObject) -> Void in
-                                responseObject["status"].stringValue == "200" ? (User.sharedInstance.isLoggedIn = true) : (User.sharedInstance.isLoggedIn = false)
+                if responseObject["status"].stringValue != "200" {
+                                Helpers.clearUserData(entity: "User")
+                            }
                                 self.goHome()
                             },
                              failure: {(error) -> Void in

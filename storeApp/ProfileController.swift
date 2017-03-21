@@ -128,7 +128,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     
     
     //MARK: - Variables
-    let user = User.sharedInstance
+    let user = Helpers.getUserData() as! User
     var age: Int?
     var tcId = "tcId"
     var dateCell: UITextField?
@@ -194,7 +194,6 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     
     //MARK: - Internal Functions
     func setupUserData() {
-        
         user.tobacco == false ? (tobaccoSwitch.isOn = false) : (tobaccoSwitch.isOn = true)
         user.alcohol == false ? (alcoholSwitch.isOn = false) : (alcoholSwitch.isOn = true)
         user.lottery == false ? (lotterySwitch.isOn = false) : (lotterySwitch.isOn = true)
@@ -205,9 +204,9 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     func setupCells() {
         datePicker.date = Helpers.dateFromString(dateString: user.dob!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         emailCell.textField.text = user.email
-        firstNameCell.textField.text = user.first!
-        lastNameCell.textField.text = user.last!
-        phoneCell.textField.text = Helpers.formatPhoneNumber(phone: (user.phone!))
+        firstNameCell.textField.text = user.first
+        lastNameCell.textField.text = user.last
+        phoneCell.textField.text = Helpers.formatPhoneNumber(phone: user.phone!)
         dobCell.textField.text = Helpers.formattedDateToString(date: user.dob!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
     }
     
@@ -259,14 +258,16 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
                 user.tobacco = false
             }
             
+            Helpers.updateUserData()
+            
             //think about guarding user? there should be no instance where someone is in their profile without data.
             let params:Dictionary<String, Any> = [ "first"    : user.first!,
                                                    "last"     : user.last!,
                                                    "dob"      : user.dob!,
                                                    "phone"    : user.phone!,
-                                                   "tobacco"  : user.tobacco!,
-                                                   "alcohol"  : user.alcohol!,
-                                                   "lottery"  : user.lottery!]
+                                                   "tobacco"  : user.tobacco,
+                                                   "alcohol"  : user.alcohol,
+                                                   "lottery"  : user.lottery]
             
             
             APIClient
@@ -274,10 +275,6 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
                 .updateUser(id: user.id!,
                             params: params as NSDictionary,
                             success: {(responseObject) -> Void in
-                                let defaults = UserDefaults.standard
-                                let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.user)
-                                defaults.set(encodedData, forKey: "user")
-                                defaults.synchronize()
                                 _ = self.navigationController?.popViewController(animated: true)
                                 
                         },
@@ -399,7 +396,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 1 {
+        if section == tableView.numberOfSections - 1 {
             let footerView = UIView()
             footerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height, height: 0)
             footerView.addSubview(termsLabel)

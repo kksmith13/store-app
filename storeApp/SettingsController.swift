@@ -20,8 +20,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         return tv
     }()
     
-    var loggedInStatus = User.sharedInstance.isLoggedIn
-    let user = User.sharedInstance
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +30,8 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        user = Helpers.getUserData() as? User
+        tableView.reloadData()
         
         navigationItem.title = "Settings"
     }
@@ -47,11 +48,11 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return loggedInStatus! ? 3 : 1
+            return (user != nil) ? 3 : 1
         case 1:
             return 2
         case 2:
-            return loggedInStatus! ? 1 : 0
+            return (user != nil) ? 1 : 0
         case 3:
             return 4
         case 4:
@@ -59,7 +60,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         case 5:
             return 1
         case 6:
-            return loggedInStatus! ? 1 : 0
+            return (user != nil) ? 1 : 0
         default:
             return 0
         }
@@ -72,7 +73,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         switch indexPath.section {
         case 0:
             if indexPath.row == 0 {
-                loggedInStatus! ? (cell.textLabel?.text = "Profile") : (cell.textLabel?.text = "Log in or Join Clark's")
+                (user != nil) ? (cell.textLabel?.text = "Profile") : (cell.textLabel?.text = "Log in or Join Clark's")
             } else if indexPath.row == 1 {
                 cell.textLabel?.text = "Rewards Account"
             } else {
@@ -108,7 +109,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         case 5:
             cell.textLabel?.text = "Tell a Friend"
         case 6:
-            cell.textLabel?.text = "Logout as " + user.email!
+            cell.textLabel?.text = "Logout as " + (user?.email)!
         default:
             break
         }
@@ -134,7 +135,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            if(!loggedInStatus!) {
+            if(user == nil) {
                 let loginController = LoginController()
                 present(loginController, animated: true, completion: nil)
             } else if indexPath.row == 0 {
@@ -154,7 +155,7 @@ class SettingsController: AppViewController, UITableViewDelegate, UITableViewDat
         case 6:
             APIClient.sharedInstance.logout(success: {(responseObject) -> Void in
                 debugPrint("Logged out")
-                UserDefaults.standard.setIsLoggedIn(value: false)
+                Helpers.clearUserData(entity: "User")
                 _ = self.navigationController?.popViewController(animated: true)
             }, failure: {(error) -> Void in
                 self.showAlert(title: "Error", message: error.localizedDescription)

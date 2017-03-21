@@ -11,5 +11,6 @@ import CoreData
 
 
 public class User: NSManagedObject {
+    static let sharedInstance = User()
 
 }

@@ -68,37 +68,17 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
     }
     
     //MARK: - Internal Functions
-    func clearUser() {
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        
-        if let context = delegate?.managedObjectContext {
-            do {
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                let objects = try context.fetch(fetchRequest) as? [NSManagedObject]
-                for object in objects! {
-                    context.delete(object)
-                }
-                try context.save()
-            } catch let err {
-                print(err)
-            }
-        }
-    }
     func setupUser(response: JSON) {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        let user  = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as! User
+        print(response["user"])
+        let userData = response["user"]
+        user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
         
-        let delegate = UIApplication.shared.delegate as? AppDelegate
-        
-        if let context = delegate?.managedObjectContext {
-            let user  = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as! User
-            print(response["user"])
-            let userData = response["user"]
-            user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
-            
-            do {
-                try context.save()
-            } catch let err {
-                print(err)
-            }
+        do {
+            try context.save()
+        } catch let err {
+            print(err)
         }
     }
     
@@ -130,7 +110,7 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                         if responseObject["success"].stringValue == "false"{
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
-                            self.clearUser()
+                            Helpers.clearUserData(entity: "User")
                             self.setupUser(response: responseObject)
                             self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
