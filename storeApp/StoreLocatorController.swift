@@ -11,7 +11,8 @@ import MapKit
 import SwiftyJSON
 
 
-class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, StoreCellDelegate {
+class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, StoreCellDelegate, LocatorTableHeaderDelegate {
+    
     @available(iOS 8.0, *)
     public func updateSearchResults(for searchController: UISearchController) {
         //
@@ -63,11 +64,19 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     let cellId = "cellId"
     let headerId = "headerId"
     
+    var user: User?
+    var preference = "Premium"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
         tableView.register(LocatorTableHeader.self, forHeaderFooterViewReuseIdentifier: headerId)
         definesPresentationContext = true
+        
+        user = Helpers.getUserData() as? User
+        if user != nil {
+            preference = (user?.gasPreference)!
+        }
         
         setupViews()
     }
@@ -101,6 +110,37 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     func setPosition() {
         for (i, store) in locations.enumerated() {
             store.position = i
+        }
+    }
+    
+    //needs to be tidied up.. repeating 3 times
+    func changeGasType(sender: UIButton) {
+        let alertController = UIAlertController(title: nil, message: "Select a gas type...", preferredStyle: .actionSheet)
+        
+        let unleaded = UIAlertAction(title: "Unleaded", style: .default) { action in
+            sender.setTitle("Unleaded", for: .normal)
+            self.preference = "Unleaded"
+            self.tableView.reloadData()
+        }
+        let premium = UIAlertAction(title: "Premium", style: .default) { action in
+            sender.setTitle("Premium", for: .normal)
+            self.preference = "Premium"
+            self.tableView.reloadData()
+        }
+        let diesel = UIAlertAction(title: "Diesel", style: .default) { action in
+            sender.setTitle("Diesel", for: .normal)
+            self.preference = "Diesel"
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in }
+        
+        alertController.addAction(unleaded)
+        alertController.addAction(premium)
+        alertController.addAction(diesel)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true) {
+            // ...
         }
     }
     
@@ -197,6 +237,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                     store.phone = stores["phoneNumber"].stringValue
                     store.address = stores["address"].stringValue
                     store.price = stores["gasPrice"].stringValue
+                    store.premium = stores["premium"].stringValue
+                    store.diesel = stores["diesel"].stringValue
                     store.distance = distance
                     self.locations.append(store)
                     self.locatorMap.addAnnotation(store)
@@ -277,6 +319,8 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! StoreCell
         cell.delegate = self
         cell.store = locations[indexPath.item]
+        cell.preference = preference
+        
         return cell
     }
     
@@ -286,6 +330,9 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! LocatorTableHeader
+        header.delegate = self
+        header.gasTypeButton.setTitle(preference, for: .normal)
+        
         //header.backgroundColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1)
         return header
     }

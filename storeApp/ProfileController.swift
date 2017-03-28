@@ -65,7 +65,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         dp.datePickerMode = .date
         return dp
     }()
-    
+
     let toolbar: UIToolbar = {
         let tb = UIToolbar()
         tb.barStyle = .default

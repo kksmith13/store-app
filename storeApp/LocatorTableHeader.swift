@@ -8,12 +8,23 @@
 
 import UIKit
 
+protocol LocatorTableHeaderDelegate: class {
+    func changeGasType(sender: UIButton)
+}
+
 class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate{
     
-    let thisLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .red
-        return label
+    weak var delegate: LocatorTableHeaderDelegate?
+    
+    lazy var gasTypeButton: UIButton = {
+        let button = UIButton()
+        let color = UIColor(red: 0/255, green: 122/255, blue: 1, alpha: 1)
+        button.setTitle("Unleaded", for: .normal)
+        button.setTitleColor(color, for: .normal)
+        button.titleLabel!.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightLight)
+        button.contentHorizontalAlignment = .center
+        button.addTarget(self, action: #selector(gasTypePressed), for: .touchDown)
+        return button
     }()
     
     lazy var searchController: UISearchController = {
@@ -39,13 +50,17 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         searchController.searchBar.endEditing(true)
     }
     
+    func gasTypePressed(sender: UIButton) {
+        self.delegate?.changeGasType(sender: sender)
+    }
+    
     func setupViews() {
         
         addSubview(searchController.searchBar)
-        addSubview(thisLabel)
+        addSubview(gasTypeButton)
         
-        addConstraintsWithFormat(format: "H:[v0(50)]-|", views: thisLabel)
-        addConstraintsWithFormat(format: "V:|-12-[v0(20)]", views: thisLabel)
+        addConstraintsWithFormat(format: "H:[v0(80)]-|", views: gasTypeButton)
+        addConstraintsWithFormat(format: "V:|-12-[v0(20)]", views: gasTypeButton)
     
     }
     
@@ -59,7 +74,7 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
     }
     
     override func layoutSubviews() {
-        searchController.searchBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: 44)
+        searchController.searchBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.7, height: 44)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -73,7 +73,7 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
         let user  = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as! User
         print(response["user"])
         let userData = response["user"]
-        user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
+        user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue, gasPreference: userData["gasPreference"].stringValue)
         
         do {
             try context.save()
