@@ -11,7 +11,8 @@ import UIKit
 class SettingsController: AppViewController, UITableViewDelegate, UITableViewDataSource {
     
     lazy var tableView: UITableView = {
-        let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        //this might need to be changed eventually.. probably not smart to have to -64 height here
+        let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 64)
         let tv = UITableView(frame: frame, style: .grouped)
         tv.layoutMargins = .zero
         tv.delegate = self

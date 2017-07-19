@@ -29,7 +29,7 @@ class StoreCell: BaseTVCell {
                 return
             }
             
-            var price = "0"
+            var price = "0.00"
             if preference == "Unleaded" {
                 price = store.price!
             } else if preference == "Premium" {

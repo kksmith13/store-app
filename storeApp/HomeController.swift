@@ -32,7 +32,8 @@ class HomeController: CustomTabBarController {
         navigationItem.title = "Home"
         user = Helpers.getUserData() as? User
         if user != nil {
-            mainView.loginButton.removeFromSuperview()
+            mainView.welcomeMessage.text = "Welcome back, " + (user?.first)!
+            mainView.showWelcomeMessage()
         } else {
             mainView.showLoginButton()
         }

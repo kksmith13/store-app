@@ -39,7 +39,8 @@ class MainNavigationController: UINavigationController {
         
         let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
         navigationBar.barTintColor = primaryColor
-        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationBar.isTranslucent = false
+        navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.systemFont(ofSize: 22, weight: UIFontWeightLight), NSForegroundColorAttributeName: UIColor.white]
         navigationBar.tintColor = .white
     }
     

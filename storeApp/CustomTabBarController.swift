@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-class CustomTabBarController: AppViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
+class CustomTabBarController: AppViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -48,7 +48,7 @@ class CustomTabBarController: AppViewController, UICollectionViewDataSource, UIC
     }()
     
     let cellId = "tbCell"
-    let cellNames  = ["About", "Specials", "", "Stuff", "Settings"]
+    let cellNames  = ["About", "Specials", "", "Other", "Settings"]
     let cellImages = ["info", "coupon", "", "more", "gear"]
     
     override func viewDidLoad() {

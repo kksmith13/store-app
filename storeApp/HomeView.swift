@@ -9,10 +9,28 @@
 import UIKit
 
 class HomeView: UIView {
+    
+    var loggedIn: Bool? {
+        didSet {
+            if (!loggedIn!) {
+                showLoginButton()
+            } else {
+                showWelcomeMessage()
+            }
+        }
+    }
+    
     let logoImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "clark-tBanner")
         return iv
+    }()
+    
+    let welcomeMessage: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightLight)
+        return label
     }()
     
     lazy var loginButton: UIButton = {
@@ -39,6 +57,15 @@ class HomeView: UIView {
     func showLoginButton() {
         addSubview(loginButton)
         _ = loginButton.anchor(logoImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 32, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 50)
+        
+        welcomeMessage.removeFromSuperview()
+        
+    }
+    
+    func showWelcomeMessage() {
+        addSubview(welcomeMessage)
+        _ = welcomeMessage.anchor(logoImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, topConstant: 32, leftConstant: 32, bottomConstant: 0, rightConstant: 32, widthConstant: 0, heightConstant: 30)
+        loginButton.removeFromSuperview()
     }
     
     required init?(coder aDecoder: NSCoder) {

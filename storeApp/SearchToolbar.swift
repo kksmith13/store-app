@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol LocatorTableHeaderDelegate: class {
+protocol SearchToolbarDelegate: class {
     func changeGasType(sender: UIButton)
 }
 
-class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate{
+class SearchToolbar: BaseView, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate{
     
-    weak var delegate: LocatorTableHeaderDelegate?
+    weak var delegate: SearchToolbarDelegate?
     
     lazy var gasTypeButton: UIButton = {
         let button = UIButton()
@@ -39,12 +39,6 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         return sc
     }()
     
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        
-        setupViews()
-    }
-    
     deinit {
         searchController.isActive = false
         searchController.searchBar.endEditing(true)
@@ -54,7 +48,8 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
         self.delegate?.changeGasType(sender: sender)
     }
     
-    func setupViews() {
+    override func setupViews() {
+        super.setupViews()
         
         addSubview(searchController.searchBar)
         addSubview(gasTypeButton)
@@ -75,9 +70,5 @@ class LocatorTableHeader: UITableViewHeaderFooterView, UISearchResultsUpdating, 
     
     override func layoutSubviews() {
         searchController.searchBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.7, height: 44)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

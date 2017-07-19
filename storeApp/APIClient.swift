@@ -94,6 +94,28 @@ class APIClient {
         }
     }
     
+    func getWithParams(urlString: URLConvertible,
+                       parameters: NSDictionary,
+                       headers: NSDictionary,
+                       success: @escaping (JSON) -> Void,
+                       failure: @escaping (NSError) -> Void) {
+        
+        Alamofire
+            .request(urlString, method: .get, parameters: parameters as? Parameters, headers: headers as? HTTPHeaders)
+            .responseJSON { (responseObject) -> Void in
+                
+                if responseObject.result.isSuccess {
+                    let resJSON = JSON(responseObject.result.value!)
+                    success(resJSON)
+                }
+                
+                if responseObject.result.isFailure {
+                    let error : Error = responseObject.result.error!
+                    failure(error as NSError)
+                }
+        }
+    }
+    
     func POST(urlString:URLConvertible,
               parameters:NSDictionary,
               headers:NSDictionary,
@@ -225,18 +247,20 @@ class APIClient {
                    failure: failure)
     }
     
-    func loadCoupons(success: @escaping (JSON) -> Void,
+    func loadCoupons(params: NSDictionary,
+                     success: @escaping (JSON) -> Void,
                      failure: @escaping (NSError) -> Void) {
         
         let couponsURL:URLConvertible = baseAPIURL + "/coupons"
         let loadCouponsHeaders = setupGETHeaders()
         
-        return GET(urlString: couponsURL,
-                   headers: loadCouponsHeaders,
-                   success: {(responseObject) -> Void in
-                    success(responseObject)
-            },
-                   failure: failure)
+        return getWithParams(urlString: couponsURL,
+                             parameters: params,
+                             headers: loadCouponsHeaders,
+                             success: {(responseObject) -> Void in
+                                success(responseObject)
+                            },
+                             failure: failure)
     }
     
     func createUser(params: NSDictionary,

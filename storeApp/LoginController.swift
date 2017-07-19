@@ -32,6 +32,8 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
         
     }
     
+    
+    //MARK: - Keyboard Stuff
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)

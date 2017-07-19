@@ -36,6 +36,22 @@ class Helpers: NSObject {
         }
     }
     
+    //this might not work correctly... what happens in do block when it gets a user that is nil?
+    static func getLoggedInStatus() -> Bool {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        do {
+            let user = try(context.fetch(fetchRequest)).first as? User
+            return (user?.isLoggedIn)!
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return false
+    }
+    
     static func getUserData() -> Any? {
         let context = CoreDataStack.sharedManager.managedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
