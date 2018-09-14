@@ -15,7 +15,7 @@ class MainNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateSettings()
+        goHome()
     }
 
     fileprivate func configureTheme(){
