@@ -7,8 +7,64 @@
 //
 
 import UIKit
+import CoreData
 
 class Helpers: NSObject {
+    
+    
+    //Mark: - Core Data Functions
+    static func updateUserData() {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        do {
+            try context.save()
+        } catch let err {
+            print(err)
+        }
+    }
+    
+    static func clearUserData(entity: String) {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        do {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+            let objects = try context.fetch(fetchRequest) as? [NSManagedObject]
+            for object in objects! {
+                context.delete(object)
+            }
+            try context.save()
+        } catch let err {
+            print(err)
+        }
+    }
+    
+    //this might not work correctly... what happens in do block when it gets a user that is nil?
+    static func getLoggedInStatus() -> Bool {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        do {
+            let user = try(context.fetch(fetchRequest)).first as? User
+            return (user?.isLoggedIn)!
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return false
+    }
+    
+    static func getUserData() -> Any? {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        do {
+            return try(context.fetch(fetchRequest)).first as? User
+            
+        } catch let err {
+            print(err)
+        }
+        
+        return nil
+    }
     
     static func calculateAgeFromDate(dob: String) -> Int {
         //can't set dateStyle or it crashes

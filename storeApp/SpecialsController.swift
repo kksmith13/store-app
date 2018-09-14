@@ -17,6 +17,8 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
     let refreshControl = UIRefreshControl()
     
     let specialId = "specialId"
+    let checkBackId = "checkBackId"
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +26,10 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
         navigationItem.title = "Specials"
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(SpecialCell.self, forCellWithReuseIdentifier: specialId)
+        collectionView?.register(CheckBackCell.self, forCellWithReuseIdentifier: checkBackId)
 
+        user = Helpers.getUserData() as? User
+        
         hasFetchedSpecials = false
         fetchSpecials()
         view.backgroundColor = UIColor.green
@@ -44,10 +49,15 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
     }
     
     func fetchSpecials() {
+        var params = Dictionary<String, Bool>()
+        params["tobacco"] = user?.tobacco
+        params["alcohol"] = user?.alcohol
+        params["lottery"] = user?.lottery
+        
         specials.removeAll()
         APIClient
             .sharedInstance
-            .loadCoupons(success: { (responseObject) -> Void in
+            .loadCoupons(params: params as NSDictionary, success: { (responseObject) -> Void in
                 for(_, item) in responseObject["coupons"] {
                     
                     let decodedImage = Configuration.convertBase64Image(image: item["image"]["data"].stringValue)
@@ -92,16 +102,46 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return specials.count
+        if user != nil {
+            return specials.count == 0 ? 1 : specials.count
+        } else {
+            return specials.count == 0 ? 1 : specials.count + 1
+        }
+
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: specialId, for: indexPath) as! SpecialCell
-        
-        cell.backgroundColor = .white
-        cell.special = specials[indexPath.item]
-        
-        return cell
+        if user == nil {
+            if specials.count == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: checkBackId, for: indexPath) as! CheckBackCell
+                cell.checkBackLabel.text = "There are no more offers. Login or sign up to check for more!"
+                return cell
+            } else {
+                if indexPath.row < specials.count {
+                    //all the specials
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: specialId, for: indexPath) as! SpecialCell
+                    cell.backgroundColor = .white
+                    cell.special = specials[indexPath.item]
+                    return cell
+                } else {
+                    //checkBack cell with login
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: checkBackId, for: indexPath) as! CheckBackCell
+                    return cell
+                }
+            }
+        } else /*user != nil*/ {
+            if specials.count == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: checkBackId, for: indexPath) as! CheckBackCell
+                cell.checkBackLabel.text = "There are currently no offers. Check back later for more!"
+                cell.loginButton.removeFromSuperview()
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: specialId, for: indexPath) as! SpecialCell
+                cell.backgroundColor = .white
+                cell.special = specials[indexPath.item]
+                return cell
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -113,14 +153,16 @@ class SpecialsController: AppCollectionViewController, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 16, 0)
+        return UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let specialController = SpecialDetailsController()
-        specialController.special = specials[indexPath.row]
-        
-        navigationController?.pushViewController(specialController, animated: true)
+        if indexPath.row < specials.count {
+            let specialController = SpecialDetailsController()
+            specialController.special = specials[indexPath.row]
+            
+            navigationController?.pushViewController(specialController, animated: true)
+        }
     }
     
     

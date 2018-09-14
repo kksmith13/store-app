@@ -25,6 +25,7 @@ class SpecialCell: BaseCVCell {
     
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.backgroundColor = UserDefaults.standard.colorForKey(key: "linesColor")
         return imageView
     }()
     
@@ -51,7 +52,7 @@ class SpecialCell: BaseCVCell {
     
     let seperatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = UserDefaults.standard.colorForKey(key: "linesColor")
         return view
     }()
     

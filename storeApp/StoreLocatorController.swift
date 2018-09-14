@@ -11,17 +11,17 @@ import MapKit
 import SwiftyJSON
 
 
-class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, StoreCellDelegate {
+class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationManagerDelegate, UISearchResultsUpdating {
+    
     @available(iOS 8.0, *)
     public func updateSearchResults(for searchController: UISearchController) {
         //
     }
+    
     var position = 0
-    let regionRadius: CLLocationDistance = 3000
+    let regionRadius: CLLocationDistance = 4000
     
     var initialLocation: CLLocation?
-    
-    var locations = [Store]()
 
     lazy var locatorMap: MKMapView = {
         let mv = MKMapView()
@@ -47,39 +47,34 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         return view
     }()
     
-    lazy var tableView: UITableView = {
-        let tv = UITableView()
-        tv.delegate = self
-        tv.dataSource = self
-        tv.tableFooterView = UIView()
-        tv.sectionHeaderHeight = UITableViewAutomaticDimension
-        tv.estimatedRowHeight = 24.0
-        tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        tv.contentInset = UIEdgeInsetsMake(0, 0, 16, 0)
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
-        return tv
+    var sheetBottomConstraint: NSLayoutConstraint?
+    
+    lazy var bottomSheet: BottomSheetView = {
+        let sheet = BottomSheetView()
+        sheet.storeController = self
+        return sheet
     }()
     
     let cellId = "cellId"
     let headerId = "headerId"
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(StoreCell.self, forCellReuseIdentifier: cellId)
-        tableView.register(LocatorTableHeader.self, forHeaderFooterViewReuseIdentifier: headerId)
         definesPresentationContext = true
-        
-        setupViews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = ""
         
         let currentLatitude = locationManager.location?.coordinate.latitude
         let currentLongitude = locationManager.location?.coordinate.longitude
         
         initialLocation = CLLocation(latitude: currentLatitude!, longitude: currentLongitude!)
         centerMapOnLocation(initialLocation!)
+
+        setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = "Find A Store"
+        
     }
     
     //MARK: - Internal Functions
@@ -87,57 +82,31 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         view.addSubview(locatorMap)
         view.addSubview(storeInfo)
 
-        view.addSubview(tableView)
+        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: bottomSheet.fullSheetHeight)
         
-        _ = locatorMap.anchor(view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 64, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 300)
-        _ = tableView.anchorToTop(locatorMap.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         addLocationsToMap()
+        setupBottomSheet()
+    }
+    
+    //MARK: - Bottom Sheet
+    func setupBottomSheet() {
+        let initialConstant = bottomSheet.partialConstant
+        view.addSubview(bottomSheet)
+        
+        sheetBottomConstraint = bottomSheet.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: initialConstant)
+        sheetBottomConstraint?.isActive = true
+        
+        _ = bottomSheet.anchor(nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: bottomSheet.fullSheetHeight)
     }
 
     func sortLocations() {
-        locations.sort {Int($0.distance!) < Int($1.distance!)}
+        bottomSheet.locations.sort {Int($0.distance!) < Int($1.distance!)}
     }
     
     func setPosition() {
-        for (i, store) in locations.enumerated() {
+        for (i, store) in bottomSheet.locations.enumerated() {
             store.position = i
         }
-    }
-    
-    //MARK: - StoreCell Delegate Methods
-    func openDirections(cell: StoreCell){
-        guard tableView.indexPath(for: cell) != nil else {
-            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
-            return
-        }
-        
-        let index = tableView.indexPath(for: cell)?.row
-        let regionDistance: CLLocationDistance = 10000
-        let coordinates = locations[index!].coordinate
-        let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
-        let options = [
-            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
-            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
-        ]
-        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
-        let mapItem = MKMapItem(placemark: placemark)
-        
-        mapItem.name = locations[index!].address
-        mapItem.openInMaps(launchOptions: options)
-        
-    }
-    
-    func openDetails(cell: StoreCell) {
-        guard tableView.indexPath(for: cell) != nil else {
-            // Note, this shouldn't happen - how did the user tap on a button that wasn't on screen?
-            return
-        }
-        
-        let index = tableView.indexPath(for: cell)?.row
-        let storeDetailsController = StoreDetailsController()
-        navigationItem.title = ""
-        storeDetailsController.store = locations[index!]
-        navigationController?.pushViewController(storeDetailsController, animated: true)
     }
     
     // MARK: - Map Functions
@@ -197,15 +166,17 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
                     store.phone = stores["phoneNumber"].stringValue
                     store.address = stores["address"].stringValue
                     store.price = stores["gasPrice"].stringValue
+                    store.premium = stores["premium"].stringValue
+                    store.diesel = stores["diesel"].stringValue
                     store.distance = distance
-                    self.locations.append(store)
+                    self.bottomSheet.locations.append(store)
                     self.locatorMap.addAnnotation(store)
                     
                 }
                 
                 self.sortLocations()
                 self.setPosition()
-                self.tableView.reloadData()
+                self.bottomSheet.tableView.reloadData()
                 },
                         failure: {(error) -> Void in
                             self.showAlert(title: "Failed loading stores", message: error.localizedDescription)
@@ -224,9 +195,11 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
     
     // Function to handle selecting an annotation
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        //if selected mark is location....
         let directionsRequest = MKDirectionsRequest()
         let selectedLoc = view.annotation as? Store
-        tableView.selectRow(at: IndexPath.init(row: (selectedLoc?.position)!, section: 0), animated: true, scrollPosition: .middle)
+        bottomSheet.sheetPosition = .full
+        bottomSheet.tableView.selectRow(at: IndexPath.init(row: (selectedLoc?.position)!, section: 0), animated: true, scrollPosition: .middle)
         let selectedPlacemark = MKPlacemark(coordinate: (selectedLoc?.coordinate)!, addressDictionary: nil)
         let selectedMapItem = MKMapItem(placemark: selectedPlacemark)
         
@@ -262,36 +235,6 @@ class StoreLocatorController: AppViewController, MKMapViewDelegate, CLLocationMa
         renderer.strokeColor = .blue
         renderer.lineWidth = 5.0
         return renderer
-    }
-    
-    //MARK: - TV Delegate Methods
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! StoreCell
-        cell.delegate = self
-        cell.store = locations[indexPath.item]
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 104
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! LocatorTableHeader
-        //header.backgroundColor = UIColor(red: 222/255, green: 222/255, blue: 222/255, alpha: 1)
-        return header
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
     }
     
 }

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SwiftyJSON
+import CoreData
 
 class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegate {
     
@@ -30,6 +32,8 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
         
     }
     
+    
+    //MARK: - Keyboard Stuff
     fileprivate func observeKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
@@ -66,6 +70,20 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
     }
     
     //MARK: - Internal Functions
+    func setupUser(response: JSON) {
+        let context = CoreDataStack.sharedManager.managedObjectContext
+        let user  = NSEntityDescription.insertNewObject(forEntityName: "User", into: context) as! User
+        print(response["user"])
+        let userData = response["user"]
+        user.setUserData(isLoggedIn: true, id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue, gasPreference: userData["gasPreference"].stringValue)
+        
+        do {
+            try context.save()
+        } catch let err {
+            print(err)
+        }
+    }
+    
     func pushSignup() {
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         guard let mainNavigationController = rootViewController as? MainNavigationController else { return }
@@ -94,15 +112,8 @@ class LoginController : AppViewController, LoginViewDelegate, UITextFieldDelegat
                         if responseObject["success"].stringValue == "false"{
                             self.showAlert(title: "Error", message: "Credentials are invalid")
                         } else {
-                            let defaults = UserDefaults.standard
-                            defaults.setIsLoggedIn(value: true)
-                            print(responseObject["user"])
-                            let userData = responseObject["user"]
-                            let user = User.init(id: userData["_id"].stringValue, first: userData["first"].stringValue, last: userData["last"].stringValue, email: userData["email"].stringValue, phone: userData["phone"].stringValue, dob: userData["dob"].stringValue, tobacco: userData["tobacco"].boolValue, alcohol: userData["alcohol"].boolValue, lottery: userData["lottery"].boolValue)
-                            let encodedData = NSKeyedArchiver.archivedData(withRootObject: user)
-                            defaults.set(encodedData, forKey: "user")
-                            defaults.synchronize()
-                            //UserDefaults.standard.setValue(responseObject["username"].stringValue, forKey: "username")
+                            Helpers.clearUserData(entity: "User")
+                            self.setupUser(response: responseObject)
                             self.view.endEditing(true)
                             self.dismiss(animated: true, completion: nil)
                         }

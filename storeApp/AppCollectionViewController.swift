@@ -24,6 +24,4 @@ class AppCollectionViewController: UICollectionViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
 }

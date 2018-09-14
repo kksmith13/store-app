@@ -51,7 +51,7 @@ class Configuration: NSObject {
         
         let imageData = image
         let encodedImage = NSData(base64Encoded: imageData, options: .ignoreUnknownCharacters)
-        let decodedImage = UIImage(data: encodedImage as! Data)!
+        let decodedImage = UIImage(data: encodedImage! as Data)!
         
         return decodedImage
     }
@@ -61,15 +61,15 @@ class Configuration: NSObject {
         APIClient
             .sharedInstance
             .loadSettings(success: {(responseObject) -> Void in
-                let defaults = UserDefaults.standard
-                let primary = responseObject["setting"][0]["primaryColor"].stringValue
-                let secondary = responseObject["setting"][0]["secondaryColor"].stringValue
-                let primaryUIC = Configuration.hexStringToUIColor(hex: primary)
-                let secondaryUIC = Configuration.hexStringToUIColor(hex: secondary)
-                defaults.setColor(color: primaryUIC, forKey: "primaryColor")
-                defaults.setColor(color: secondaryUIC, forKey: "secondaryColor")
-                defaults.setValue(responseObject["setting"][0]["appIcon"]["data"].stringValue, forKey: "icon")
-                defaults.synchronize()
+//                let defaults = UserDefaults.standard
+//                let primary = responseObject["setting"][0]["primaryColor"].stringValue
+//                let secondary = responseObject["setting"][0]["secondaryColor"].stringValue
+//                let primaryUIC = Configuration.hexStringToUIColor(hex: primary)
+//                let secondaryUIC = Configuration.hexStringToUIColor(hex: secondary)
+//                defaults.setColor(color: primaryUIC, forKey: "primaryColor")
+//                defaults.setColor(color: secondaryUIC, forKey: "secondaryColor")
+//                defaults.setValue(responseObject["setting"][0]["appIcon"]["data"].stringValue, forKey: "icon")
+//                defaults.synchronize()
                 success(responseObject as AnyObject!)
                 },
                           failure: {(error) -> Void in

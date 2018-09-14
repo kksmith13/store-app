@@ -65,7 +65,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
         dp.datePickerMode = .date
         return dp
     }()
-    
+
     let toolbar: UIToolbar = {
         let tb = UIToolbar()
         tb.barStyle = .default
@@ -128,7 +128,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     
     
     //MARK: - Variables
-    var user: User?
+    let user = Helpers.getUserData() as! User
     var age: Int?
     var tcId = "tcId"
     var dateCell: UITextField?
@@ -194,25 +194,20 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     
     //MARK: - Internal Functions
     func setupUserData() {
-        if let data = UserDefaults.standard.object(forKey: "user") {
-            user = NSKeyedUnarchiver.unarchiveObject(with: data as! Data) as? User
-        }
+        user.tobacco == false ? (tobaccoSwitch.isOn = false) : (tobaccoSwitch.isOn = true)
+        user.alcohol == false ? (alcoholSwitch.isOn = false) : (alcoholSwitch.isOn = true)
+        user.lottery == false ? (lotterySwitch.isOn = false) : (lotterySwitch.isOn = true)
         
-        user?.tobacco == false ? (tobaccoSwitch.isOn = false) : (tobaccoSwitch.isOn = true)
-        user?.alcohol == false ? (alcoholSwitch.isOn = false) : (alcoholSwitch.isOn = true)
-        user?.lottery == false ? (lotterySwitch.isOn = false) : (lotterySwitch.isOn = true)
-        
-        age = Helpers.calculateAgeFromDate(dob: user!.dob)
-        print(age!)
+        age = Helpers.calculateAgeFromDate(dob: user.dob!)
     }
     
     func setupCells() {
-        datePicker.date = Helpers.dateFromString(dateString: user!.dob, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        emailCell.textField.text = user?.email
-        firstNameCell.textField.text = user?.first
-        lastNameCell.textField.text = user?.last
-        phoneCell.textField.text = Helpers.formatPhoneNumber(phone: (user!.phone))
-        dobCell.textField.text = Helpers.formattedDateToString(date: user!.dob, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
+        datePicker.date = Helpers.dateFromString(dateString: user.dob!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        emailCell.textField.text = user.email
+        firstNameCell.textField.text = user.first
+        lastNameCell.textField.text = user.last
+        phoneCell.textField.text = Helpers.formatPhoneNumber(phone: user.phone!)
+        dobCell.textField.text = Helpers.formattedDateToString(date: user.dob!, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", dateStyle: .long)
     }
     
     func doneDob() {
@@ -229,9 +224,9 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     func saveData(sender: UIBarButtonItem) {
         print("Saving...")
         
-        user?.tobacco = tobaccoSwitch.isOn
-        user?.alcohol = alcoholSwitch.isOn
-        user?.lottery = lotterySwitch.isOn
+        user.tobacco = tobaccoSwitch.isOn
+        user.alcohol = alcoholSwitch.isOn
+        user.lottery = lotterySwitch.isOn
         
         let first = firstNameCell
         let last = lastNameCell
@@ -247,41 +242,39 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
             showAlert(title: "Birth Date Invalid", message: "Please Select a Birth Date")
         } else {
             
-            user?.first = first.textField.text!
-            user?.last  = last.textField.text!
-            user?.phone = Helpers.unformatPhoneNumber(phone: phone.textField.text!)
-            user?.dob = Helpers.datePickerToFormattedString(date: datePicker.date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            user.first = first.textField.text!
+            user.last  = last.textField.text!
+            user.phone = Helpers.unformatPhoneNumber(phone: phone.textField.text!)
+            user.dob = Helpers.datePickerToFormattedString(date: datePicker.date, dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
             
             //turn off content if the user changes age to under 21 or 18
-            age = Helpers.calculateAgeFromDate(dob: user!.dob)
+            age = Helpers.calculateAgeFromDate(dob: user.dob!)
             if(age! < 21) {
-                user?.alcohol = false
-                user?.lottery = false
+                user.alcohol = false
+                user.lottery = false
             }
             
             if (age! < 18) {
-                user?.tobacco = false
+                user.tobacco = false
             }
             
+            Helpers.updateUserData()
+            
             //think about guarding user? there should be no instance where someone is in their profile without data.
-            let params:Dictionary<String, Any> = [ "first"    : user!.first,
-                                                   "last"     : user!.last,
-                                                   "dob"      : user!.dob,
-                                                   "phone"    : user!.phone,
-                                                   "tobacco"  : user!.tobacco,
-                                                   "alcohol"  : user!.alcohol,
-                                                   "lottery"  : user!.lottery]
+            let params:Dictionary<String, Any> = [ "first"    : user.first!,
+                                                   "last"     : user.last!,
+                                                   "dob"      : user.dob!,
+                                                   "phone"    : user.phone!,
+                                                   "tobacco"  : user.tobacco,
+                                                   "alcohol"  : user.alcohol,
+                                                   "lottery"  : user.lottery]
             
             
             APIClient
                 .sharedInstance
-                .updateUser(id: (user?.id)!,
+                .updateUser(id: user.id!,
                             params: params as NSDictionary,
                             success: {(responseObject) -> Void in
-                                let defaults = UserDefaults.standard
-                                let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.user!)
-                                defaults.set(encodedData, forKey: "user")
-                                defaults.synchronize()
                                 _ = self.navigationController?.popViewController(animated: true)
                                 
                         },
@@ -403,7 +396,7 @@ class ProfileController: AppViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 1 {
+        if section == tableView.numberOfSections - 1 {
             let footerView = UIView()
             footerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height, height: 0)
             footerView.addSubview(termsLabel)

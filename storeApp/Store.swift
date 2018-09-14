@@ -17,6 +17,8 @@ class Store: NSObject, MKAnnotation{
     var zipcode: String?
     var phone: String?
     var price: String?
+    var premium: String?
+    var diesel: String?
     var distance: Double?
     var latitude: Double?
     var longitude: Double?

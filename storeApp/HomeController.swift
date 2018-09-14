@@ -11,6 +11,8 @@ import SwiftyJSON
 
 class HomeController: CustomTabBarController {
     
+    var user: User?
+    
     let mainView: HomeView = {
         let mv = HomeView()
         return mv
@@ -18,7 +20,7 @@ class HomeController: CustomTabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.addSubview(mainView)
         _ = mainView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         view.sendSubview(toBack: mainView)
@@ -28,8 +30,10 @@ class HomeController: CustomTabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationItem.title = "Home"
-        if UserDefaults.standard.isLoggedIn() {
-            mainView.loginButton.removeFromSuperview()
+        user = Helpers.getUserData() as? User
+        if user != nil {
+            mainView.welcomeMessage.text = "Welcome back, " + (user?.first)!
+            mainView.showWelcomeMessage()
         } else {
             mainView.showLoginButton()
         }

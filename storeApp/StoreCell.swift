@@ -23,6 +23,25 @@ class StoreCell: BaseTVCell {
         self.delegate = nil
     }
     
+    var preference: String? {
+        didSet {
+            guard let store = store else {
+                return
+            }
+            
+            var price = "0.00"
+            if preference == "Unleaded" {
+                price = store.price!
+            } else if preference == "Premium" {
+                price = store.premium!
+            } else if preference == "Diesel" {
+                price = store.diesel!
+            }
+            
+            priceLabel.text = "$" + price
+        }
+    }
+    
     var store: Store? {
         didSet {
             guard let store = store else {
@@ -31,8 +50,8 @@ class StoreCell: BaseTVCell {
             nameLabel.text = store.name
             addressLabel.text = store.address
             locationLabel.text = store.city! + ", " + store.state! + " " + store.zipcode!
-            priceLabel.text = "$" + (store.price)!
             distanceLabel.text = String(format: "%.1f", (store.distance)!/1609.344)
+            
         }
     }
     

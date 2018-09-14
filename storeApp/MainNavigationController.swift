@@ -7,15 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
 class MainNavigationController: UINavigationController {
+    
+    var user = Helpers.getUserData() as? User
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateSettings()
-        updateLoggedInStatus()
+        goHome()
     }
-    
+
     fileprivate func configureTheme(){
+        let defaults = UserDefaults.standard
+        let primary = UIColor(red: 0, green: 64/255, blue: 120/255, alpha: 1)
+        let secondary = UIColor(red: 255/255, green: 247/255, blue: 8/255, alpha: 1)
+        defaults.setColor(color: primary, forKey: "primaryColor")
+        defaults.setColor(color: secondary, forKey: "secondaryColor")
+        
         let backgroundColor = UIColor.init(red: 239/255, green: 238/255, blue: 244/255, alpha: 1)
         UserDefaults.standard.setColor(color: backgroundColor, forKey: "backgroundColor")
         
@@ -36,14 +45,18 @@ class MainNavigationController: UINavigationController {
         
         let primaryColor = UserDefaults.standard.colorForKey(key: "primaryColor")
         navigationBar.barTintColor = primaryColor
-        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationBar.isTranslucent = false
+        navigationBar.titleTextAttributes = [NSFontAttributeName : UIFont.systemFont(ofSize: 22, weight: UIFontWeightLight), NSForegroundColorAttributeName: UIColor.white]
         navigationBar.tintColor = .white
     }
     
     fileprivate func updateSettings() {
         Configuration
-            .getSettingsFromAPI(success: {(response) -> Void in },
+            .getSettingsFromAPI(success: {(response) -> Void in
+                                    self.updateLoggedInStatus()
+                                },
                                 failure: {(error) -> Void in
+                                    self.updateLoggedInStatus()
                                     debugPrint(error)
             })
     }
@@ -52,11 +65,9 @@ class MainNavigationController: UINavigationController {
         APIClient
             .sharedInstance
             .isAuthenticated(success: {(responseObject) -> Void in
-                                if responseObject["status"].stringValue == "200" {
-                                    UserDefaults.standard.setIsLoggedIn(value: true)
-                                } else {
-                                    UserDefaults.standard.setIsLoggedIn(value: false)
-                                }
+                if responseObject["status"].stringValue != "200" {
+                                Helpers.clearUserData(entity: "User")
+                            }
                                 self.goHome()
                             },
                              failure: {(error) -> Void in
@@ -67,7 +78,7 @@ class MainNavigationController: UINavigationController {
     
     fileprivate func goHome() {
         configureTheme()
-        perform(#selector(showHomeController), with: nil, afterDelay: 0.01)
+        perform(#selector(showHomeController), with: nil, afterDelay: 0.20)
     }
     
     func showHomeController() {
