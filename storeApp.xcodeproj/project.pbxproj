@@ -271,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				8300324B1D4962C10046848A /* Configuration.swift */,
-				830032851D76185C0046848A /* APIClient.swift */,
 				83DCE55E1E71A9F100513CFD /* Helpers.swift */,
 			);
 			name = Services;
@@ -294,6 +293,7 @@
 				831E5A031E372034007B2FE7 /* EmploymentController.swift */,
 				831E5A061E37236B007B2FE7 /* WebsiteController.swift */,
 				83DCE55A1E7061F000513CFD /* ProfileController.swift */,
+				830032851D76185C0046848A /* APIClient.swift */,
 			);
 			name = "Settings Controllers";
 			sourceTree = "<group>";
